@@ -1,15 +1,16 @@
 package org.example.Entity;
 
+import java.io.ObjectInputFilter;
+
 public class Transaction {
 
-    public Transaction(Address from, int gas, int gasPrice, String sing, int nonce, Address to, long transactionIndex, int value, String data) {
+    public Transaction(Address from, int gas, int gasPrice, String sing, Address to, int value, String data) {
         this.from = from;
         this.gas = gas;
         this.gasPrice = gasPrice;
         this.sing = sing;
-        this.nonce = nonce;
+
         this.to = to;
-        this.transactionIndex = transactionIndex;
         this.value = value;
         this.data = data;
     }
@@ -17,12 +18,10 @@ public class Transaction {
     Address from;
     int gas;
     int blockNumber;
-    boolean status;
+    TransactionStatus status;
     int gasPrice;
     String sing;
-    int nonce;
     Address to;
-    long transactionIndex;
     int value;
     String data;
 
@@ -50,11 +49,11 @@ public class Transaction {
         this.blockNumber = blockNumber;
     }
 
-    public boolean isStatus() {
+    public TransactionStatus getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(TransactionStatus status) {
         this.status = status;
     }
 
@@ -74,13 +73,7 @@ public class Transaction {
         this.sing = sing;
     }
 
-    public int getNonce() {
-        return nonce;
-    }
 
-    public void setNonce(int nonce) {
-        this.nonce = nonce;
-    }
 
     public Address getTo() {
         return to;
@@ -90,13 +83,7 @@ public class Transaction {
         this.to = to;
     }
 
-    public long getTransactionIndex() {
-        return transactionIndex;
-    }
 
-    public void setTransactionIndex(long transactionIndex) {
-        this.transactionIndex = transactionIndex;
-    }
 
     public int getValue() {
         return value;

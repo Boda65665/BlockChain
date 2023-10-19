@@ -1,11 +1,9 @@
 package org.example.BlockChainApps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Cryptography.Asymmetric;
 import org.example.Cryptography.HashEncoder;
 import org.example.Entity.Address;
-import org.example.Entity.Block;
 import org.example.BlockChain.BlockChain;
 import org.example.Entity.Transaction;
 import org.example.Exeptions.BlockChainException;
@@ -38,10 +36,17 @@ public class App {
 
         ArrayList<Transaction> transactions = new ArrayList<>();
         for (int i = 0;i<20;i++){
-            transactions.add(new Transaction(from,gas,gasPrice,asymmetric.sign(hashEncoder.SHA256(String.valueOf(i)+to.getPublicKey()), from.getPrivateKey()),i,to,i,10,null));
+            if(i>15 && i<19) transactions.add(new Transaction(from,gas,gasPrice,"wegr",to,-10,null));
+            else {
+                transactions.add(new Transaction(from,gas,gasPrice,asymmetric.sign(hashEncoder.SHA256(to.getPublicKey()), from.getPrivateKey()),to,-10,null));
+
+            }
+
         }
         javaChain.addBlock(transactions);
-
+        for (Transaction transaction : javaChain.getLastBLock().getData()) {
+            System.out.println(transaction.getStatus());
+        }
 
 
 
