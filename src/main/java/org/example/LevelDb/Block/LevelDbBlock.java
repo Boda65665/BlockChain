@@ -136,7 +136,11 @@ public class LevelDbBlock<T>{
         db.close();
     }
 
+<<<<<<< HEAD
 //fweffewfefefwefewf
+=======
+
+>>>>>>> 38ae040 (v0.7)
 
         public static void main(String[] args) throws IOException {
 
