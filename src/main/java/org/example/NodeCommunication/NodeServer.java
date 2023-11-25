@@ -1,10 +1,9 @@
 package org.example.NodeCommunication;
 
 import com.google.gson.Gson;
-import org.example.BlockChain.BlockChain;
 import org.example.BlockChain.BlockChainBase;
-import org.example.LevelDb.Block.LevelDbBlock;
-import org.example.LevelDb.State.LevelDbState;
+import org.example.DB.LevelDb.Block.LevelDbBlock;
+import org.example.DB.LevelDb.State.LevelDbState;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class NodeServer<T> {
     }
 
     public void handler() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(7880);
+        ServerSocket serverSocket = new ServerSocket(1234);
         while (true) {
             Socket clientSocket = serverSocket.accept();
             System.out.println("connecting "+clientSocket.getInetAddress().getHostAddress());
@@ -38,20 +37,19 @@ public class NodeServer<T> {
                 String lastAddress = in.readLine();
                 if (hashLastBlock==null) {
                     out.println(gson.toJson(blockChain.getBlocks()));
-                    out.println(gson.toJson(levelDbBlock.getBlockFromPoolBlocks()));
+                    out.println(gson.toJson(blockChain.getBlocksPool()));
                     out.println(gson.toJson(blockChain.getAllAddresses()));
                 }
                 else {
                     if (levelDbBlock.get(hashLastBlock)!=null){
                             out.println(gson.toJson(blockChain.getBlocksStartingFrom(hashLastBlock)));
                             out.println(gson.toJson(blockChain.getBlocksPool()));
-                            out.println(gson.toJson(levelDbState));
                             out.println(gson.toJson(blockChain.getAddressStartingFrom(lastAddress)));
 
                     }
                     else {
                         out.println(gson.toJson(blockChain.getBlocks()));
-                        out.println(gson.toJson(levelDbBlock.getBlockFromPoolBlocks()));
+                        out.println(gson.toJson(blockChain.getBlocksPool()));
                         out.println(gson.toJson(blockChain.getAllAddresses()));
                     }
                 }

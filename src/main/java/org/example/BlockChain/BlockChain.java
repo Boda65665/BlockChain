@@ -3,11 +3,10 @@ package org.example.BlockChain;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.example.Entity.Address;
 import org.example.Entity.Block;
-import org.example.Entity.Transaction;
 import org.example.Exeptions.BlockChainException;
 import org.example.Cryptography.HashEncoder;
-import org.example.LevelDb.Block.LevelDbBlock;
-import org.example.LevelDb.State.LevelDbState;
+import org.example.DB.LevelDb.Block.LevelDbBlock;
+import org.example.DB.LevelDb.State.LevelDbState;
 
 import java.io.IOException;
 import java.util.ArrayDeque;

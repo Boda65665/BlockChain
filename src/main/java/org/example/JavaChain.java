@@ -1,7 +1,5 @@
 package org.example;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.gson.reflect.TypeToken;
 import org.example.BlockChain.BlockChain;
 import org.example.BlockChain.BlockChainBase;
 import org.example.Cryptography.HashEncoder;
@@ -9,13 +7,12 @@ import org.example.Entity.Address;
 import org.example.Entity.Block;
 import org.example.Entity.Transaction;
 import org.example.Exeptions.BlockChainException;
-import org.example.LevelDb.Block.LevelDbBlock;
-import org.example.LevelDb.State.LevelDbState;
+import org.example.DB.LevelDb.Block.LevelDbBlock;
+import org.example.DB.LevelDb.State.LevelDbState;
 import org.example.Rules.PoWRule;
 import org.example.Rules.TransactionRule;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
