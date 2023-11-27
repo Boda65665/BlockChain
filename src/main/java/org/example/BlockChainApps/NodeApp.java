@@ -59,12 +59,13 @@ public class NodeApp {
                 switch (numberExecute){
                 case 1:{
                     String randomIpNode = nodeListDB.getRandomIp();
-                    nodeClient.SynchronizationBlockChain(ipAddress);
 
                     if (randomIpNode!=null) {
+                        nodeClient.SynchronizationBlockChain(ipAddress);
+
                     }
                     else {
-                        nodeListDB.editStatusActive(ipAddress, true);
+                        nodeListDB.editStatusActive(randomIpNode, true);
                     }
                     break;
                 }
