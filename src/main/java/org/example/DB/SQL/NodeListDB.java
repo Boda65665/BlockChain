@@ -41,7 +41,7 @@ public class NodeListDB {
             System.out.println("PostgreSQL JDBC драйвер не найден!");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("Ошибка подключения к базе данных!");
+            System.out.println("Ошибка подключения к базе данных!(В NodeListDb укажите свои данные для подключения к бд))");
             e.printStackTrace();
         }
     }

@@ -14,7 +14,7 @@ import java.util.Base64;
 
 public class AESEncryption {
 
-    private static final String key = "wegtgelxgofke;dk"; // 16 символов для AES-128
+    private static final String key = "wegtgelxgofke$dk"; // 16 символов для AES-128
     SecretKeySpec secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
 
     public AESEncryption() throws UnsupportedEncodingException {

@@ -60,7 +60,9 @@ public class NodeApp {
                     if (randomIpNode!=null) {
                         nodeClient.SynchronizationBlockChain(ipAddress);
                     }
-//                    nodeListDB.editStatusActive(ipAddress,true);
+                    else {
+                        nodeListDB.editStatusActive(ipAddress, true);
+                    }
                 }
                 case 2:
                 case 3:
