@@ -26,10 +26,10 @@ public class NodeClient<T> {
     }
 
     public void SynchronizationBlockChain(String IP) throws Exception {
-        Socket socket = new Socket(IP,1234);
+        Socket socket = new Socket(IP,1238);
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        System.out.println("connect to "+IP+":"+1234);
+        System.out.println("connect to "+IP+":"+1238);
         System.out.println("Starting download blockChain");
         out.println("full");
         if (!blockChain.getBlocks().isEmpty()) {
@@ -46,8 +46,8 @@ public class NodeClient<T> {
         in.close();
         socket.close();
         System.out.println("finishing download blockchain");
-        InetAddress ip = InetAddress.getLocalHost();
-        String ipAddress = ip.getHostAddress();
+        IpConfigParser ipConfigParser = new IpConfigParser();
+        String ipAddress = ipConfigParser.getIpAddress();
         nodeListDB.editStatusActive(ipAddress,true);
     }
 }

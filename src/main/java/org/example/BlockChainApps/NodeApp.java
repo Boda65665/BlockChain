@@ -6,6 +6,7 @@ import org.example.DB.SQL.NodeListDB;
 import org.example.Entity.Transaction;
 import org.example.Exeptions.BlockChainException;
 import org.example.JavaChain;
+import org.example.NodeCommunication.IpConfigParser;
 import org.example.NodeCommunication.NodeClient;
 import org.example.NodeCommunication.NodeServer;
 
@@ -25,11 +26,12 @@ import java.util.Scanner;
  */
 public class NodeApp {
     public static void main(String[] args) throws Exception {
+
         BlockChain<ArrayList<Transaction>> blockChain = new BlockChain<>(new HashEncoder());
         JavaChain javaChain = new JavaChain(blockChain);
-        InetAddress ip = InetAddress.getLocalHost();
         Scanner scanner = new Scanner(System.in);
-        String ipAddress = ip.getHostAddress();
+        IpConfigParser ipConfigParser = new IpConfigParser();
+        String ipAddress = ipConfigParser.getIpAddress();
         System.out.println(ipAddress);
         NodeClient<ArrayList<Transaction>> nodeClient = new NodeClient<>(javaChain);
         NodeServer<ArrayList<Transaction>> nodeServer = new NodeServer<>(blockChain);
@@ -43,10 +45,11 @@ public class NodeApp {
             }
         });
         serverThread.start();
+        System.out.println("\nВыберите действие из выпадающего списка:\n1)Синхронизация с блокчейном\n2)Кошелек\n3)Майнинг\n4)Настройки ноды");
+
         while (true){
 
 
-            System.out.println("Выберите действие из выпадающего списка:\n1)Синхронизация с блокчейном\n2)Кошелек\n3)Майнинг");
 
             try {
                 int numberExecute = scanner.nextInt();
@@ -56,19 +59,34 @@ public class NodeApp {
                 switch (numberExecute){
                 case 1:{
                     String randomIpNode = nodeListDB.getRandomIp();
+                    nodeClient.SynchronizationBlockChain(ipAddress);
 
                     if (randomIpNode!=null) {
-                        nodeClient.SynchronizationBlockChain(randomIpNode);
                     }
                     else {
                         nodeListDB.editStatusActive(ipAddress, true);
                     }
+                    break;
                 }
                 case 2:
                 case 3:
+                case 4:{
+                    System.out.println("Выберите параметр который хотите изменить:\n1)Изменить ip");
+                    numberExecute = scanner.nextInt();
+                    if (numberExecute==1) {
+                        if (ipConfigParser.isHaveProblemIp()){
+                        System.out.println("Введите новый ipv4");
+                        String newIp = scanner.nextLine();
+                        if (ipConfigParser.editMyIp(newIp)) System.out.println("\nУспешно\n");
+                        else System.out.println("\nНе успешно,введен некоректный ip\n");}
+                        else System.out.println("\nУ вас нет проблем с ip\n");
+                    }
+                    else System.out.println("\nНевено номер параметра");
+                }
                 break;
-                default:
-                    System.out.println("Введите действительный номер комманды!\n");;
+
+                    default:
+                    System.out.println("\nВведите действительный номер комманды!\n1)Синхронизация с блокчейном\n2)Кошелек\n3)Майнинг\n4)Настройки ноды\n");;
 
             }
             }

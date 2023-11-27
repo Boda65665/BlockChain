@@ -2,12 +2,12 @@ package org.example.DB.SQL;
 
 import org.checkerframework.checker.units.qual.A;
 import org.example.Cryptography.AESEncryption;
+import org.example.NodeCommunication.IpConfigParser;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -70,8 +70,8 @@ public class NodeListDB {
     public String getRandomIp() throws Exception {
         ArrayList<String> IPs = getAllIp();
         if (IPs.isEmpty()) return null;
-        InetAddress ip = InetAddress.getLocalHost();
-        String ipAddress = ip.getHostAddress();
+        IpConfigParser ipConfigParser = new IpConfigParser();
+        String ipAddress = ipConfigParser.getIpAddress();
         if (IPs.size()==1 && IPs.get(0).equals(ipAddress)) return null;
         Random random = new Random();
         int randomIndex = random.nextInt(IPs.size());

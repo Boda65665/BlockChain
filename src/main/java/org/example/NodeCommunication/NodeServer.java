@@ -23,12 +23,10 @@ public class NodeServer<T> {
     }
 
     public void handler() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(1234);
-        System.out.println(serverSocket.getInetAddress().getHostAddress());
+        ServerSocket serverSocket = new ServerSocket(1238);
         while (true) {
             Socket clientSocket = serverSocket.accept();
             System.out.println("connecting "+clientSocket.getInetAddress().getHostAddress());
-
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
