@@ -24,6 +24,7 @@ public class NodeServer<T> {
 
     public void handler() throws IOException {
         ServerSocket serverSocket = new ServerSocket(1234);
+        System.out.println(serverSocket.getInetAddress().getHostAddress());
         while (true) {
             Socket clientSocket = serverSocket.accept();
             System.out.println("connecting "+clientSocket.getInetAddress().getHostAddress());

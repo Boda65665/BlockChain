@@ -58,7 +58,7 @@ public class NodeApp {
                     String randomIpNode = nodeListDB.getRandomIp();
 
                     if (randomIpNode!=null) {
-                        nodeClient.SynchronizationBlockChain(ipAddress);
+                        nodeClient.SynchronizationBlockChain(randomIpNode);
                     }
                     else {
                         nodeListDB.editStatusActive(ipAddress, true);

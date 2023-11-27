@@ -79,7 +79,7 @@ public class NodeListDB {
             randomIndex=random.nextInt(IPs.size());
         }
         connection.close();
-        return encryption.decode(IPs.get(randomIndex));
+        return IPs.get(randomIndex);
     }
     public void addNode(String ip) throws Exception {
         connectDb();
