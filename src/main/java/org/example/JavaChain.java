@@ -74,8 +74,6 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
     @Override
     public ArrayList<Block<ArrayList<Transaction>>> getBlocksStartingFrom(String hash) {
-        //если poolBlocks пуст,то блок создался из тех транзакций которые были в poolTransaction,поэтому надо очистить
-        if (getBlocksPool().isEmpty()) poolTransactions = new ArrayList<>();
         return blockChain.getBlocksStartingFrom(hash);
     }
 
@@ -122,5 +120,11 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         return blockChain.getBlockFromPoll();
     }
 
+    public void setPoolTransactions(ArrayList<Transaction> poolTransactions) {
+        this.poolTransactions = poolTransactions;
+    }
 
+    public ArrayList<Transaction> getPoolTransactions() {
+        return poolTransactions;
+    }
 }
