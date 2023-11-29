@@ -17,7 +17,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
-    private final ArrayList<Transaction> poolTransactions = new ArrayList<>();
+    private ArrayList<Transaction> poolTransactions = new ArrayList<>();
     private final BlockChain<ArrayList<Transaction>> blockChain;
     private final LevelDbState levelDbState = new LevelDbState();
     private final LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>();
@@ -74,6 +74,8 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
     @Override
     public ArrayList<Block<ArrayList<Transaction>>> getBlocksStartingFrom(String hash) {
+        //если poolBlocks пуст,то блок создался из тех транзакций которые были в poolTransaction,поэтому надо очистить
+        if (getBlocksPool().isEmpty()) poolTransactions = new ArrayList<>();
         return blockChain.getBlocksStartingFrom(hash);
     }
 
