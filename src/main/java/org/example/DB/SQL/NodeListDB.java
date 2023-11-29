@@ -1,15 +1,13 @@
 package org.example.DB.SQL;
 
-import org.checkerframework.checker.units.qual.A;
 import org.example.Cryptography.AESEncryption;
 import org.example.NodeCommunication.IpConfigParser;
+import org.example.NodeCommunication.NodeClient;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.InvalidKeyException;
@@ -17,7 +15,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class NodeListDB {
     Connection connection = null;
@@ -76,6 +73,7 @@ public class NodeListDB {
         Random random = new Random();
         int randomIndex = random.nextInt(IPs.size());
         while (IPs.get(randomIndex).equals(ipAddress)){
+            if (IPs.isEmpty()) return null;
             randomIndex=random.nextInt(IPs.size());
         }
         connection.close();

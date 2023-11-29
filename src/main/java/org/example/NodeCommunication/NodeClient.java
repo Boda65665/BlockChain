@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class NodeClient<T> {
@@ -25,7 +26,12 @@ public class NodeClient<T> {
         this.blockChain = blockChain;
     }
 
-    public void SynchronizationBlockChain(String IP) throws Exception {
+
+
+
+    public boolean SynchronizationBlockChain(String IP) throws Exception {
+        if (!ping(IP)) return false;
+
         Socket socket = new Socket(IP,1238);
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -49,5 +55,42 @@ public class NodeClient<T> {
         IpConfigParser ipConfigParser = new IpConfigParser();
         String ipAddress = ipConfigParser.getIpAddress();
         nodeListDB.editStatusActive(ipAddress,true);
+        return true;
+    }
+    public  boolean ping(String IP) throws Exception {
+        Socket socket = null;
+        try {
+            socket = new Socket(IP,1238);
+            PrintWriter out = new PrintWriter(socket.getOutputStream());
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            System.out.println("connect to "+IP+":"+1238);
+            out.println("ping");
+            out.flush();
+
+            out.close();
+            in.close();
+            socket.close();
+            return true;
+        } catch (IOException e) {
+            nodeListDB.editStatusActive(IP,false);
+            return false;
+        }
+
+    }
+    public void update() throws Exception {
+        ArrayList<String> IPs = nodeListDB.getAllIp();
+        for (String ip : IPs) {
+            if (ping(ip)){
+                Socket socket = new Socket(ip,1238);
+                PrintWriter out = new PrintWriter(socket.getOutputStream());
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out.println("updateCall");
+                out.flush();
+                out.println();
+                in.close();
+                socket.close();
+            }
+        }
+
     }
 }

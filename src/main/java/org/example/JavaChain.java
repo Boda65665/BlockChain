@@ -63,16 +63,11 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
         }
         block.setHash(Block.calculateHash(block.getData(),blockChain.getTail(),hashEncoder,block.getNonce()));
-        poolTransactions.clear();
         blockChain.addBlock(block);
         levelDbBlock.put(block);
     }
 
-    public void addBlock() throws BlockChainException, IOException {
-        ArrayList<Transaction> transactions = new ArrayList<>(poolTransactions);
 
-        addBlock(new Block<>(transactions));
-    }
     public ArrayList<Block<ArrayList<Transaction>>> getBlocks(){
         return blockChain.getBlocks();
     }
@@ -101,9 +96,16 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         ArrayList<Block<ArrayList<Transaction>>> blocks = blockChain.getBlocks();
         return blocks.get(blocks.size()-1);
     }
-    public boolean addTransactionToPoolTransactions(Transaction transaction){
+    public boolean addTransactionToPoolTransactions(Transaction transaction) throws IOException {
+
         if (transactionRule.Execute(transaction)) {
             poolTransactions.add(transaction);
+            if (poolTransactions.size()==4) {
+                ArrayList<Transaction> dataBlock = new ArrayList<>(poolTransactions);
+                Block<ArrayList<Transaction>> newBlock = new Block<>(dataBlock);
+                poolTransactions.clear();
+                addBlockToPoll(newBlock);
+            }
             return true;
         }
         return false;

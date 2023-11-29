@@ -12,7 +12,7 @@ public class ProofOfWorkService<T> {
     public ProofOfWorkService(BlockChainBase<T> blockChain) {
         this.blockChain = blockChain;
     }
-    public Block<T> Proof(int height, Block<T> block) throws BlockChainException, JsonProcessingException {
+    public Block<T> startMining(int height, Block<T> block) throws BlockChainException, JsonProcessingException {
         for (int i = 0; i < Integer.MAX_VALUE; i++)
         {
             if (poWRule.Execute(height, block.getHash())){

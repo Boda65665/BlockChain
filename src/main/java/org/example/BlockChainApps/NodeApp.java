@@ -34,20 +34,23 @@ public class NodeApp {
         String ipAddress = ipConfigParser.getIpAddress();
         System.out.println(ipAddress);
         NodeClient<ArrayList<Transaction>> nodeClient = new NodeClient<>(javaChain);
+
         NodeServer<ArrayList<Transaction>> nodeServer = new NodeServer<>(blockChain);
+
         NodeListDB nodeListDB = new NodeListDB();
         if (!nodeListDB.isCreated(ipAddress)) nodeListDB.addNode(ipAddress);
+        else nodeListDB.editStatusActive(ipAddress,false);
         Thread serverThread = new Thread(() -> {
             try {
                 nodeServer.handler();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
         serverThread.start();
-        System.out.println("\nВыберите действие из выпадающего списка:\n1)Синхронизация с блокчейном\n2)Кошелек\n3)Майнинг\n4)Настройки ноды");
 
         while (true){
+            System.out.println("\nВыберите действие из выпадающего списка:\n1)Синхронизация с блокчейном\n2)Кошелек\n3)Майнинг\n4)Настройки ноды");
 
 
 
@@ -58,21 +61,24 @@ public class NodeApp {
 
                 switch (numberExecute){
                 case 1:{
+                    System.out.println("\nЗапуск поиска нод в сети...");
                     String randomIpNode = nodeListDB.getRandomIp();
 
-                    if (randomIpNode!=null) {
-                        nodeClient.SynchronizationBlockChain(randomIpNode);
-
+                    while (randomIpNode!=null && !nodeClient.SynchronizationBlockChain(randomIpNode)){
+                        randomIpNode=nodeListDB.getRandomIp();
                     }
-                    else {
+                    if (randomIpNode==null){
+                        System.out.println("Вы первая нода в сети!");
                         nodeListDB.editStatusActive(ipAddress, true);
                     }
                     break;
                 }
                 case 2:
-                case 3:
+                case 3:{
+
+                }
                 case 4:{
-                    System.out.println("Выберите параметр который хотите изменить:\n1)Изменить ip");
+                    System.out.println("Выберите параметр который хотите изменить:\n1)Изменить ip\n2)Аддресс кошелька(для майниннга)");
                     numberExecute = scanner.nextInt();
                     if (numberExecute==1) {
                         if (ipConfigParser.isHaveProblemIp()){
@@ -82,12 +88,15 @@ public class NodeApp {
                         else System.out.println("\nНе успешно,введен некоректный ip\n");}
                         else System.out.println("\nУ вас нет проблем с ip\n");
                     }
+                    else if (numberExecute==2){
+                        System.out.println("\nВведите аддресс на которой хотите получать деньги за майнинг или выберит еиз выпадающего списка своих кошелеков");
+
+
+                    }
                     else System.out.println("\nНевено номер параметра");
                 }
                 break;
 
-                    default:
-                    System.out.println("\nВведите действительный номер комманды!\n1)Синхронизация с блокчейном\n2)Кошелек\n3)Майнинг\n4)Настройки ноды\n");;
 
             }
             }

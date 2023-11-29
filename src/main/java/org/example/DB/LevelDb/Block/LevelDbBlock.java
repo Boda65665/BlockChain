@@ -143,6 +143,7 @@ public class LevelDbBlock<T>{
         public static void main(String[] args) throws IOException {
 
         LevelDbBlock<String> levelDbBlock = new LevelDbBlock<>();
+        System.out.println(levelDbBlock.getAll().size());
         Block<String> block1 = new Block<>("a");
         block1.setHash("agdaw");
         levelDbBlock.put(block1);
