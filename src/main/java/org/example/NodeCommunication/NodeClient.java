@@ -32,10 +32,10 @@ public class NodeClient<T> {
     public boolean SynchronizationBlockChain(String IP) throws Exception {
         if (!ping(IP)) return false;
 
-        Socket socket = new Socket(IP,1238);
+        Socket socket = new Socket(IP,1239);
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        System.out.println("connect to "+IP+":"+1238);
+        System.out.println("connect to "+IP+":"+1239);
         System.out.println("Starting download blockChain");
         out.println("full");
         if (!blockChain.getBlocks().isEmpty()) {
@@ -60,10 +60,10 @@ public class NodeClient<T> {
     public  boolean ping(String IP) throws Exception {
         Socket socket = null;
         try {
-            socket = new Socket(IP,1238);
+            socket = new Socket(IP,1239);
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println("connect to "+IP+":"+1238);
+            System.out.println("connect to "+IP+":"+1239);
             out.println("ping");
             out.flush();
 
@@ -81,7 +81,7 @@ public class NodeClient<T> {
         ArrayList<String> IPs = nodeListDB.getAllIp();
         for (String ip : IPs) {
             if (ping(ip)){
-                Socket socket = new Socket(ip,1238);
+                Socket socket = new Socket(ip,1239);
                 PrintWriter out = new PrintWriter(socket.getOutputStream());
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out.println("updateCall");

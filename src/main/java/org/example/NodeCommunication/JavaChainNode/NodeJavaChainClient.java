@@ -29,7 +29,7 @@ public class NodeJavaChainClient extends NodeClient<ArrayList<Transaction>> {
     @Override
     public boolean SynchronizationBlockChain(String ip) throws Exception {
         if (!super.SynchronizationBlockChain(ip))return false;
-        Socket socket = new Socket(ip, 1238);
+        Socket socket = new Socket(ip, 1239);
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out.println("getPoolTransactions");
