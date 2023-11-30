@@ -7,6 +7,8 @@ import org.example.Entity.Transaction;
 import org.example.Exeptions.BlockChainException;
 import org.example.JavaChain;
 import org.example.NodeCommunication.IpConfigParser;
+import org.example.NodeCommunication.JavaChainNode.NodeJavaChainClient;
+import org.example.NodeCommunication.JavaChainNode.NodeJavaChainServer;
 import org.example.NodeCommunication.NodeClient;
 import org.example.NodeCommunication.NodeServer;
 
@@ -33,9 +35,9 @@ public class NodeApp {
         IpConfigParser ipConfigParser = new IpConfigParser();
         String ipAddress = ipConfigParser.getIpAddress();
         System.out.println(ipAddress);
-        NodeClient<ArrayList<Transaction>> nodeClient = new NodeClient<>(javaChain);
+        NodeJavaChainClient nodeClient = new NodeJavaChainClient(javaChain);
 
-        NodeServer<ArrayList<Transaction>> nodeServer = new NodeServer<>(blockChain);
+        NodeJavaChainServer nodeServer = new NodeJavaChainServer(javaChain);
 
         NodeListDB nodeListDB = new NodeListDB();
         if (!nodeListDB.isCreated(ipAddress)) nodeListDB.addNode(ipAddress);
