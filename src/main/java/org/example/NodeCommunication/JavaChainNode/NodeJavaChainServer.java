@@ -34,7 +34,7 @@ public class NodeJavaChainServer extends NodeServer<ArrayList<Transaction>> {
             }
         });
         threadHandlerBase.start();
-        ServerSocket serverSocket = new ServerSocket(1239);
+        ServerSocket serverSocket = new ServerSocket(1240);
         while (true) {
             Socket clientSocket = serverSocket.accept();
             System.out.println("connecting " + clientSocket.getInetAddress().getHostAddress());
