@@ -1,7 +1,7 @@
 package org.example.NodeCommunication;
 
 import org.example.BlockChain.BlockChainBase;
-import org.example.DB.SQL.NodeListDB;
+import org.example.DB.SQL.Node.NodeListDB;
 import org.example.Entity.Block;
 import org.example.DB.LevelDb.Block.LevelDbBlock;
 import org.example.DB.LevelDb.State.LevelDbState;
@@ -10,11 +10,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class NodeClient<T> {
     LevelDbBlock<Block<T>> levelDbBlock = new LevelDbBlock<>();

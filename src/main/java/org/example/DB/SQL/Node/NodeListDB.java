@@ -1,8 +1,7 @@
-package org.example.DB.SQL;
+package org.example.DB.SQL.Node;
 
 import org.example.Cryptography.AESEncryption;
 import org.example.NodeCommunication.IpConfigParser;
-import org.example.NodeCommunication.NodeClient;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import org.example.BlockChain.BlockChainBase;
 import org.example.DB.LevelDb.Block.LevelDbBlock;
 import org.example.DB.LevelDb.State.LevelDbState;
-import org.example.DB.SQL.NodeListDB;
+import org.example.DB.SQL.Node.NodeListDB;
 
 import java.io.BufferedReader;
 import java.io.IOException;

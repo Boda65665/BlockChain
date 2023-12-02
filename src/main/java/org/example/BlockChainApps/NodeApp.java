@@ -2,22 +2,13 @@ package org.example.BlockChainApps;
 
 import org.example.BlockChain.BlockChain;
 import org.example.Cryptography.HashEncoder;
-import org.example.DB.SQL.NodeListDB;
+import org.example.DB.SQL.Node.NodeListDB;
 import org.example.Entity.Transaction;
-import org.example.Exeptions.BlockChainException;
 import org.example.JavaChain;
 import org.example.NodeCommunication.IpConfigParser;
 import org.example.NodeCommunication.JavaChainNode.NodeJavaChainClient;
 import org.example.NodeCommunication.JavaChainNode.NodeJavaChainServer;
-import org.example.NodeCommunication.NodeClient;
-import org.example.NodeCommunication.NodeServer;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -76,6 +67,11 @@ public class NodeApp {
                     break;
                 }
                 case 2:
+                {
+
+                    System.out.println();
+                    break;
+                }
                 case 3:{
 
                 }
