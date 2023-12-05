@@ -2,8 +2,11 @@ package org.example.BlockChainApps;
 
 import org.example.BlockChain.BlockChain;
 import org.example.Cryptography.HashEncoder;
+import org.example.DB.LevelDb.State.LevelDbState;
 import org.example.DB.SQL.Node.NodeListDB;
+import org.example.DB.SQL.Wallets.WalletDB;
 import org.example.Entity.Transaction;
+import org.example.Entity.Wallet;
 import org.example.JavaChain;
 import org.example.NodeCommunication.IpConfigParser;
 import org.example.NodeCommunication.JavaChainNode.NodeJavaChainClient;
@@ -19,15 +22,16 @@ import java.util.Scanner;
  */
 public class NodeApp {
     public static void main(String[] args) throws Exception {
-
+        WalletDB walletDB = new WalletDB();
         BlockChain<ArrayList<Transaction>> blockChain = new BlockChain<>(new HashEncoder());
         JavaChain javaChain = new JavaChain(blockChain);
         Scanner scanner = new Scanner(System.in);
         IpConfigParser ipConfigParser = new IpConfigParser();
         String ipAddress = ipConfigParser.getIpAddress();
         System.out.println(ipAddress);
+        HashEncoder hashEncoder = new HashEncoder();
         NodeJavaChainClient nodeClient = new NodeJavaChainClient(javaChain);
-
+        LevelDbState levelDbState = new LevelDbState();
         NodeJavaChainServer nodeServer = new NodeJavaChainServer(javaChain);
 
         NodeListDB nodeListDB = new NodeListDB();
@@ -68,8 +72,48 @@ public class NodeApp {
                 }
                 case 2:
                 {
+                    System.out.println("1)Мои кошельки\n2)Создать кошелек\n3)Востановить кошелек\n4)Назад");
+                    numberExecute = scanner.nextInt();
+                    switch (numberExecute){
+                        case 1:{
+                            ArrayList<Wallet> wallets = walletDB.getAllWallets();
+                            if (wallets.isEmpty()){
+                                System.out.println("У вас нет еще ни 1 кошелька");
+                                break;
+                            }
+                            else {
+                                System.out.println("Выберите кошелек,которым хотите воспользоваться:");
+                                for (int i = 0;i<wallets.size();i++) {
+                                    System.out.printf("%d) %s%n",i+1,wallets.get(i).getPublicKey());
+                                }
+                                int numberWallet = scanner.nextInt();
+                                while (numberWallet>wallets.size()){
+                                    System.out.println("Вы ввели недействительный номер кошелька");
+                                    numberWallet=scanner.nextInt();
+                                }
+                                Wallet wallet = wallets.get(numberWallet);
 
-                    System.out.println();
+                                System.out.println("Введите пароль от кошелька");
+                                String password = scanner.nextLine();
+                                int attempts = 3;
+                                while (hashEncoder.SHA256(password).equals(wallet.getPassword()) && attempts!=0) {
+                                    attempts--;
+                                    System.out.println("\nYour Wallet:\n");
+                                    System.out.println("Address: " + wallet.getPublicKey());
+                                    if (levelDbState.get(wallet.getPublicKey()) != null)
+                                        System.out.println("Balance: " + levelDbState.get(wallet.getPublicKey()) + " ETH");
+                                    else System.out.println("Balance: 0 ETH");
+                                    System.out.println("Private Key: "+wallet.getPrivateKey());
+                                    System.out.println("Secret Phrase: "+wallet.getSecretPhrase());
+                                }
+
+
+                            }
+                        }
+                        case 4:{
+                            break;
+                        }
+                    }
                     break;
                 }
                 case 3:{

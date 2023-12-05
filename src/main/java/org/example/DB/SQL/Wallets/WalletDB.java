@@ -51,9 +51,33 @@ public class WalletDB {
         stmt.setString(4,new HashEncoder().SHA256(password));
         stmt.execute();
     }
-//    public ArrayList<Wallet> getAllWallets(){
-//        //
-//    }
+    public void createNewWallet(Wallet wallet) throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        connectDb();
+        String sql = "INSERT INTO wallets (address,private_key,secret_phrase,password) VALUES (?,?,?,?)";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1,wallet.getPublicKey());
+        stmt.setString(2,encryption.encode(wallet.getPrivateKey()));
+        stmt.setString(3,encryption.encode(wallet.getSecretPhrase()));
+        stmt.setString(4,new HashEncoder().SHA256(wallet.getPassword()));
+        stmt.execute();
+    }
+        public ArrayList<Wallet> getAllWallets() throws SQLException {
+        ArrayList<Wallet> wallets = new ArrayList<>();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select * from wallets");
+        while (resultSet.next()){
+            Wallet wallet = new Wallet(resultSet.getString("password"),resultSet.getString("address"),resultSet.getString("private_key"),resultSet.getString("secret_phrase"));
+            wallets.add(wallet);
+        }
+        return wallets;
+    }
+    public Wallet getWalletByAddress(String address) throws SQLException {
+        String sql = "select * from wallets where address=?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1,address);
+        ResultSet resultSet = statement.executeQuery();
+        return new Wallet(resultSet.getString("password"),resultSet.getString("address"),resultSet.getString("private_key"),resultSet.getString("secret_phrase"));
+    }
 
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         WalletDB walletDB = new WalletDB();
