@@ -1,6 +1,12 @@
 package org.example.BlockChainApps;
 
+import net.sf.extjwnl.JWNLException;
+import net.sf.extjwnl.data.IndexWord;
+import net.sf.extjwnl.data.POS;
+import net.sf.extjwnl.dictionary.Dictionary;
 import org.example.BlockChain.BlockChain;
+import org.example.Cryptography.AESEncryption;
+import org.example.Cryptography.Asymmetric;
 import org.example.Cryptography.HashEncoder;
 import org.example.DB.LevelDb.State.LevelDbState;
 import org.example.DB.SQL.Node.NodeListDB;
@@ -22,19 +28,21 @@ import java.util.Scanner;
  */
 public class NodeApp {
     public static void main(String[] args) throws Exception {
-        WalletDB walletDB = new WalletDB();
-        BlockChain<ArrayList<Transaction>> blockChain = new BlockChain<>(new HashEncoder());
-        JavaChain javaChain = new JavaChain(blockChain);
-        Scanner scanner = new Scanner(System.in);
-        IpConfigParser ipConfigParser = new IpConfigParser();
-        String ipAddress = ipConfigParser.getIpAddress();
+        generateSecretPhrase();
+        final WalletDB walletDB = new WalletDB();
+        final BlockChain<ArrayList<Transaction>> blockChain = new BlockChain<>(new HashEncoder());
+        final JavaChain javaChain = new JavaChain(blockChain);
+        final Scanner scanner = new Scanner(System.in);
+        final IpConfigParser ipConfigParser = new IpConfigParser();
+        final String ipAddress = ipConfigParser.getIpAddress();
         System.out.println(ipAddress);
-        HashEncoder hashEncoder = new HashEncoder();
-        NodeJavaChainClient nodeClient = new NodeJavaChainClient(javaChain);
-        LevelDbState levelDbState = new LevelDbState();
-        NodeJavaChainServer nodeServer = new NodeJavaChainServer(javaChain);
-
-        NodeListDB nodeListDB = new NodeListDB();
+        final HashEncoder hashEncoder = new HashEncoder();
+        final NodeJavaChainClient nodeClient = new NodeJavaChainClient(javaChain);
+        final LevelDbState levelDbState = new LevelDbState();
+        final NodeJavaChainServer nodeServer = new NodeJavaChainServer(javaChain);
+        final AESEncryption encryption = new AESEncryption();
+        final NodeListDB nodeListDB = new NodeListDB();
+        final Asymmetric asymmetricEncoder = new Asymmetric();
         if (!nodeListDB.isCreated(ipAddress)) nodeListDB.addNode(ipAddress);
         else nodeListDB.editStatusActive(ipAddress,false);
         Thread serverThread = new Thread(() -> {
@@ -86,30 +94,44 @@ public class NodeApp {
                                 for (int i = 0;i<wallets.size();i++) {
                                     System.out.printf("%d) %s%n",i+1,wallets.get(i).getPublicKey());
                                 }
+                                System.out.println("0) Exit");
                                 int numberWallet = scanner.nextInt();
                                 while (numberWallet>wallets.size()){
                                     System.out.println("Вы ввели недействительный номер кошелька");
                                     numberWallet=scanner.nextInt();
                                 }
-                                Wallet wallet = wallets.get(numberWallet);
+                                if (numberWallet==0) break;
+                                Wallet wallet = wallets.get(numberWallet-1);
 
                                 System.out.println("Введите пароль от кошелька");
+                                System.out.println("Для выхода из меню ввода пороля введите: 'exit'");
                                 String password = scanner.nextLine();
-                                int attempts = 3;
-                                while (hashEncoder.SHA256(password).equals(wallet.getPassword()) && attempts!=0) {
-                                    attempts--;
-                                    System.out.println("\nYour Wallet:\n");
-                                    System.out.println("Address: " + wallet.getPublicKey());
-                                    if (levelDbState.get(wallet.getPublicKey()) != null)
-                                        System.out.println("Balance: " + levelDbState.get(wallet.getPublicKey()) + " ETH");
-                                    else System.out.println("Balance: 0 ETH");
-                                    System.out.println("Private Key: "+wallet.getPrivateKey());
-                                    System.out.println("Secret Phrase: "+wallet.getSecretPhrase());
+                                while (!password.equals("exit") && !hashEncoder.SHA256(password).equals(wallet.getPassword())) {
+                                    password = scanner.nextLine();
+                                    System.out.println("Введен неверный пароль!Для выхода из меню ввода пороля введите: 'exit'");
                                 }
-
-
+                                if (password.equals("exit"))break;
+                                System.out.println("\nYour Wallet:");
+                                System.out.println("Address: " + wallet.getPublicKey());
+                                if (levelDbState.get(wallet.getPublicKey()) != null) System.out.println("Balance: " + levelDbState.get(wallet.getPublicKey()) + " ETH");
+                                else System.out.println("Balance: 0 ETH");
+                                System.out.println("Private Key: "+encryption.decode(wallet.getPrivateKey()));
+                                System.out.println("Secret Phrase: "+encryption.encode(wallet.getSecretPhrase()));
                             }
                         }
+                        case 2:{
+                            System.out.println("Введите пароль от нового кошелька.Длинна пароля от 5 символов");
+                            System.out.println("Или введите exit для выхожа из меню.");
+                            String password = scanner.nextLine();
+                            while (!password.equals("exit") && password.length()<5){
+                                password=scanner.nextLine();
+                                System.out.println("Пароль слишком короткий,введите пароль длинной более 5 символов");
+                            }
+                            if (password.equals("exit"))break;
+                            Asymmetric.Keys keys = asymmetricEncoder.generateKeys();
+//                            Wallet newWallet = new Wallet(password,keys.publicKey(),keys.privateKey(),generateSecretPhrase());
+                        }
+
                         case 4:{
                             break;
                         }
@@ -154,4 +176,26 @@ public class NodeApp {
 
 
     }
+    private static String generateSecretPhrase() throws JWNLException {
+        Dictionary dictionary = Dictionary.getDefaultResourceInstance();
+        // Создание списка для хранения случайных слов
+        StringBuilder secretePhrase = new StringBuilder();
+        // Генерация 12 случайных слов
+        while (secretePhrase.toString().split(" ").length<12) {
+            // Получение случайного индекса слова
+            IndexWord indexWord = dictionary.getRandomIndexWord(POS.NOUN);
+            // Получение слова по индексу
+            String word = indexWord.getLemma();
+            if(word.split(" ").length>1) continue;
+            // Добавление слова в список
+            secretePhrase.append(word).append(" ");
+        }
+        // Вывод случайных слов
+
+        return secretePhrase.toString().trim();
+    }
+
 }
+
+
+

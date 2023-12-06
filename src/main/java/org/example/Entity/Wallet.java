@@ -41,7 +41,5 @@ public class Wallet {
         return secretPhrase;
     }
 
-    public void setSecretPhrase(String secretPhrase) {
-        this.secretPhrase = secretPhrase;
-    }
+
 }
