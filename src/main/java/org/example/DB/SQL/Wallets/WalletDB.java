@@ -41,47 +41,74 @@ public class WalletDB {
             e.printStackTrace();
         }
     }
-    public void createNewWallet(String publicKey,String secretPhrase,String privateKey,String password) throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+    public boolean createNewWallet(String publicKey,String privateKey,String password) throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         connectDb();
-        String sql = "INSERT INTO wallets (address,private_key,secret_phrase,password) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO wallets (address,private_key,password) VALUES (?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1,publicKey);
         stmt.setString(2,encryption.encode(privateKey));
-        stmt.setString(3,encryption.encode(secretPhrase));
-        stmt.setString(4,new HashEncoder().SHA256(password));
-        stmt.execute();
-    }
-    public void createNewWallet(Wallet wallet) throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        stmt.setString(3,new HashEncoder().SHA256(password));
+        boolean isCreate = stmt.execute();
+        connection.close();
+        return isCreate;    }
+    public boolean createNewWallet(Wallet wallet) throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         connectDb();
-        String sql = "INSERT INTO wallets (address,private_key,secret_phrase,password) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO wallets (address,private_key,password) VALUES (?,?,?)";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1,wallet.getPublicKey());
         stmt.setString(2,encryption.encode(wallet.getPrivateKey()));
-        stmt.setString(3,encryption.encode(wallet.getSecretPhrase()));
-        stmt.setString(4,new HashEncoder().SHA256(wallet.getPassword()));
-        stmt.execute();
+        stmt.setString(3,new HashEncoder().SHA256(wallet.getPassword()));
+        boolean isCreate = stmt.execute();
+        connection.close();
+        return isCreate;
     }
-        public ArrayList<Wallet> getAllWallets() throws SQLException {
+        public ArrayList<Wallet> getAllWallets() throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        connectDb();
         ArrayList<Wallet> wallets = new ArrayList<>();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("select * from wallets");
         while (resultSet.next()){
-            Wallet wallet = new Wallet(resultSet.getString("password"),resultSet.getString("address"),resultSet.getString("private_key"),resultSet.getString("secret_phrase"));
+            Wallet wallet = new Wallet(resultSet.getString("password"),resultSet.getString("address"),encryption.decode(resultSet.getString("private_key")));
             wallets.add(wallet);
         }
-        return wallets;
+            connection.close();
+
+            return wallets;
     }
     public Wallet getWalletByAddress(String address) throws SQLException {
+        connectDb();
         String sql = "select * from wallets where address=?";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1,address);
         ResultSet resultSet = statement.executeQuery();
-        return new Wallet(resultSet.getString("password"),resultSet.getString("address"),resultSet.getString("private_key"),resultSet.getString("secret_phrase"));
-    }
+        connection.close();
 
+        return new Wallet(resultSet.getString("password"),resultSet.getString("address"),resultSet.getString("private_key"));
+    }
+    public Wallet getWalletBySecretPhrase(String secretPhrase) throws SQLException {
+        connectDb();
+        String sql = "select * from wallets where secret_phrase=?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1,secretPhrase);
+        ResultSet resultSet = statement.executeQuery();
+        if (!resultSet.next()) {
+            return null;
+        }
+        connection.close();
+
+        return new Wallet(resultSet.getString("password"),resultSet.getString("address"),resultSet.getString("private_key"));
+    }
+    public boolean deleteByAddress(String address) throws SQLException {
+        connectDb();
+        String sql = "delete from wallets where address=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1,address);
+        boolean isDelete = preparedStatement.execute();
+        connection.close();
+        return isDelete;
+    }
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         WalletDB walletDB = new WalletDB();
-        walletDB.createNewWallet("f","s","fs","d");
 
 
     }

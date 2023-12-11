@@ -4,14 +4,14 @@ public class Wallet {
     String password;
     String publicKey;
     String privateKey;
-    String secretPhrase;
 
-    public Wallet(String password, String publicKey, String privateKey, String secretPhrase) {
+    public Wallet(String password, String publicKey, String privateKey) {
         this.password = password;
         this.publicKey = publicKey;
         this.privateKey = privateKey;
-        this.secretPhrase = secretPhrase;
     }
+
+
 
     public String getPassword() {
         return password;
@@ -37,9 +37,6 @@ public class Wallet {
         this.privateKey = privateKey;
     }
 
-    public String getSecretPhrase() {
-        return secretPhrase;
-    }
 
 
 }

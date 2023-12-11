@@ -1,7 +1,9 @@
 package org.example;
 
+import org.checkerframework.checker.units.qual.A;
 import org.example.BlockChain.BlockChain;
 import org.example.BlockChain.BlockChainBase;
+import org.example.Cryptography.Asymmetric;
 import org.example.Cryptography.HashEncoder;
 import org.example.Entity.Address;
 import org.example.Entity.Block;
@@ -9,10 +11,14 @@ import org.example.Entity.Transaction;
 import org.example.Exeptions.BlockChainException;
 import org.example.DB.LevelDb.Block.LevelDbBlock;
 import org.example.DB.LevelDb.State.LevelDbState;
+import org.example.NodeCommunication.JavaChainNode.NodeJavaChainClient;
+import org.example.NodeCommunication.JavaChainNode.NodeJavaChainServer;
 import org.example.Rules.PoWRule;
 import org.example.Rules.TransactionRule;
 
 import java.io.IOException;
+import java.security.spec.InvalidKeySpecException;
+import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
@@ -22,14 +28,15 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     private final LevelDbState levelDbState = new LevelDbState();
     private final LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>();
 
-
+    private final Asymmetric asymmetric = new Asymmetric();
     private final TransactionRule transactionRule = new TransactionRule();
     PoWRule<ArrayList<Transaction>> poWRule = new PoWRule<>();
     private final HashEncoder hashEncoder = new HashEncoder();
 
+    private final NodeJavaChainClient nodeJavaChainClient = new NodeJavaChainClient(this);
 
 
-    public JavaChain(BlockChain<ArrayList<Transaction>> blockChain) throws IOException {
+    public JavaChain(BlockChain<ArrayList<Transaction>> blockChain) throws IOException, SQLException {
         this.blockChain = blockChain;
 
     }
@@ -51,7 +58,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
             if (transactionRule.Execute(transaction)){
                 from.setBalance(from.getBalance()-transaction.getValue());
-                from.setNonce(transaction.getNonce());
+                from.setNonce(transaction.getNonce()+1);
                 transaction.setStatus(true);
                 to.setBalance(to.getBalance()+transaction.getValue());
                 from.getTransactionsComplete().add(transaction);
@@ -65,6 +72,11 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         block.setHash(Block.calculateHash(block.getData(),blockChain.getTail(),hashEncoder,block.getNonce()));
         blockChain.addBlock(block);
         levelDbBlock.put(block);
+        try {
+            nodeJavaChainClient.update();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -96,7 +108,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         ArrayList<Block<ArrayList<Transaction>>> blocks = blockChain.getBlocks();
         return blocks.get(blocks.size()-1);
     }
-    public boolean addTransactionToPoolTransactions(Transaction transaction) throws IOException {
+    public boolean addTransactionToPoolTransactions(Transaction transaction) throws Exception {
 
         if (transactionRule.Execute(transaction)) {
             poolTransactions.add(transaction);
@@ -106,6 +118,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
                 poolTransactions.clear();
                 addBlockToPoll(newBlock);
             }
+            nodeJavaChainClient.update();
             return true;
         }
         return false;
@@ -113,12 +126,11 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
 
     }
-    public void addBlockToPoll(Block<ArrayList<Transaction>> block) throws IOException {
+    public void addBlockToPoll(Block<ArrayList<Transaction>> block) throws Exception {
         blockChain.addBlockToPoll(block);
+        nodeJavaChainClient.update();
     }
-    public Block<ArrayList<Transaction>> popBlockFromPool() throws IOException {
-        return blockChain.getBlockFromPoll();
-    }
+
 
     public void setPoolTransactions(ArrayList<Transaction> poolTransactions) {
         this.poolTransactions = poolTransactions;
@@ -126,5 +138,11 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
     public ArrayList<Transaction> getPoolTransactions() {
         return poolTransactions;
+    }
+    public Transaction buildTransaction(String fromAddressString,String toAddressString,String privateKey,int value) {
+        Address fromAddress = new Address(fromAddressString);
+        Address toAddress = new Address(toAddressString);
+        String sign = asymmetric.sign(toAddressString+fromAddress.getNonce(),privateKey);
+        return new Transaction(fromAddress,0,0,sign,toAddress,value,"",fromAddress.getNonce());
     }
 }

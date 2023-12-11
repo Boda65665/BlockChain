@@ -11,6 +11,7 @@ import org.example.Cryptography.HashEncoder;
 import org.example.DB.LevelDb.State.LevelDbState;
 import org.example.DB.SQL.Node.NodeListDB;
 import org.example.DB.SQL.Wallets.WalletDB;
+import org.example.Entity.Address;
 import org.example.Entity.Transaction;
 import org.example.Entity.Wallet;
 import org.example.JavaChain;
@@ -32,7 +33,7 @@ public class NodeApp {
         final WalletDB walletDB = new WalletDB();
         final BlockChain<ArrayList<Transaction>> blockChain = new BlockChain<>(new HashEncoder());
         final JavaChain javaChain = new JavaChain(blockChain);
-        final Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         final IpConfigParser ipConfigParser = new IpConfigParser();
         final String ipAddress = ipConfigParser.getIpAddress();
         System.out.println(ipAddress);
@@ -45,6 +46,7 @@ public class NodeApp {
         final Asymmetric asymmetricEncoder = new Asymmetric();
         if (!nodeListDB.isCreated(ipAddress)) nodeListDB.addNode(ipAddress);
         else nodeListDB.editStatusActive(ipAddress,false);
+        //startServerNode
         Thread serverThread = new Thread(() -> {
             try {
                 nodeServer.handler();
@@ -65,24 +67,27 @@ public class NodeApp {
 
 
                 switch (numberExecute){
+                    //synchronizationBlockChain
                 case 1:{
                     System.out.println("\nЗапуск поиска нод в сети...");
                     String randomIpNode = nodeListDB.getRandomIp();
-
                     while (randomIpNode!=null && !nodeClient.SynchronizationBlockChain(randomIpNode)){
                         randomIpNode=nodeListDB.getRandomIp();
                     }
                     if (randomIpNode==null){
-                        System.out.println("Вы первая нода в сети!");
+                        System.out.println("Вы единственная нода в сети!");
                         nodeListDB.editStatusActive(ipAddress, true);
                     }
                     break;
                 }
+
                 case 2:
                 {
+                    //wallet
                     System.out.println("1)Мои кошельки\n2)Создать кошелек\n3)Востановить кошелек\n4)Назад");
                     numberExecute = scanner.nextInt();
                     switch (numberExecute){
+                        //myWallets
                         case 1:{
                             ArrayList<Wallet> wallets = walletDB.getAllWallets();
                             if (wallets.isEmpty()){
@@ -105,6 +110,7 @@ public class NodeApp {
 
                                 System.out.println("Введите пароль от кошелька");
                                 System.out.println("Для выхода из меню ввода пороля введите: 'exit'");
+                                scanner = new Scanner(System.in);
                                 String password = scanner.nextLine();
                                 while (!password.equals("exit") && !hashEncoder.SHA256(password).equals(wallet.getPassword())) {
                                     password = scanner.nextLine();
@@ -113,31 +119,133 @@ public class NodeApp {
                                 if (password.equals("exit"))break;
                                 System.out.println("\nYour Wallet:");
                                 System.out.println("Address: " + wallet.getPublicKey());
-                                if (levelDbState.get(wallet.getPublicKey()) != null) System.out.println("Balance: " + levelDbState.get(wallet.getPublicKey()) + " ETH");
-                                else System.out.println("Balance: 0 ETH");
-                                System.out.println("Private Key: "+encryption.decode(wallet.getPrivateKey()));
-                                System.out.println("Secret Phrase: "+encryption.encode(wallet.getSecretPhrase()));
+                                Address address = levelDbState.get(wallet.getPublicKey());
+                                int balance;
+                                if (address != null) {
+                                    System.out.println("Balance: " + address.getBalance() + " ETH");
+                                    balance = address.getBalance();
+
+                                }
+                                else {
+                                    System.out.println("Balance: 0 ETH");
+                                    balance = 0;
+                                }
+                                System.out.println("\nЧто хотите сделать?\n1)Отправить перевод\n2)Удалить кошелек\n3)Получить Private Key\n0)Exit");
+                                //sendTransfer
+                                numberExecute = scanner.nextInt();
+                                switch (numberExecute){
+                                    case 1:{
+                                        System.out.println("Введите аддресс на который хотите отправить: ");
+                                        scanner=new Scanner(System.in);
+                                        String to = scanner.nextLine();
+                                        if (!asymmetricEncoder.isValidPublicKey(to)) {
+                                            System.out.println("Некорректный адресс");
+                                            break;
+                                        }
+                                        System.out.println("Введите суммы, которую хотите отправить");
+                                        int value = scanner.nextInt();
+                                        if (value<=0 || value>balance){
+                                            System.out.println("Некорректная сумма");
+                                        }
+                                        Transaction transaction = javaChain.buildTransaction(wallet.getPublicKey(),to,wallet.getPrivateKey(),value);
+                                        javaChain.addTransactionToPoolTransactions(transaction);
+                                        System.out.println("Успешно отправленно!");
+                                        System.out.println("ждите подтверждение отправки транзакции в блокчейне");
+
+                                        break;
+                                    }
+                                    //deleteWallet
+                                    case 2:{
+                                        System.out.println("Введите пароль от кошелька,который хотите удалить");
+                                        scanner = new Scanner(System.in);
+                                        password=scanner.nextLine();
+                                        if (!hashEncoder.SHA256(password).equals(wallet.getPassword())){
+                                            System.out.println("Неверный пароль");
+                                            break;
+                                        }
+                                        walletDB.deleteByAddress(wallet.getPublicKey());
+                                        System.out.println("Кошелек успешно удален!");
+                                        break;
+                                    }
+                                    case 3:{
+                                        System.out.println("Введите пароль: ");
+                                        scanner = new Scanner(System.in);
+                                        password=scanner.nextLine();
+                                        if (!hashEncoder.SHA256(password).equals(wallet.getPassword())){
+                                            System.out.println("Неверный пароль");
+                                            break;
+                                        }
+                                        System.out.println("Private Key: "+wallet.getPrivateKey());
+                                    }
+                                    case 0:{
+                                        break;
+                                    }
+                                }
+
                             }
+                            break;
                         }
+                        //createWallet
                         case 2:{
                             System.out.println("Введите пароль от нового кошелька.Длинна пароля от 5 символов");
                             System.out.println("Или введите exit для выхожа из меню.");
+                            scanner = new Scanner(System.in);
                             String password = scanner.nextLine();
                             while (!password.equals("exit") && password.length()<5){
-                                password=scanner.nextLine();
                                 System.out.println("Пароль слишком короткий,введите пароль длинной более 5 символов");
+                                password=scanner.nextLine();
                             }
                             if (password.equals("exit"))break;
                             Asymmetric.Keys keys = asymmetricEncoder.generateKeys();
-//                            Wallet newWallet = new Wallet(password,keys.publicKey(),keys.privateKey(),generateSecretPhrase());
-                        }
-
-                        case 4:{
+                            Wallet newWallet = new Wallet(password,keys.publicKey(),keys.privateKey());
+                            walletDB.createNewWallet(newWallet);
                             break;
                         }
+                        case 3:{
+                            //restoreWallet
+                            System.out.println("Что хотите сделать?\n1)Востановить при помощи Private key\n0)Exit");
+
+                            numberExecute = scanner.nextInt();
+                            switch (numberExecute) {
+                                case 0:
+                                    break;
+                                case 1: {
+                                    scanner = new Scanner(System.in);
+                                    System.out.println("Введите Private Key");
+                                    String privateKey = scanner.nextLine();
+                                    String publicKey = asymmetricEncoder.generatePublicKeyFromPrivateKey(privateKey);
+                                    if (publicKey == null) {
+                                        System.out.println("Неверный privateKey");
+                                        break;
+
+                                    }
+                                    System.out.println("Придумайте новый пароль для своего кошелька,минимум 5 символов");
+                                    System.out.println("Или введите exit для выхожа из меню.");
+                                    scanner = new Scanner(System.in);
+                                    String password = scanner.nextLine();
+                                    while (!password.equals("exit") && password.length() < 5) {
+                                        System.out.println("Пароль слишком короткий,введите пароль длинной более 5 символов");
+                                        password = scanner.nextLine();
+                                    }
+                                    if (password.equals("exit")) break;
+                                    Wallet newWallet = new Wallet(password, publicKey, privateKey);
+                                    walletDB.createNewWallet(newWallet);
+                                    System.out.println("Кошелек успешно добавлен!");
+                                    break;
+
+                                }
+                            }
+                            }
+                            break;
+
+                    }
+
+//                        case 5:{
+//                            break;
+//                        }
                     }
                     break;
-                }
+
                 case 3:{
 
                 }
@@ -154,8 +262,6 @@ public class NodeApp {
                     }
                     else if (numberExecute==2){
                         System.out.println("\nВведите аддресс на которой хотите получать деньги за майнинг или выберит еиз выпадающего списка своих кошелеков");
-
-
                     }
                     else System.out.println("\nНевено номер параметра");
                 }

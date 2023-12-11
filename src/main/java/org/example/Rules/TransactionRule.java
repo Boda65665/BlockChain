@@ -25,7 +25,7 @@ public class TransactionRule implements RuleBase<Transaction>{
     @Override
     public void Execute(ArrayList<Block<Transaction>> blocks, Block<Transaction> newBlock) throws BlockChainException {
         Transaction transaction = newBlock.getData();
-
+        System.out.println(transaction.getSing());
         if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo().getPublicKey()+transaction.getNonce()),transaction.getFrom().getPublicKey(),transaction.getSing())){
             throw new BlockChainException("Invalid signature");
         }
@@ -38,7 +38,6 @@ public class TransactionRule implements RuleBase<Transaction>{
     }
     public boolean Execute(Transaction transaction){
         try{
-
             Execute(null,new Block<>(transaction));
             return true;
 

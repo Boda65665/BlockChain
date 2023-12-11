@@ -80,6 +80,10 @@ public class LevelDbState {
 //        levelDbState.getAll();
 //        String states = "[{\"publicKey\":\"ddd\",\"balance\":0,\"nonce\":0,\"transactionsComplete\":[]},{\"publicKey\":\"s\",\"balance\":0,\"nonce\":0,\"transactionsComplete\":[]},{\"publicKey\":\"shh\",\"balance\":0,\"nonce\":0,\"transactionsComplete\":[]}]";
 //        levelDbState.buildStates(states);
+
+        Address address = new Address("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIDHJ1jHqlt2XmCOb8bMKiaXn87cWpR/MkfoWQ1msXRCfRuoripZOpTerR1v9uUHrk85OQRuYZWBBj5Ik/EZ7s8CAwEAAQ==",110,null,0);
+        levelDbState.put(address);
+
         System.out.println(levelDbState.getAll().size());
     }
 

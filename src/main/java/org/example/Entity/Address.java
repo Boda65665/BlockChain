@@ -6,15 +6,15 @@ import java.util.ArrayList;
 
 public class Address {
 
-    public Address(Asymmetric.Keys keys, int balance, ArrayList<Transaction> transactionsComplete,int nonce) {
-        this.publicKey = keys.publicKey();
+    public Address(String publicKey, int balance, ArrayList<Transaction> transactionsComplete,int nonce) {
+        this.publicKey = publicKey;
         this.balance = balance;
         this.transactionsComplete = transactionsComplete;
         this.nonce = nonce;
 
     }
-    public Address(Asymmetric.Keys keys){
-        this.publicKey = keys.publicKey();
+    public Address(String publicKey){
+        this.publicKey = publicKey;
         this.balance = 0;
         this.transactionsComplete = new ArrayList<>();
         nonce = 0;
