@@ -1,110 +1,118 @@
 package org.example.Cryptography;// Java program to create a
 // asymmetric key
-
-import org.bouncycastle.jce.ECPointUtil;
-import org.bouncycastle.jce.interfaces.ECPrivateKey;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
-import org.bouncycastle.jce.spec.ECParameterSpec;
-import org.bouncycastle.jce.spec.ECPrivateKeySpec;
-import org.bouncycastle.jce.spec.ECPublicKeySpec;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.K;
-
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.*;
-import java.security.interfaces.RSAPrivateCrtKey;
-import java.security.spec.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.zip.DeflaterOutputStream;
+import java.util.Date;
+import java.sql.Timestamp;
 
-// Class to create an asymmetric key
-public  class Asymmetric {
-    public record Keys(String publicKey, String privateKey) {
-        public Keys(String publicKey, String privateKey) {
+import org.bouncycastle.jce.ECNamedCurveTable;
+import org.bouncycastle.jce.interfaces.ECPrivateKey;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.jce.spec.ECParameterSpec;
+import org.bouncycastle.jce.spec.ECPublicKeySpec;
+import org.bouncycastle.math.ec.ECPoint;
+
+public class Asymmetric {
+    public  record Keys(String publicKey, String privateKey) {
+        public  Keys(String publicKey, String privateKey) {
             this.publicKey = publicKey;
             this.privateKey = privateKey;
         }
     }
 
-    public Keys generateKeys() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
 
 
-        Security.setProperty("crypto.policy", "unlimited");
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(512); // Установка размера ключа
-        // Генерация ключевой пары
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        // Convert keys to strings
-        String publicKeyString = Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded());
-        String privateKeyString = Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded());
+    public String sign(String plaintext, String privateKey) throws SignatureException, UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+        Signature ecdsaSign = Signature.getInstance("SHA256withECDSA", "BC");
+        ecdsaSign.initSign(getPrivateKeyFromString(privateKey));
+        ecdsaSign.update(plaintext.getBytes("UTF-8"));
+        byte[] signature = ecdsaSign.sign();
+        return Base64.getEncoder().encodeToString(signature);
 
-        return new Keys(publicKeyString, privateKeyString);
     }
 
-    public String sign(String message, String privateKeyString) {
+    public  boolean verify(String plaintext, String publicKey,String signature) throws SignatureException,
+            InvalidKeyException, UnsupportedEncodingException,
+            NoSuchAlgorithmException, NoSuchProviderException {
+        Signature ecdsaVerify = Signature.getInstance("SHA256withECDSA",
+                "BC");
+        ecdsaVerify.initVerify(getPublicKeyFromString(publicKey));
+        ecdsaVerify.update(plaintext.getBytes("UTF-8"));
+        return ecdsaVerify.verify(Base64.getDecoder().decode(signature));
+    }
+
+    public  Keys GenerateKeys() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
+        Security.addProvider(new BouncyCastleProvider());
+
+        // Используем кривую с меньшей длиной ключа для минимизации размера ключей
+        ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec("secp192r1");
+
+        KeyPairGenerator g = KeyPairGenerator.getInstance("ECDSA", "BC");
+
+        g.initialize(ecSpec);
+        KeyPair keyPair = g.generateKeyPair();
+        byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
+        byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
+
+// Конвертация в строковое представление в формате Base64
+        String publicKeyString = Base64.getEncoder().encodeToString(publicKeyBytes);
+        String privateKeyString = Base64.getEncoder().encodeToString(privateKeyBytes);
+        return new Keys(publicKeyString,privateKeyString);
+    }
+    public String getPublicFromPrivateKey(String privateKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
+            KeyFactory keyFactory;
+
+            keyFactory = KeyFactory.getInstance("ECDSA", "BC");
+            ECParameterSpec ecSpec = ECNamedCurveTable.getParameterSpec("secp192r1");
+            ECPoint pointQ = ecSpec.getG().multiply(((ECPrivateKey) getPrivateKeyFromString(privateKey)).getD());
+            ECPublicKeySpec pubSpec = new ECPublicKeySpec(pointQ, ecSpec);
+            byte[] publicKeyBytes = keyFactory.generatePublic(pubSpec).getEncoded();
+        return Base64.getEncoder().encodeToString(publicKeyBytes);
+    }
+    private   PrivateKey getPrivateKeyFromString(String privateKeyString) throws InvalidKeySpecException {
+        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyString);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+        KeyFactory keyFactory;
         try {
-            byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyString);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
-            Signature signature = Signature.getInstance("SHA256withRSA");
-            signature.initSign(privateKey);
-            signature.update(message.getBytes());
-            byte[] signatureBytes = signature.sign();
-            return Base64.getEncoder().encodeToString(signatureBytes);
-        } catch (IllegalArgumentException | NoSuchAlgorithmException | InvalidKeyException | SignatureException |
-                 InvalidKeySpecException e) {
+            keyFactory = KeyFactory.getInstance("ECDSA", "BC");
+            return keyFactory.generatePrivate(keySpec);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
-
-
-
-    public boolean verify(String message, String publicKeyString, String signatureString) {
-        try {
-            byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
-            PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
-            byte[] signatureBytes = Base64.getDecoder().decode(signatureString);
-            Signature signature = Signature.getInstance("SHA256withECDSA");
-            signature.initVerify(publicKey);
-            signature.update(message.getBytes());
-            return signature.verify(signatureBytes);
-        } catch (IllegalArgumentException | NoSuchAlgorithmException  |
-                 InvalidKeySpecException | InvalidKeyException | SignatureException e) {
-            e.printStackTrace();
-            return false;
-
-        }
-    }
-    public boolean isValidPublicKey(String publicKeyString){
+    private   PublicKey getPublicKeyFromString(String publicKeyString) {
         byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
+        KeyFactory keyFactory;
         try {
-            PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
-            return true;
-        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
-            return false;
+            keyFactory = KeyFactory.getInstance("ECDSA", "BC");
+            return keyFactory.generatePublic(keySpec);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException e) {
+            e.printStackTrace();
         }
+        return null;
     }
-    public String generatePublicKeyFromPrivateKey(String privateKeyString)  {
-        try {
-            byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyString);
-            RSAPrivateCrtKey privk = (RSAPrivateCrtKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(privateKeyBytes));
-            RSAPublicKeySpec publicKeySpec = new java.security.spec.RSAPublicKeySpec(privk.getModulus(), privk.getPublicExponent());
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            PublicKey myPublicKey = keyFactory.generatePublic(publicKeySpec);
-            byte[] publicKeyBytes = myPublicKey.getEncoded();
-            return Base64.getEncoder().encodeToString(publicKeyBytes);
-        }
-        catch (IllegalArgumentException | NoSuchAlgorithmException | InvalidKeySpecException e){
-            return null;
-        }
+    public static void main(String[] args) throws Exception {
+
+    Asymmetric asymmetric = new Asymmetric();
+    Keys keys = asymmetric.GenerateKeys();
+    System.out.println(keys.publicKey);
+    System.out.println(keys.privateKey);
+    System.out.println(asymmetric.getPublicFromPrivateKey(keys.privateKey));
+    String sign = asymmetric.sign("dd", keys.privateKey);
+    System.out.println(sign);
+    System.out.println(asymmetric.verify("dd", keys.publicKey,sign));
+
+
+
+
 
     }
 
-
-        }
+}
