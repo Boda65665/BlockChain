@@ -100,13 +100,13 @@ public class LevelDbPoolBlock<T> {
         transactions.add(transaction);
         transactions.add(transaction);
         Type type = new TypeToken<ArrayList<Transaction>>(){}.getType();
-        LevelDbBlock<ArrayList<Transaction>> levelDbBlock =new LevelDbBlock<>(type);
+        LevelDbPoolBlock<ArrayList<Transaction>> LevelDbPoolBlock =new LevelDbPoolBlock<>(type);
 
         Block<ArrayList<Transaction>> block = new Block<>(transactions);
         block.setHash("dwtdfsr");
-        levelDbBlock.put(block);
+        LevelDbPoolBlock.put(block);
         Gson gson1  = new Gson();
-        System.out.println(levelDbBlock.getAll().get(0).getData().get(0).getFrom().getPublicKey());
+        System.out.println(LevelDbPoolBlock.getAll().pop().getData().get(0).getFrom().getPublicKey());
 
 
 
