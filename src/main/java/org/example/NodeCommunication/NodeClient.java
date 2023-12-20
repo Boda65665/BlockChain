@@ -35,30 +35,43 @@ public class NodeClient<T> {
 
     public boolean SynchronizationBlockChain(String IP) throws Exception {
         if (!ping(IP)) return false;
+        IpConfigParser ipConfigParser = new IpConfigParser();
+        final String ipAddress = ipConfigParser.getIpAddress();
 
-        Socket socket = new Socket(IP,1239);
+        Socket socket = new Socket(IP,1238);
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        System.out.println("connect to "+IP+":"+1239);
+        System.out.println("connect to "+IP+":"+1238);
         System.out.println("Starting download blockChain");
         out.println("full");
         if (!blockChain.getBlocks().isEmpty()) {
             out.println(blockChain.getBlocks().get(blockChain.getBlocks().size() - 1));
+        }
+        else {
+            out.println("");
+        }
+        if (!blockChain.getAllAddresses().isEmpty()){
             out.println(blockChain.getAllAddresses().get(blockChain.getAllAddresses().size()-1));
+        }
+        else {
+            out.println("");
         }
         out.flush();
         String blocksJson = in.readLine();
-        String poolBlocksJson = in.readLine();
+
+        String poolBlocksJson = in.readLine();System.out.println(233);
         String statesJson = in.readLine();
+
         levelDbBlock.buildBlockChain(blocksJson);
+
         levelDbPoolBlock.buildBlockChain(poolBlocksJson);
+
         levelDbState.buildStates(statesJson);
         out.close();
         in.close();
         socket.close();
         System.out.println("finishing download blockchain");
-        IpConfigParser ipConfigParser = new IpConfigParser();
-        String ipAddress = ipConfigParser.getIpAddress();
+
         nodeListDB.editStatusActive(ipAddress,true);
         return true;
     }

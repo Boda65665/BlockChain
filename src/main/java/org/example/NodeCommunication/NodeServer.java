@@ -48,7 +48,8 @@ public class NodeServer<T> {
             if (request.equals("full")) {
                 String hashLastBlock = in.readLine();
                 String lastAddress = in.readLine();
-                if (hashLastBlock==null) {
+                if (hashLastBlock.isEmpty()) {
+
                     out.println(gson.toJson(blockChain.getBlocks()));
                     out.println(gson.toJson(blockChain.getBlocksPool()));
                     out.println(gson.toJson(blockChain.getAllAddresses()));

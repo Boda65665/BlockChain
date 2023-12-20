@@ -94,18 +94,18 @@ public class LevelDbPoolBlock<T> {
 
 
     public static void main(String[] args) throws IOException {
-
-        ArrayList<Transaction> transactions = new ArrayList<>();
-        Transaction transaction = new Transaction(new Address("fdewf"),0,0,"fed",null,0,"Fesf",0);
-        transactions.add(transaction);
-        transactions.add(transaction);
         Type type = new TypeToken<ArrayList<Transaction>>(){}.getType();
         LevelDbPoolBlock<ArrayList<Transaction>> LevelDbPoolBlock =new LevelDbPoolBlock<>(type);
-
-        Block<ArrayList<Transaction>> block = new Block<>(transactions);
-        block.setHash("dwtdfsr");
-        LevelDbPoolBlock.put(block);
-        Gson gson1  = new Gson();
+        ArrayList<Transaction> transactions = new ArrayList<>();
+//        Transaction transaction = new Transaction(new Address("fdewf"),0,0,"fed",null,0,"Fesf",0);
+//        transactions.add(transaction);
+//        transactions.add(transaction);
+//
+//
+//        Block<ArrayList<Transaction>> block = new Block<>(transactions);
+//        block.setHash("dwtdfsr");
+//        LevelDbPoolBlock.put(block);
+//        Gson gson1  = new Gson();
         System.out.println(LevelDbPoolBlock.getAll().pop().getData().get(0).getFrom().getPublicKey());
 
 

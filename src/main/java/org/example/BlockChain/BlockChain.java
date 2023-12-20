@@ -34,6 +34,7 @@ public class BlockChain<T> implements BlockChainBase<T>{
         blocks=levelDbBlock.getAll();
         blocksPool = levelDbPoolBlock.getAll();
         addresses = levelDbState.getAll();
+
     }
     public void addBlock(Block<T> block) throws JsonProcessingException, BlockChainException {
         if (blocks.isEmpty()){

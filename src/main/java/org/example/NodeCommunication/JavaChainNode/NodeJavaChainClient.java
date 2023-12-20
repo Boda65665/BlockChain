@@ -6,6 +6,7 @@ import org.example.BlockChain.BlockChainBase;
 import org.example.DB.SQL.Node.NodeListDB;
 import org.example.Entity.Transaction;
 import org.example.JavaChain;
+import org.example.NodeCommunication.IpConfigParser;
 import org.example.NodeCommunication.NodeClient;
 
 import java.io.BufferedReader;
@@ -32,7 +33,8 @@ public class NodeJavaChainClient extends NodeClient<ArrayList<Transaction>> {
     @Override
     public boolean SynchronizationBlockChain(String ip) throws Exception {
         if (!super.SynchronizationBlockChain(ip)) return false;
-        Socket socket = new Socket(ip, 1239);
+        super.SynchronizationBlockChain(ip);
+        Socket socket = new Socket("localhost", 1240);
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out.println("getPoolTransactions");
