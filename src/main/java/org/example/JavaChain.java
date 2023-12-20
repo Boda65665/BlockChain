@@ -17,6 +17,11 @@
 //import org.example.Rules.TransactionRule;
 //
 //import java.io.IOException;
+//import java.io.UnsupportedEncodingException;
+//import java.security.InvalidKeyException;
+//import java.security.NoSuchAlgorithmException;
+//import java.security.NoSuchProviderException;
+//import java.security.SignatureException;
 //import java.security.spec.InvalidKeySpecException;
 //import java.sql.SQLException;
 //import java.util.ArrayDeque;
@@ -112,7 +117,7 @@
 //
 //        if (transactionRule.Execute(transaction)) {
 //            poolTransactions.add(transaction);
-//            if (poolTransactions.size()==4) {
+//            if (poolTransactions.size()==1) {
 //                ArrayList<Transaction> dataBlock = new ArrayList<>(poolTransactions);
 //                Block<ArrayList<Transaction>> newBlock = new Block<>(dataBlock);
 //                poolTransactions.clear();
@@ -139,10 +144,10 @@
 //    public ArrayList<Transaction> getPoolTransactions() {
 //        return poolTransactions;
 //    }
-//    public Transaction buildTransaction(String fromAddressString,String toAddressString,String privateKey,int value) {
+//    public Transaction buildTransaction(String fromAddressString,String toAddressString,String privateKey,int value) throws UnsupportedEncodingException, SignatureException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchProviderException {
 //        Address fromAddress = new Address(fromAddressString);
 //        Address toAddress = new Address(toAddressString);
-//        String sign = asymmetric.sign(toAddressString+fromAddress.getNonce(),privateKey);
+//        String sign = asymmetric.sign(hashEncoder.SHA256(toAddressString+fromAddress.getNonce()),privateKey);
 //        return new Transaction(fromAddress,0,0,sign,toAddress,value,"",fromAddress.getNonce());
 //    }
 //}

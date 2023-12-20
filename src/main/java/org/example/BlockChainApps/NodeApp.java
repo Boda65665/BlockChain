@@ -12,6 +12,7 @@
 //import org.example.DB.SQL.Node.NodeListDB;
 //import org.example.DB.SQL.Wallets.WalletDB;
 //import org.example.Entity.Address;
+//import org.example.Entity.Block;
 //import org.example.Entity.Transaction;
 //import org.example.Entity.Wallet;
 //import org.example.JavaChain;
@@ -19,6 +20,7 @@
 //import org.example.NodeCommunication.JavaChainNode.NodeJavaChainClient;
 //import org.example.NodeCommunication.JavaChainNode.NodeJavaChainServer;
 //
+//import java.util.ArrayDeque;
 //import java.util.ArrayList;
 //import java.util.InputMismatchException;
 //import java.util.Scanner;
@@ -69,6 +71,7 @@
 //                switch (numberExecute){
 //                    //synchronizationBlockChain
 //                case 1:{
+//
 //                    System.out.println("\nЗапуск поиска нод в сети...");
 //                    String randomIpNode = nodeListDB.getRandomIp();
 //                    while (randomIpNode!=null && !nodeClient.SynchronizationBlockChain(randomIpNode)){
@@ -144,8 +147,9 @@
 //                                        }
 //                                        System.out.println("Введите суммы, которую хотите отправить");
 //                                        int value = scanner.nextInt();
-//                                        if (value<=0 || value>balance){
+//                                        if (value<0 || value>balance){
 //                                            System.out.println("Некорректная сумма");
+//                                            break;
 //                                        }
 //                                        Transaction transaction = javaChain.buildTransaction(wallet.getPublicKey(),to,wallet.getPrivateKey(),value);
 //                                        javaChain.addTransactionToPoolTransactions(transaction);
@@ -213,11 +217,15 @@
 //                                    scanner = new Scanner(System.in);
 //                                    System.out.println("Введите Private Key");
 //                                    String privateKey = scanner.nextLine();
-//                                    String publicKey = asymmetricEncoder.generatePublicKeyFromPrivateKey(privateKey);
+//                                    String publicKey = asymmetricEncoder.getPublicFromPrivateKey(privateKey);
 //                                    if (publicKey == null) {
 //                                        System.out.println("Неверный privateKey");
 //                                        break;
 //
+//                                    }
+//                                    if(walletDB.getWalletByAddress(publicKey)!=null) {
+//                                        System.out.println("Данный кошелек уже добавлен!");
+//                                        break;
 //                                    }
 //                                    System.out.println("Придумайте новый пароль для своего кошелька,минимум 5 символов");
 //                                    System.out.println("Или введите exit для выхожа из меню.");
@@ -278,9 +286,6 @@
 //        }
 //
 //
-//
-//
-//
 //    }
 //    private static String generateSecretPhrase() throws JWNLException {
 //        Dictionary dictionary = Dictionary.getDefaultResourceInstance();
@@ -300,6 +305,7 @@
 //
 //        return secretePhrase.toString().trim();
 //    }
+//
 //
 //}
 //

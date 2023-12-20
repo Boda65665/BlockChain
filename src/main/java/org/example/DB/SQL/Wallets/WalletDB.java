@@ -29,6 +29,7 @@ public class WalletDB {
             String sql = Files.readString(Paths.get(basePath + "\\src\\main\\java\\org\\example\\DB\\SQL\\Wallets\\Wallets.sql"));
             statement.execute(sql);
         }
+        connection.close();
     }
     public void connectDb() {
 
@@ -81,9 +82,10 @@ public class WalletDB {
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1,address);
         ResultSet resultSet = statement.executeQuery();
+        if(!resultSet.next()) return null;
+        Wallet wallet = new Wallet(resultSet.getString("password"),resultSet.getString("address"),resultSet.getString("private_key"));
         connection.close();
-
-        return new Wallet(resultSet.getString("password"),resultSet.getString("address"),resultSet.getString("private_key"));
+        return wallet;
     }
     public Wallet getWalletBySecretPhrase(String secretPhrase) throws SQLException {
         connectDb();
@@ -92,6 +94,8 @@ public class WalletDB {
         statement.setString(1,secretPhrase);
         ResultSet resultSet = statement.executeQuery();
         if (!resultSet.next()) {
+            connection.close();
+
             return null;
         }
         connection.close();

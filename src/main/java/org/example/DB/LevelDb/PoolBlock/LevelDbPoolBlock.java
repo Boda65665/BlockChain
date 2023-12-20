@@ -1,7 +1,8 @@
-package org.example.DB.LevelDb.Block;
+package org.example.DB.LevelDb.PoolBlock;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.example.DB.LevelDb.Block.LevelDbBlock;
 import org.example.Entity.Address;
 import org.example.Entity.Block;
 import org.example.Entity.Transaction;
@@ -12,15 +13,17 @@ import org.iq80.leveldb.Options;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Map;
 
 import static org.iq80.leveldb.impl.Iq80DBFactory.*;
 
-public class LevelDbBlock<T>{
-
+public class LevelDbPoolBlock<T> {
     private final Gson gson = new Gson();
     private final Type typeData;
-    public LevelDbBlock(Type typeData) {
+
+    public LevelDbPoolBlock(Type typeData) {
         this.typeData = typeData;
     }
 
@@ -29,14 +32,13 @@ public class LevelDbBlock<T>{
         options.createIfMissing(true);
         try {
             String basePath = System.getProperty("user.dir");
-            String path = basePath+"\\src\\main\\java\\org\\example\\DB\\LevelDb\\Block\\bd";
+            String path = basePath+"\\src\\main\\java\\org\\example\\DB\\LevelDb\\PoolBlock\\bd";
             return factory.open(new File(path), options);
         } catch (IOException e) {
             throw new RuntimeException(e);
 
         }
     }
-
     public void put(Block<T> block) throws IOException {
         DB db = connectDb();
         String key = block.getHash();
@@ -46,7 +48,6 @@ public class LevelDbBlock<T>{
     }
     public Block<T> get(String key) throws IOException {
         DB db = connectDb();
-
         String blockJson = asString(db.get(bytes(key)));
         Type blockType = new TypeToken<Block<T>>(){}.getType();
         Block<T> block = gson.fromJson(blockJson, blockType);
@@ -59,29 +60,24 @@ public class LevelDbBlock<T>{
         db.close();
         return block;
     }
-    public ArrayList<Block<T>> getAll() throws IOException {
+    public ArrayDeque<Block<T>> getAll() throws IOException {
         DB db = connectDb();
         DBIterator iterator = db.iterator();
 
         iterator.seekToFirst();
-        ArrayList<Block<T>> blocks = new ArrayList<>();
+        ArrayDeque<Block<T>> blocks = new ArrayDeque<>();
         Type blockType = new TypeToken<Block<T>>(){}.getType();
         while (iterator.hasNext()) {
             Map.Entry<byte[], byte[]> entry = iterator.next();
             String value = asString(entry.getValue());
-
             String key = asString(entry.getKey());
             Block<T> block = gson.fromJson(value, blockType);
             block.setData(gson.fromJson(gson.toJson(block.getData()),typeData));
             blocks.add(block);
-
         }
         db.close();
         return blocks;
     }
-
-
-
     public void buildBlockChain(String blocksJson) throws IOException {
         DB db = connectDb();
         Type blocksType = new TypeToken<ArrayList<Block<T>>>(){}.getType();
@@ -97,27 +93,23 @@ public class LevelDbBlock<T>{
 
 
 
-        public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
-            ArrayList<Transaction> transactions = new ArrayList<>();
-            Transaction transaction = new Transaction(new Address("fdewf"),0,0,"fed",null,0,"Fesf",0);
-            transactions.add(transaction);
-            transactions.add(transaction);
-            Type type = new TypeToken<ArrayList<Transaction>>(){}.getType();
-            LevelDbBlock<ArrayList<Transaction>> levelDbBlock =new LevelDbBlock<>(type);
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        Transaction transaction = new Transaction(new Address("fdewf"),0,0,"fed",null,0,"Fesf",0);
+        transactions.add(transaction);
+        transactions.add(transaction);
+        Type type = new TypeToken<ArrayList<Transaction>>(){}.getType();
+        LevelDbBlock<ArrayList<Transaction>> levelDbBlock =new LevelDbBlock<>(type);
 
-            Block<ArrayList<Transaction>> block = new Block<>(transactions);
-            block.setHash("dwtdfsr");
-            levelDbBlock.put(block);
-            Gson gson1  = new Gson();
-            System.out.println(levelDbBlock.getAll().get(0).getData().get(0).getFrom().getPublicKey());
+        Block<ArrayList<Transaction>> block = new Block<>(transactions);
+        block.setHash("dwtdfsr");
+        levelDbBlock.put(block);
+        Gson gson1  = new Gson();
+        System.out.println(levelDbBlock.getAll().get(0).getData().get(0).getFrom().getPublicKey());
 
 
 
 
     }
-
-
-
-
 }

@@ -40,11 +40,12 @@ public class LevelDbState {
         db.close();
     }
 
-    public Address get(String key) {
+    public Address get(String key) throws IOException {
         DB db = connectDb();
         String addressJson = asString(db.get(bytes(key)));
-
-        return  gson.fromJson(addressJson,Address.class);
+        Address address = gson.fromJson(addressJson,Address.class);
+        db.close();
+        return  address;
     }
     public void update(Address address) throws IOException {
         put(address);
@@ -81,7 +82,7 @@ public class LevelDbState {
 //        String states = "[{\"publicKey\":\"ddd\",\"balance\":0,\"nonce\":0,\"transactionsComplete\":[]},{\"publicKey\":\"s\",\"balance\":0,\"nonce\":0,\"transactionsComplete\":[]},{\"publicKey\":\"shh\",\"balance\":0,\"nonce\":0,\"transactionsComplete\":[]}]";
 //        levelDbState.buildStates(states);
 
-        Address address = new Address("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIDHJ1jHqlt2XmCOb8bMKiaXn87cWpR/MkfoWQ1msXRCfRuoripZOpTerR1v9uUHrk85OQRuYZWBBj5Ik/EZ7s8CAwEAAQ==",110,null,0);
+        Address address = new Address("MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEU7pBO372GCyyq0AahmTwJbkCOfc+O7Y+tBFtqRhSEpPdMpXdPDKzkBWNLsIU7waK",110,null,0);
         levelDbState.put(address);
 
         System.out.println(levelDbState.getAll().size());
