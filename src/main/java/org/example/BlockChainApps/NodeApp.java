@@ -74,7 +74,6 @@ public class NodeApp {
 
                     System.out.println("\nЗапуск поиска нод в сети...");
                     String randomIpNode = nodeListDB.getRandomIp();
-                    nodeClient.SynchronizationBlockChain(ipAddress);
                     while (randomIpNode!=null && !nodeClient.SynchronizationBlockChain(randomIpNode)){
                         randomIpNode=nodeListDB.getRandomIp();
                     }
