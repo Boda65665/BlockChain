@@ -1,5 +1,6 @@
 package org.example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.reflect.TypeToken;
 import org.checkerframework.checker.units.qual.A;
 import org.example.BlockChain.BlockChain;
@@ -122,7 +123,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
             poolTransactions.add(transaction);
             if (poolTransactions.size()==1) {
                 ArrayList<Transaction> dataBlock = new ArrayList<>(poolTransactions);
-                Block<ArrayList<Transaction>> newBlock = new Block<>(dataBlock);
+                Block<ArrayList<Transaction>> newBlock = buildBlock(dataBlock);
                 poolTransactions.clear();
                 addBlockToPoll(newBlock);
             }
@@ -143,6 +144,9 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     public void setPoolTransactions(ArrayList<Transaction> poolTransactions) {
         this.poolTransactions = poolTransactions;
     }
+    private String getTail(){
+        return blockChain.getTail();
+    }
 
     public ArrayList<Transaction> getPoolTransactions() {
         return poolTransactions;
@@ -152,5 +156,10 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         Address toAddress = new Address(toAddressString);
         String sign = asymmetric.sign(hashEncoder.SHA256(toAddressString+fromAddress.getNonce()),privateKey);
         return new Transaction(fromAddress,0,0,sign,toAddress,value,"",fromAddress.getNonce());
+    }
+    public Block<ArrayList<Transaction>> buildBlock(ArrayList<Transaction> data) throws JsonProcessingException {
+        Block<ArrayList<Transaction>> block = new Block<>(data);
+        block.setHash(Block.calculateHash(block.getData(),getTail(),hashEncoder,block.getNonce()));
+        return block;
     }
 }

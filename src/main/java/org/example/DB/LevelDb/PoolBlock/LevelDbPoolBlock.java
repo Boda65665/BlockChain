@@ -97,16 +97,9 @@ public class LevelDbPoolBlock<T> {
         Type type = new TypeToken<ArrayList<Transaction>>(){}.getType();
         LevelDbPoolBlock<ArrayList<Transaction>> LevelDbPoolBlock =new LevelDbPoolBlock<>(type);
         ArrayList<Transaction> transactions = new ArrayList<>();
-//        Transaction transaction = new Transaction(new Address("fdewf"),0,0,"fed",null,0,"Fesf",0);
-//        transactions.add(transaction);
-//        transactions.add(transaction);
-//
-//
-//        Block<ArrayList<Transaction>> block = new Block<>(transactions);
-//        block.setHash("dwtdfsr");
-//        LevelDbPoolBlock.put(block);
-//        Gson gson1  = new Gson();
-        System.out.println(LevelDbPoolBlock.getAll().pop().getData().get(0).getFrom().getPublicKey());
+        ArrayDeque<Block<ArrayList<Transaction>>> blocks = LevelDbPoolBlock.getAll();
+
+        while (blocks.peek()!=null) System.out.println(blocks.pop().getData().get(0).getFrom().getPublicKey());
 
 
 
