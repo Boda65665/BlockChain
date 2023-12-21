@@ -33,17 +33,16 @@ public class NodeJavaChainClient extends NodeClient<ArrayList<Transaction>> {
     @Override
     public boolean SynchronizationBlockChain(String ip) throws Exception {
         if (!super.SynchronizationBlockChain(ip)) return false;
-        super.SynchronizationBlockChain(ip);
         Socket socket = new Socket("localhost", 1240);
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out.println("getPoolTransactions");
         out.flush();
         String pollTransactionsJson = in.readLine();
-        Type typeJson = new TypeToken<ArrayList<Transaction>>() {
-        }.getType();
+        Type typeJson = new TypeToken<ArrayList<Transaction>>() {}.getType();
         ArrayList<Transaction> poolTransactions = gson.fromJson(pollTransactionsJson, typeJson);
         javaChain.setPoolTransactions(poolTransactions);
+
         return true;
     }
 

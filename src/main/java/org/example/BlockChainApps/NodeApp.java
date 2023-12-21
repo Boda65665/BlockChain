@@ -249,7 +249,7 @@ public class NodeApp {
                     }
                     }
                     break;
-
+                //mining
                 case 3:{
 
                 }

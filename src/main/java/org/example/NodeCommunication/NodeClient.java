@@ -59,7 +59,7 @@ public class NodeClient<T> {
         out.flush();
         String blocksJson = in.readLine();
 
-        String poolBlocksJson = in.readLine();System.out.println(233);
+        String poolBlocksJson = in.readLine();
         String statesJson = in.readLine();
 
         levelDbBlock.buildBlockChain(blocksJson);

@@ -1,12 +1,14 @@
 package org.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.checkerframework.checker.units.qual.A;
 import org.example.BlockChain.BlockChain;
 import org.example.BlockChain.BlockChainBase;
 import org.example.Cryptography.Asymmetric;
 import org.example.Cryptography.HashEncoder;
+import org.example.DB.LevelDb.TransactonPool.LevelDbTransactionPool;
 import org.example.Entity.Address;
 import org.example.Entity.Block;
 import org.example.Entity.Transaction;
@@ -32,7 +34,9 @@ import java.util.ArrayList;
 
 public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     private ArrayList<Transaction> poolTransactions = new ArrayList<>();
+    private final Gson gson = new Gson();
     private final BlockChain<ArrayList<Transaction>> blockChain;
+    private final LevelDbTransactionPool levelDbTransactionPool = new LevelDbTransactionPool();
     private final LevelDbState levelDbState = new LevelDbState();
     private final Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
     private final LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>(typeData);
@@ -47,6 +51,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
     public JavaChain(BlockChain<ArrayList<Transaction>> blockChain) throws IOException, SQLException {
         this.blockChain = blockChain;
+        poolTransactions=levelDbTransactionPool.getAll();
 
     }
 
@@ -124,7 +129,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
             if (poolTransactions.size()==1) {
                 ArrayList<Transaction> dataBlock = new ArrayList<>(poolTransactions);
                 Block<ArrayList<Transaction>> newBlock = buildBlock(dataBlock);
-                poolTransactions.clear();
+                clearPoolTransaction();
                 addBlockToPoll(newBlock);
             }
             nodeJavaChainClient.update();
@@ -135,14 +140,21 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
 
     }
+
+    private void clearPoolTransaction() throws IOException {
+        poolTransactions.clear();
+        levelDbTransactionPool.clear();
+    }
+
     public void addBlockToPoll(Block<ArrayList<Transaction>> block) throws Exception {
         blockChain.addBlockToPoll(block);
         nodeJavaChainClient.update();
     }
 
 
-    public void setPoolTransactions(ArrayList<Transaction> poolTransactions) {
+    public void setPoolTransactions(ArrayList<Transaction> poolTransactions) throws IOException {
         this.poolTransactions = poolTransactions;
+        levelDbTransactionPool.buildTransactionPool(gson.toJson(poolTransactions));
     }
     private String getTail(){
         return blockChain.getTail();
