@@ -42,16 +42,20 @@ public class BlockChain<T> implements BlockChainBase<T>{
             String expectedHash = Block.calculateHash(block.getData(),tail,hashEncoder,block.getNonce());
             if (expectedHash.equals(block.getHash())) blocks.add(block);
             else throw new BlockChainException("invalid hash");
+            tail=block.getHash();
             return;
         }
 
 
-        String tail =  blocks.get(blocks.size()-1).getHash();
+
 
         if (block.getParentHash().equals(tail)){
 
             String expectedHash = Block.calculateHash(block.getData(),tail,hashEncoder,block.getNonce());
-            if (expectedHash.equals(block.getHash())) blocks.add(block);
+            if (expectedHash.equals(block.getHash())) {
+                blocks.add(block);
+                tail=block.getHash();
+            }
             else {
                 throw new BlockChainException("Invalid hash");
             }

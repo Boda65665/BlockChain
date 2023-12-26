@@ -110,7 +110,11 @@ public class LevelDbBlock<T>{
 //            block.setHash("dwtdfsr");
 //            levelDbBlock.put(block);
 //            Gson gson1  = new Gson();
-            System.out.println(levelDbBlock.getAll().get(0).getData().get(0).getFrom().getPublicKey());
+            ArrayList<Block<ArrayList<Transaction>>> blocks = levelDbBlock.getAll();
+            for (Block<ArrayList<Transaction>> block : blocks) {
+                System.out.println(block.getHash());
+
+            }
 
 
 

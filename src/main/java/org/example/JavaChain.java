@@ -108,6 +108,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         levelDbBlock.put(block);
         //начисляем награду за майнинг
         Address feeRecipient = levelDbState.get(block.getFeeRecipient());
+        System.out.println(feeRecipient.getPublicKey());
         if (feeRecipient==null) feeRecipient = new Address(block.getFeeRecipient(),0,null,0);
         feeRecipient.setBalance(feeRecipient.getBalance()+100);
         levelDbState.update(feeRecipient);
