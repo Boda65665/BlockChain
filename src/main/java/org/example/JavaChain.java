@@ -83,11 +83,18 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
                 from.setBalance(from.getBalance()-transaction.getValue());
                 from.setNonce(transaction.getNonce()+1);
                 transaction.setStatus(true);
+
                 to.setBalance(to.getBalance()+transaction.getValue());
-                from.getTransactionsComplete().add(transaction.getHash());
+                ArrayList<String> fromTransactionsComplete = from.getTransactionsComplete();
+                ArrayList<String> toTransactionsComplete = to.getTransactionsComplete();
 
-                to.getTransactionsComplete().add(transaction.getHash());
+                if (fromTransactionsComplete==null) fromTransactionsComplete=new ArrayList<>();
+                if (toTransactionsComplete==null) toTransactionsComplete=new ArrayList<>();
 
+                fromTransactionsComplete.add(transaction.getHash());
+                toTransactionsComplete.add(transaction.getHash());
+                from.setTransactionsComplete(fromTransactionsComplete);
+                to.setTransactionsComplete(toTransactionsComplete);
                 levelDbState.update(to);
                 levelDbState.update(from);
 
