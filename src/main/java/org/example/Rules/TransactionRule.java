@@ -44,9 +44,9 @@ public class TransactionRule implements RuleBase<Transaction>{
         if (transaction.getValue()>fromAddress.getBalance() || transaction.getValue()<0){
             throw new BlockChainException("not enough money");
         }
-        if(transaction.getNonce() < fromAddress.getNonce()){
-            throw new BlockChainException("invalid nonce");
-        }
+//        if(transaction.getNonce() < fromAddress.getNonce()){
+//            throw new BlockChainException("invalid nonce");
+//        }
     }
     public boolean Execute(Transaction transaction){
         try{

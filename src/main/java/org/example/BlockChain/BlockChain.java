@@ -34,11 +34,11 @@ public class BlockChain<T> implements BlockChainBase<T>{
         blocks=levelDbBlock.getAll();
         blocksPool = levelDbPoolBlock.getAll();
         addresses = levelDbState.getAll();
-
+        if (!blocks.isEmpty()) tail = blocks.get(blocks.size()-1).getHash();
     }
     public void addBlock(Block<T> block) throws JsonProcessingException, BlockChainException {
-        if (blocks.isEmpty()){
 
+        if (blocks.isEmpty()){
             String expectedHash = Block.calculateHash(block.getData(),tail,hashEncoder,block.getNonce());
             if (expectedHash.equals(block.getHash())) blocks.add(block);
             else throw new BlockChainException("invalid hash");
@@ -47,7 +47,6 @@ public class BlockChain<T> implements BlockChainBase<T>{
 
 
         String tail =  blocks.get(blocks.size()-1).getHash();
-
 
         if (block.getParentHash().equals(tail)){
 
@@ -66,7 +65,9 @@ public class BlockChain<T> implements BlockChainBase<T>{
         levelDbPoolBlock.put(block);
     }
     public Block<T> popBlockFromPoll() throws IOException {
-        return (blocksPool.peek()!=null) ? blocksPool.pop() : null;
+        if (blocksPool.peek()==null) return null;
+        levelDbPoolBlock.deleteByHash(blocksPool.peek().getHash());
+        return blocksPool.pop();
     }
     public ArrayList<Block<T>> getBlocks(){
         return blocks;

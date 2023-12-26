@@ -90,6 +90,12 @@ public class LevelDbPoolBlock<T> {
         }
         db.close();
     }
+    public void deleteByHash(String hash) throws IOException {
+        if (get(hash)!=null) return;
+        DB db = connectDb();
+        db.delete(bytes(hash));
+        db.close();
+    }
 
 
 

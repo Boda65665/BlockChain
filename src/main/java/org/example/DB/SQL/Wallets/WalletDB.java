@@ -8,7 +8,7 @@ import org.example.NodeCommunication.IpConfigParser;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.InvalidKeyException;
@@ -111,8 +111,29 @@ public class WalletDB {
         connection.close();
         return isDelete;
     }
+    public String getMyAddressForMining() throws IOException {
+        String basePath = System.getProperty("user.dir");
+        String path = basePath+"\\src\\main\\java\\org\\example\\DB\\SQL\\AddressWalletForMining.txt";
+        FileReader fileReader = new FileReader(path);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line;
+        line = bufferedReader.readLine();
+        bufferedReader.close();
+        return line;
+    }
+    public void setAddressForMining(String address) throws IOException {
+        String basePath = System.getProperty("user.dir");
+        String path = basePath+"\\src\\main\\java\\org\\example\\DB\\SQL\\AddressWalletForMining.txt";
+            FileWriter fileWriter = new FileWriter(path);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(address);
+            bufferedWriter.close();
+    }
+
     public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         WalletDB walletDB = new WalletDB();
+        walletDB.setAddressForMining("edwedff");
+        System.out.println(walletDB.getMyAddressForMining());
 
 
     }

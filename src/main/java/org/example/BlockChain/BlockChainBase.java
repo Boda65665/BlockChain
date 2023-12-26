@@ -11,11 +11,12 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public interface BlockChainBase<T> {
-    void addBlock(Block<T> block) throws IOException, BlockChainException;
+    void addBlock(Block<T> block) throws Exception;
     ArrayList<Block<T>> getBlocks();
     ArrayList<Block<T>> getBlocksStartingFrom(String hash);
     ArrayList<Address> getAddressStartingFrom(String publicKey);
     ArrayDeque<Block<T>> getBlocksPool();
     ArrayList<Address> getAllAddresses();
+    void addBlockToPoll(Block<T> block) throws Exception;
 
 }

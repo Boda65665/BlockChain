@@ -36,7 +36,7 @@ public class LevelDbTransactionPool {
 
     public void put(Transaction transaction) throws IOException {
         DB db = connectDb();
-        String key = new HashEncoder().SHA256(transaction.getFrom().getPublicKey()+transaction.getNonce());
+        String key = new HashEncoder().SHA256(transaction.getHash());
         String value = gson.toJson(transaction);
         db.put(bytes(key),bytes(value));
         db.close();
@@ -71,7 +71,7 @@ public class LevelDbTransactionPool {
         Type statesType = new TypeToken<ArrayList<Transaction>>(){}.getType();
         ArrayList<Transaction> transactions = gson.fromJson(transactionJson,statesType);
         for (Transaction transaction : transactions) {
-            String key = new HashEncoder().SHA256(transaction.getFrom().getPublicKey()+transaction.getNonce());
+            String key = new HashEncoder().SHA256(transaction.getHash());
             db.put(bytes(key),bytes(gson.toJson(transaction)));
         }
         db.close();

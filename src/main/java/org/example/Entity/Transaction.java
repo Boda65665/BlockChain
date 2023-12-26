@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Transaction {
 
 
-    public Transaction(Address from, int gas, int gasPrice, String sing, Address to, int value, String data, int nonce) {
+    public Transaction(Address from, int gas, int gasPrice, String sing, Address to, int value, String data, int nonce,String hash) {
         this.from = from;
         this.gas = gas;
         this.gasPrice = gasPrice;
@@ -45,7 +45,7 @@ public class Transaction {
     private String data;
     private int nonce;
 
-
+    private String hash;
 
     public Address getFrom() {
         return from;
@@ -126,6 +126,14 @@ public class Transaction {
 
     public void setNonce(int nonce) {
         this.nonce = nonce;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }
 

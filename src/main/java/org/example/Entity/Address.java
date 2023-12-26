@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Address {
 
-    public Address(String publicKey, int balance, ArrayList<Transaction> transactionsComplete,int nonce) {
+    public Address(String publicKey, int balance, ArrayList<String> transactionsComplete,int nonce) {
         this.publicKey = publicKey;
         this.balance = balance;
         this.transactionsComplete = transactionsComplete;
@@ -30,7 +30,7 @@ public class Address {
     private String publicKey;
     private int balance;
     private int nonce;
-    private ArrayList<Transaction> transactionsComplete;
+    private ArrayList<String> transactionsComplete = new ArrayList<>();
 
     public String getPublicKey() {
         return publicKey;
@@ -50,11 +50,11 @@ public class Address {
         this.balance = balance;
     }
 
-    public ArrayList<Transaction> getTransactionsComplete() {
+    public ArrayList<String> getTransactionsComplete() {
         return transactionsComplete;
     }
 
-    public void setTransactionsComplete(ArrayList<Transaction> transactionsComplete) {
+    public void setTransactionsComplete(ArrayList<String> transactionsComplete) {
         this.transactionsComplete = transactionsComplete;
     }
 }

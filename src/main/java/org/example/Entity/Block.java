@@ -19,6 +19,7 @@ public class Block<T> {
     }
 
     private String parentHash;
+    private String feeRecipient;
     private String hash;
     int blockNumber;
     T data;
@@ -65,11 +66,15 @@ public class Block<T> {
         this.blockNumber = blockNumber;
     }
 
+    public String getFeeRecipient() {
+        return feeRecipient;
+    }
 
+    public void setFeeRecipient(String feeRecipient) {
+        this.feeRecipient = feeRecipient;
+    }
 
-    static public String calculateHash(Object objData, String parentHash, HashEncoder hashEncoder,int nonce)
-
-            throws JsonProcessingException {
+    static public String calculateHash(Object objData, String parentHash, HashEncoder hashEncoder, int nonce) throws JsonProcessingException {
         String data = transactionsToJson(objData)+nonce;
         return hashEncoder.SHA256(data+parentHash);
     }

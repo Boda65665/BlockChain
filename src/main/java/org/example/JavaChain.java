@@ -56,15 +56,24 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     }
 
     @Override
-    public void addBlock(Block<ArrayList<Transaction>> block) throws IOException, BlockChainException {
-        poWRule.Execute(getBlocks(),block);
+    public void addBlock(Block<ArrayList<Transaction>> block) throws Exception {
+        Address address = new Address("dw");
+
+        if (!poWRule.Execute(block.getBlockNumber(),block.getHash())) {
+            System.out.println("Данный блок был найден раньше вас( ");
+            return;
+        };
 
         block.setBlockNumber(blockChain.getBlockNumber());
         block.setParentHash(blockChain.getTail());
 
         for (Transaction transaction : block.getData()) {
+
             Address from = transaction.getFrom();
             Address to = transaction.getTo();
+            from.setBalance(levelDbState.get(from.getPublicKey()).getBalance());
+            if (levelDbState.get(to.getPublicKey())!=null) to.setBalance(levelDbState.get(to.getPublicKey()).getBalance());
+
             if (levelDbState.get(from.getPublicKey())==null) throw new BlockChainException("Данного кошелька не существует!");
             if (levelDbState.get(to.getPublicKey())==null){
                 levelDbState.put(to);
@@ -75,17 +84,26 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
                 from.setNonce(transaction.getNonce()+1);
                 transaction.setStatus(true);
                 to.setBalance(to.getBalance()+transaction.getValue());
-                from.getTransactionsComplete().add(transaction);
-                to.getTransactionsComplete().add(transaction);
+                from.getTransactionsComplete().add(transaction.getHash());
+
+                to.getTransactionsComplete().add(transaction.getHash());
+
                 levelDbState.update(to);
                 levelDbState.update(from);
+
             }
+
             transaction.setBlockNumber(block.getBlockNumber());
 
         }
         block.setHash(Block.calculateHash(block.getData(),blockChain.getTail(),hashEncoder,block.getNonce()));
         blockChain.addBlock(block);
         levelDbBlock.put(block);
+        //начисляем награду за майнинг
+        Address feeRecipient = levelDbState.get(block.getFeeRecipient());
+        if (feeRecipient==null) feeRecipient = new Address(block.getFeeRecipient(),0,null,0);
+        feeRecipient.setBalance(feeRecipient.getBalance()+100);
+        levelDbState.update(feeRecipient);
         try {
             nodeJavaChainClient.update();
         } catch (Exception e) {
@@ -163,14 +181,16 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     public ArrayList<Transaction> getPoolTransactions() {
         return poolTransactions;
     }
-    public Transaction buildTransaction(String fromAddressString,String toAddressString,String privateKey,int value) throws UnsupportedEncodingException, SignatureException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchProviderException {
-        Address fromAddress = new Address(fromAddressString);
+    public Transaction buildTransaction(String fromAddressString,String toAddressString,String privateKey,int value) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchProviderException {
+        Address fromAddress = levelDbState.get(fromAddressString);
         Address toAddress = new Address(toAddressString);
         String sign = asymmetric.sign(hashEncoder.SHA256(toAddressString+fromAddress.getNonce()),privateKey);
-        return new Transaction(fromAddress,0,0,sign,toAddress,value,"",fromAddress.getNonce());
+        String hash = fromAddress.getPublicKey()+fromAddress.getNonce();
+        return new Transaction(fromAddress,0,0,sign,toAddress,value,"",fromAddress.getNonce(),hash);
     }
     public Block<ArrayList<Transaction>> buildBlock(ArrayList<Transaction> data) throws JsonProcessingException {
         Block<ArrayList<Transaction>> block = new Block<>(data);
+
         block.setHash(Block.calculateHash(block.getData(),getTail(),hashEncoder,block.getNonce()));
         return block;
     }
