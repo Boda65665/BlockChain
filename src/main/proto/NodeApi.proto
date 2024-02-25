@@ -1,0 +1,78 @@
+syntax = "proto3";
+package node.api.grc;
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import "Entity.proto";
+
+message Transaction {
+  string from = 1 ;
+  int32 gas = 2;
+  int32 gasPrice = 4;
+  string to = 6;
+  int32 value = 7;
+  string data = 8;
+}
+
+message GetBalanceRequest {
+  string address = 1;
+}
+message GetBalanceResponse {
+  int64 balance = 1;
+}
+
+message GetBlockRequest {
+  //selecting 1 of 2 arguments to search for a block
+  string hash = 1;
+  int64 number = 2;
+}
+message GetBlockResponse {
+  entity.Block block = 1;
+}
+message GetTransactionRequest{
+  string hash = 1;
+}
+message GetTransactionResponse{
+  entity.Transaction transaction = 1;
+}
+
+message SendTransactionRequest{
+  Transaction transactionStruct = 1;
+  string sign = 2;
+}
+
+message SendTransactionResponse{
+  string hash = 1;
+}
+message GetInfoBlockChainRequest{}
+message GetInfoBlockChainResponse{
+  string lastHash = 1;
+  int32 height = 2;
+}
+enum ErrorCod {
+  ADDRESS_CANNOT_BE_NULL = 0;
+  NOT_FOUND_THIS_ADDRESS = 1;
+
+  ID_BLOCK_CANNOT_BE_NULL = 2;
+  NOT_FOUND_THIS_BLOCK = 3;
+
+  HASH_TRANSACTION_CANNOT_BE_NULL = 4;
+  NOT_FOUND_THIS_TRANSACTION = 5;
+
+  ARGUMENT_CANNOT_BE_NULL = 6;
+  INSUFFICIENT_FOUNDS = 7;
+  INCORRECT_SIGNATURE = 8;
+}
+
+message ExceptionResponse {
+  google.protobuf.Timestamp timestamp = 1;
+  ErrorCod error_code = 2;
+}
+
+
+service NodeAPIServise {
+  rpc getBlockChainInfo(GetInfoBlockChainRequest) returns (GetInfoBlockChainResponse);
+  rpc sendTransaction(SendTransactionRequest) returns (SendTransactionResponse);
+  rpc getTransaction(GetTransactionRequest) returns (GetTransactionResponse);
+  rpc getBlock(GetBlockRequest) returns (GetBlockResponse);
+  rpc getBalance(GetBalanceRequest) returns (GetBalanceResponse);
+}

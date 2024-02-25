@@ -1,0 +1,38 @@
+syntax = "proto3";
+package node.communication.base;
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import "Entity.proto";
+message DownloadRequest{
+  int32 lastNumberBlock = 1;
+}
+message DownloadResponse{
+  repeated entity.Block blocks = 2;
+  repeated entity.Block poolBLocks = 4;
+}
+message TestRequest{
+  int32 lastNumberBlock = 1;
+}
+message PingRequest{
+}
+message PingResponse{
+}
+message TestResponse{
+  string test = 1;
+}
+enum ErrorCod {
+  INVALID_NUMBER_BLOCK = 0;
+  NOT_FOUND = 1;
+  THIS_NODE_IS_NOT_VALID = 2;
+}
+
+message ExceptionResponse {
+  google.protobuf.Timestamp timestamp = 1;
+  ErrorCod error_code = 2;
+}
+
+service NodeCommunication{
+  rpc test(TestRequest) returns (TestResponse);
+  rpc ping(PingRequest) returns (PingResponse);
+  rpc download(DownloadRequest) returns (DownloadResponse);
+}

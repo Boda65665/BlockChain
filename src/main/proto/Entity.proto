@@ -1,0 +1,36 @@
+syntax = "proto3";
+package node.entity;
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+message Transaction {
+  Address from = 1;
+  int32 gas = 2;
+  int32 blockNumber = 3;
+  int32 gasPrice = 4;
+  Address to = 6;
+  int32 value = 7;
+  string data = 8;
+  string sing = 9;
+  int32 nonce = 10;
+  string hash = 11;
+  bool status = 12;
+
+}
+
+message Block {
+  string parentHash = 1;
+  Address feeRecipient = 2;
+  string hash = 3;
+  int32 blockNumber= 4;
+  repeated Transaction data = 5;
+  int32 nonce = 6;
+}
+
+message Address {
+  string publicKey = 1;
+  int32 balance = 2;
+  int32 nonce = 3;
+  int32 noncePending = 4;
+  repeated string hashTransactionsCompleted = 5;
+}
