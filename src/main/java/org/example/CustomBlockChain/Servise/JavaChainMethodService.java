@@ -6,8 +6,6 @@ import org.example.BlockChainBase.Cryptography.Asymmetric;
 import org.example.BlockChainBase.Cryptography.HashEncoder;
 
 import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
-import org.example.BlockChainBase.DB.LevelDb.State.LevelDbState;
-import org.example.BlockChainBase.Entity.Address;
 import org.example.CustomBlockChain.DB.LevelDB.State.LevelDBStateCustom;
 import org.example.CustomBlockChain.DB.LevelDB.Transaction.LevelDbTransaction;
 import org.example.BlockChainBase.DB.SQL.Node.NodeListDB;
@@ -21,15 +19,11 @@ import org.example.CustomBlockChain.Rules.TransactionRule;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SignatureException;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class JavaChainMethodService {
     LevelDBStateCustom levelDbState = new LevelDBStateCustom();
@@ -121,53 +115,17 @@ public class JavaChainMethodService {
         return blockChain.popBlockFromPoll();
     }
     //if transaction already invalid than update data block and hash
-    public Block<ArrayList<Transaction>> updateBlock(Block<ArrayList<Transaction>> block) throws IOException {
-        block.setBlockNumber(blockChain.getBlocks().size()+1);
+    public Block<ArrayList<Transaction>> updateBlockInformation(Block<ArrayList<Transaction>> block) throws IOException {
+        block.setBlockNumber(blockChain.getBlocks().size() + 1);
         block.setParentHash(blockChain.getTail());
         for (Transaction transaction : block.getData()) {
-            AddressCustom from = transaction.getFrom();
-            AddressCustom to = transaction.getTo();
-
-            if (levelDbState.get(to.getPublicKey()) != null)
-                to.setBalance(levelDbState.get(to.getPublicKey()).getBalance());
-            if (levelDbState.get(from.getPublicKey()) == null) continue;
             transaction.setBlockNumber(block.getBlockNumber());
-            from.setBalance(levelDbState.get(from.getPublicKey()).getBalance());
-            if (transactionRule.Execute(transaction)) {
-                if (!from.getPublicKey().equals(to.getPublicKey())) {
-
-                }
-
-                transaction.setStatus(true);
-                AddressCustom fromAddressCustom = levelDbState.get(from.getPublicKey());
-                AddressCustom toAddressCustom =   levelDbState.get(to.getPublicKey());
-                ArrayList<String> fromTransactionsComplete = fromAddressCustom.getTransactionsComplete();
-                ArrayList<String> toTransactionsComplete = toAddressCustom.getTransactionsComplete();
-                if (fromTransactionsComplete == null) fromTransactionsComplete = new ArrayList<>();
-                fromTransactionsComplete.add(transaction.getHash());
-                if (!to.getPublicKey().equals(from.getPublicKey())) {
-                    if (toTransactionsComplete == null) toTransactionsComplete = new ArrayList<>();
-                    toTransactionsComplete.add(transaction.getHash());
-                    to.setTransactionsComplete(toTransactionsComplete);
-                    from.setBalance(levelDbState.get(from.getPublicKey()).getBalance() - transaction.getValue());
-                    to.setBalance(to.getBalance() + transaction.getValue());
-                }
-                from.setTransactionsComplete(fromTransactionsComplete);
-            }
-
-            from.setNonce(transaction.getNonce() + 1);
-            from.setNoncePending(levelDbState.get(from.getPublicKey()).getNoncePending());
-            transaction.setFrom(from);
-            transaction.setTo(to);
+            transaction.setStatus(true);
         }
-
-        block.setHash(Block.calculateHash(block.getData(),blockChain.getTail(),hashEncoder,block.getNonce()));
+        block.setHash(Block.calculateHash(block.getData(), blockChain.getTail(), hashEncoder, block.getNonce()));
         return block;
     }
 
-    public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
-        JavaChainMethodService javaChainMethodService = new JavaChainMethodService();
 
-        System.out.println(javaChainMethodService.getTransaction("b128187d315d52b5452f573caa4d2926325f9166e0eac7a16baada839600cd75"));
-    }
+
 }

@@ -64,7 +64,7 @@ public class BlockChain<T> implements BlockChainBase<T>{
             if (expectedHash.equals(block.getHash())) {
                 blocks.add(block);
                 tail=block.getHash();
-                blockChainInfoBD.addInfo(block.getHash(),blockChainInfoBD.getBlockChainInfo().height()+1);
+             //   blockChainInfoBD.addInfo(block.getHash(),blockChainInfoBD.incHeight());
             }
             else {
                 throw new BlockChainException("Invalid hash");
@@ -93,7 +93,7 @@ public class BlockChain<T> implements BlockChainBase<T>{
 
             constructBlockchain.add(block);
             if (!poWRule.Execute(constructBlockchain,block)) return false;
-
+            System.out.println(block);
             if (block.getParentHash()==null && block.getBlockNumber()==1){
                 String expectedHash = Block.calculateHash(block.getData(),null,hashEncoder,block.getNonce());
                 if (!expectedHash.equals(block.getHash())){

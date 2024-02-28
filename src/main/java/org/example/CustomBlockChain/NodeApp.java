@@ -1,10 +1,5 @@
 package org.example.CustomBlockChain;
 
-import net.sf.extjwnl.JWNLException;
-import net.sf.extjwnl.data.IndexWord;
-import net.sf.extjwnl.data.POS;
-import net.sf.extjwnl.dictionary.Dictionary;
-
 import org.example.BlockChainBase.DB.LevelDb.State.LevelDbState;
 import org.example.BlockChainBase.DB.SQL.Node.NodeListDB;
 import org.example.BlockChainBase.DB.SQL.Wallets.WalletDB;
@@ -148,9 +143,9 @@ public class NodeApp {
                                                 break;
                                             }
                                             Transaction transaction = Transaction.newTransactionBuilder()
-                                                    .setFrom(new AddressCustom(wallet.getPublicKey()))
+                                                    .setFrom(wallet.getPublicKey())
                                                     .setData("send transaction to "+to)
-                                                    .setTo(new AddressCustom(to)).setValue(value)
+                                                    .setTo(to).setValue(value)
                                                     .setNonce(javaChainMethodService.getNoncePending(wallet.getPublicKey()))
                                                     .setSing(javaChainMethodService.singTransaction(wallet.getPrivateKey(),wallet.getPublicKey(),to)).build();
 
@@ -267,7 +262,7 @@ public class NodeApp {
 
                                     if (!blockPool.isEmpty()) {
                                         Block<ArrayList<Transaction>> block = javaChainMethodService.popBlockFromPoll();
-                                        proofOfWorkService.startMining(javaChainMethodService.getBlockNumber(), javaChainMethodService.updateBlock(block));
+                                        proofOfWorkService.startMining(javaChainMethodService.getBlockNumber(), javaChainMethodService.updateBlockInformation(block));
                                     }
                                 }
                             } catch (Exception e) {

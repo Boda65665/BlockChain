@@ -1,6 +1,8 @@
 package org.example.CustomBlockChain.Servise;
 
+import com.google.gson.reflect.TypeToken;
 import node.entity.Entity;
+import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
 import org.example.BlockChainBase.Entity.Block;
 import org.example.BlockChainBase.Service.ConverterServiseGrpcEntityBase;
 import org.example.CustomBlockChain.DB.LevelDB.State.LevelDBStateCustom;
@@ -8,6 +10,7 @@ import org.example.CustomBlockChain.Entity.AddressCustom;
 import org.example.CustomBlockChain.Entity.Transaction;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +26,8 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
     @Override
     public Entity.Transaction dataBlockToGrpcData(Transaction transaction){
         return Entity.Transaction.newBuilder()
-                .setTo(addressToGrpcAddress(transaction.getTo()))
-                .setFrom(addressToGrpcAddress(transaction.getFrom()))
+                .setTo(transaction.getTo())
+                .setFrom(transaction.getFrom())
                 .setBlockNumber(transaction.getBlockNumber())
                 .setData(transaction.getData())
                 .setGasPrice(transaction.getGasPrice())
@@ -50,6 +53,7 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
     public Entity.Block blockToGrpcBlock(Block<ArrayList<Transaction>> block) throws IOException {
         ArrayList<Entity.Transaction> dataBlock = new ArrayList<>();
         for (Transaction transaction : block.getData()) {
+
             dataBlock.add(dataBlockToGrpcData(transaction));
         }
         String parentHash = (block.getParentHash()==null) ? "": block.getParentHash();
@@ -58,7 +62,7 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
                 .setHash(block.getHash())
                 .addAllData(dataBlock)
                 .setNonce(block.getNonce())
-                .setFeeRecipient(addressToGrpcAddress(levelDBStateCustom.get(block.getFeeRecipient().getPublicKey())))
+                .setFeeRecipient(block.getFeeRecipient())
                 .setParentHash(parentHash)
                 .build();
     }
@@ -66,8 +70,8 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
     @Override
     public Transaction grpcDataToData(Entity.Transaction transaction) {
         return Transaction.newTransactionBuilder()
-                .setTo(grpcAddressToAddress(transaction.getTo()))
-                .setFrom(grpcAddressToAddress(transaction.getFrom()))
+                .setTo(transaction.getTo())
+                .setFrom(transaction.getFrom())
                 .setBlockNumber(transaction.getBlockNumber())
                 .setData(transaction.getData())
                 .setGasPrice(transaction.getGasPrice())
@@ -103,8 +107,8 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
                 .setData(new ArrayList<>(transactions))
                 .setHash(block.getHash())
                 .setNonce(block.getNonce())
-                .setFeeRecipient(grpcAddressToAddress(block.getFeeRecipient()))
-                .setParentHash(block.getParentHash()).build();
+                .setFeeRecipient(block.getFeeRecipient())
+                .setParentHash(block.getParentHash().isEmpty()?null:block.getParentHash()).build();
     }
 
 

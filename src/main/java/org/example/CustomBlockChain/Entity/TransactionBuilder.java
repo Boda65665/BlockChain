@@ -3,20 +3,27 @@ package org.example.CustomBlockChain.Entity;
 import org.example.BlockChainBase.Entity.Address;
 
 public class TransactionBuilder {
-    private AddressCustom from;
+    private String from;
     private int gas;
     private int blockNumber;
     private int gasPrice;
     private String sing;
-    private AddressCustom to;
+    private String to;
     private int value;
     private String data;
     private int nonce;
     private String hash;
     private boolean status;
 
-    public TransactionBuilder setFrom(AddressCustom from) {
+
+    public TransactionBuilder setFrom(String from) {
         this.from = from;
+        return this;
+
+    }
+
+    public TransactionBuilder setTo(String to) {
+        this.to = to;
         return this;
 
     }
@@ -45,11 +52,6 @@ public class TransactionBuilder {
 
     }
 
-    public TransactionBuilder setTo(AddressCustom to) {
-        this.to = to;
-        return this;
-
-    }
 
     public TransactionBuilder setValue(int value) {
         this.value = value;
@@ -81,6 +83,6 @@ public class TransactionBuilder {
     }
 
     public Transaction build(){
-        return new Transaction(from,gas,gasPrice,sing,to,value,data,nonce,hash);
+        return new Transaction(from,gas,blockNumber,gasPrice,sing,to,value,data,nonce,hash,status);
     }
 }

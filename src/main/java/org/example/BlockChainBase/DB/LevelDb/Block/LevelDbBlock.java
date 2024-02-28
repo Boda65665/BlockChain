@@ -2,6 +2,7 @@ package org.example.BlockChainBase.DB.LevelDb.Block;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.example.BlockChainBase.Cryptography.HashEncoder;
 import org.example.BlockChainBase.DB.LevelDb.Block.Keys.LevelDbKeysBlockStruct;
 import org.example.CustomBlockChain.DB.LevelDB.Transaction.LevelDbTransaction;
 import org.example.BlockChainBase.Entity.Block;
@@ -107,12 +108,6 @@ public class LevelDbBlock<T>{
 
 
 
-        public static void main(String[] args) throws IOException {
-            Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
-
-            LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>(typeData);
-            System.out.println(levelDbBlock.getAll().size());
-
 
 
     }
@@ -120,4 +115,4 @@ public class LevelDbBlock<T>{
 
 
 
-}
+

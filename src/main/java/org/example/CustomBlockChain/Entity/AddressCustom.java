@@ -32,4 +32,6 @@ public class AddressCustom extends Address {
     public AddressCustomBuilder newAddressBuilder(){
         return new AddressCustomBuilder();
     }
+
+
 }

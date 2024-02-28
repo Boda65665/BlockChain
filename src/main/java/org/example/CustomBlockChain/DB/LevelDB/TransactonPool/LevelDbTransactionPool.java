@@ -88,18 +88,5 @@ public class LevelDbTransactionPool {
         db.close();
     }
 
-    public static void main(String[] args) throws IOException {
-        LevelDbTransactionPool transactionPool = new LevelDbTransactionPool();
-//        Transaction transaction = new Transaction(new Address("ffewfgefwffewagffef"),0,0,"fwfefef",null,0,"ew",12);
-//        ArrayList<Transaction> transactions= new ArrayList<>();
-//        transactions.add(transaction);
-//        Gson gson1 = new Gson();
-//        String json = gson1.toJson(transactions);
-//        transactionPool.buildTransactionPool(json);
-        System.out.println(transactionPool.getAll().get(0).getFrom().getPublicKey());
-//        transactionPool.clear();
-//        System.out.println(transactionPool.getAll().getByHash(0).getFrom().getPublicKey());
 
-
-    }
 }

@@ -20,7 +20,7 @@ public class ProofOfWorkService<T> {
         for (int i = 0; i < Integer.MAX_VALUE; i++)
         {
             if (poWRule.Execute(height, block.getHash())){
-                block.setFeeRecipient(new Address(feeRecipient));
+                block.setFeeRecipient(feeRecipient);
                 System.out.println("Вы нашли: "+block.getHash());
                 blockChain.addBlock(block);
                 return;

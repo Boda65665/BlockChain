@@ -19,17 +19,14 @@ public final class Entity {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.node.entity.Address from = 1;</code>
+     * <code>string from = 1;</code>
      */
-    boolean hasFrom();
+    java.lang.String getFrom();
     /**
-     * <code>.node.entity.Address from = 1;</code>
+     * <code>string from = 1;</code>
      */
-    node.entity.Entity.Address getFrom();
-    /**
-     * <code>.node.entity.Address from = 1;</code>
-     */
-    node.entity.Entity.AddressOrBuilder getFromOrBuilder();
+    com.google.protobuf.ByteString
+        getFromBytes();
 
     /**
      * <code>int32 gas = 2;</code>
@@ -47,17 +44,14 @@ public final class Entity {
     int getGasPrice();
 
     /**
-     * <code>.node.entity.Address to = 6;</code>
+     * <code>string to = 6;</code>
      */
-    boolean hasTo();
+    java.lang.String getTo();
     /**
-     * <code>.node.entity.Address to = 6;</code>
+     * <code>string to = 6;</code>
      */
-    node.entity.Entity.Address getTo();
-    /**
-     * <code>.node.entity.Address to = 6;</code>
-     */
-    node.entity.Entity.AddressOrBuilder getToOrBuilder();
+    com.google.protobuf.ByteString
+        getToBytes();
 
     /**
      * <code>int32 value = 7;</code>
@@ -117,6 +111,8 @@ public final class Entity {
       super(builder);
     }
     private Transaction() {
+      from_ = "";
+      to_ = "";
       data_ = "";
       sing_ = "";
       hash_ = "";
@@ -153,16 +149,9 @@ public final class Entity {
               done = true;
               break;
             case 10: {
-              node.entity.Entity.Address.Builder subBuilder = null;
-              if (from_ != null) {
-                subBuilder = from_.toBuilder();
-              }
-              from_ = input.readMessage(node.entity.Entity.Address.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(from_);
-                from_ = subBuilder.buildPartial();
-              }
+              java.lang.String s = input.readStringRequireUtf8();
 
+              from_ = s;
               break;
             }
             case 16: {
@@ -181,16 +170,9 @@ public final class Entity {
               break;
             }
             case 50: {
-              node.entity.Entity.Address.Builder subBuilder = null;
-              if (to_ != null) {
-                subBuilder = to_.toBuilder();
-              }
-              to_ = input.readMessage(node.entity.Entity.Address.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(to_);
-                to_ = subBuilder.buildPartial();
-              }
+              java.lang.String s = input.readStringRequireUtf8();
 
+              to_ = s;
               break;
             }
             case 56: {
@@ -259,24 +241,37 @@ public final class Entity {
     }
 
     public static final int FROM_FIELD_NUMBER = 1;
-    private node.entity.Entity.Address from_;
+    private volatile java.lang.Object from_;
     /**
-     * <code>.node.entity.Address from = 1;</code>
+     * <code>string from = 1;</code>
      */
-    public boolean hasFrom() {
-      return from_ != null;
+    public java.lang.String getFrom() {
+      java.lang.Object ref = from_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        from_ = s;
+        return s;
+      }
     }
     /**
-     * <code>.node.entity.Address from = 1;</code>
+     * <code>string from = 1;</code>
      */
-    public node.entity.Entity.Address getFrom() {
-      return from_ == null ? node.entity.Entity.Address.getDefaultInstance() : from_;
-    }
-    /**
-     * <code>.node.entity.Address from = 1;</code>
-     */
-    public node.entity.Entity.AddressOrBuilder getFromOrBuilder() {
-      return getFrom();
+    public com.google.protobuf.ByteString
+        getFromBytes() {
+      java.lang.Object ref = from_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        from_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int GAS_FIELD_NUMBER = 2;
@@ -307,24 +302,37 @@ public final class Entity {
     }
 
     public static final int TO_FIELD_NUMBER = 6;
-    private node.entity.Entity.Address to_;
+    private volatile java.lang.Object to_;
     /**
-     * <code>.node.entity.Address to = 6;</code>
+     * <code>string to = 6;</code>
      */
-    public boolean hasTo() {
-      return to_ != null;
+    public java.lang.String getTo() {
+      java.lang.Object ref = to_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        to_ = s;
+        return s;
+      }
     }
     /**
-     * <code>.node.entity.Address to = 6;</code>
+     * <code>string to = 6;</code>
      */
-    public node.entity.Entity.Address getTo() {
-      return to_ == null ? node.entity.Entity.Address.getDefaultInstance() : to_;
-    }
-    /**
-     * <code>.node.entity.Address to = 6;</code>
-     */
-    public node.entity.Entity.AddressOrBuilder getToOrBuilder() {
-      return getTo();
+    public com.google.protobuf.ByteString
+        getToBytes() {
+      java.lang.Object ref = to_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        to_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int VALUE_FIELD_NUMBER = 7;
@@ -470,8 +478,8 @@ public final class Entity {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (from_ != null) {
-        output.writeMessage(1, getFrom());
+      if (!getFromBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, from_);
       }
       if (gas_ != 0) {
         output.writeInt32(2, gas_);
@@ -482,8 +490,8 @@ public final class Entity {
       if (gasPrice_ != 0) {
         output.writeInt32(4, gasPrice_);
       }
-      if (to_ != null) {
-        output.writeMessage(6, getTo());
+      if (!getToBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, to_);
       }
       if (value_ != 0) {
         output.writeInt32(7, value_);
@@ -512,9 +520,8 @@ public final class Entity {
       if (size != -1) return size;
 
       size = 0;
-      if (from_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getFrom());
+      if (!getFromBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, from_);
       }
       if (gas_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -528,9 +535,8 @@ public final class Entity {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, gasPrice_);
       }
-      if (to_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, getTo());
+      if (!getToBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, to_);
       }
       if (value_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -568,22 +574,16 @@ public final class Entity {
       }
       node.entity.Entity.Transaction other = (node.entity.Entity.Transaction) obj;
 
-      if (hasFrom() != other.hasFrom()) return false;
-      if (hasFrom()) {
-        if (!getFrom()
-            .equals(other.getFrom())) return false;
-      }
+      if (!getFrom()
+          .equals(other.getFrom())) return false;
       if (getGas()
           != other.getGas()) return false;
       if (getBlockNumber()
           != other.getBlockNumber()) return false;
       if (getGasPrice()
           != other.getGasPrice()) return false;
-      if (hasTo() != other.hasTo()) return false;
-      if (hasTo()) {
-        if (!getTo()
-            .equals(other.getTo())) return false;
-      }
+      if (!getTo()
+          .equals(other.getTo())) return false;
       if (getValue()
           != other.getValue()) return false;
       if (!getData()
@@ -607,20 +607,16 @@ public final class Entity {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasFrom()) {
-        hash = (37 * hash) + FROM_FIELD_NUMBER;
-        hash = (53 * hash) + getFrom().hashCode();
-      }
+      hash = (37 * hash) + FROM_FIELD_NUMBER;
+      hash = (53 * hash) + getFrom().hashCode();
       hash = (37 * hash) + GAS_FIELD_NUMBER;
       hash = (53 * hash) + getGas();
       hash = (37 * hash) + BLOCKNUMBER_FIELD_NUMBER;
       hash = (53 * hash) + getBlockNumber();
       hash = (37 * hash) + GASPRICE_FIELD_NUMBER;
       hash = (53 * hash) + getGasPrice();
-      if (hasTo()) {
-        hash = (37 * hash) + TO_FIELD_NUMBER;
-        hash = (53 * hash) + getTo().hashCode();
-      }
+      hash = (37 * hash) + TO_FIELD_NUMBER;
+      hash = (53 * hash) + getTo().hashCode();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue();
       hash = (37 * hash) + DATA_FIELD_NUMBER;
@@ -767,24 +763,16 @@ public final class Entity {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (fromBuilder_ == null) {
-          from_ = null;
-        } else {
-          from_ = null;
-          fromBuilder_ = null;
-        }
+        from_ = "";
+
         gas_ = 0;
 
         blockNumber_ = 0;
 
         gasPrice_ = 0;
 
-        if (toBuilder_ == null) {
-          to_ = null;
-        } else {
-          to_ = null;
-          toBuilder_ = null;
-        }
+        to_ = "";
+
         value_ = 0;
 
         data_ = "";
@@ -823,19 +811,11 @@ public final class Entity {
       @java.lang.Override
       public node.entity.Entity.Transaction buildPartial() {
         node.entity.Entity.Transaction result = new node.entity.Entity.Transaction(this);
-        if (fromBuilder_ == null) {
-          result.from_ = from_;
-        } else {
-          result.from_ = fromBuilder_.build();
-        }
+        result.from_ = from_;
         result.gas_ = gas_;
         result.blockNumber_ = blockNumber_;
         result.gasPrice_ = gasPrice_;
-        if (toBuilder_ == null) {
-          result.to_ = to_;
-        } else {
-          result.to_ = toBuilder_.build();
-        }
+        result.to_ = to_;
         result.value_ = value_;
         result.data_ = data_;
         result.sing_ = sing_;
@@ -890,8 +870,9 @@ public final class Entity {
 
       public Builder mergeFrom(node.entity.Entity.Transaction other) {
         if (other == node.entity.Entity.Transaction.getDefaultInstance()) return this;
-        if (other.hasFrom()) {
-          mergeFrom(other.getFrom());
+        if (!other.getFrom().isEmpty()) {
+          from_ = other.from_;
+          onChanged();
         }
         if (other.getGas() != 0) {
           setGas(other.getGas());
@@ -902,8 +883,9 @@ public final class Entity {
         if (other.getGasPrice() != 0) {
           setGasPrice(other.getGasPrice());
         }
-        if (other.hasTo()) {
-          mergeTo(other.getTo());
+        if (!other.getTo().isEmpty()) {
+          to_ = other.to_;
+          onChanged();
         }
         if (other.getValue() != 0) {
           setValue(other.getValue());
@@ -955,121 +937,73 @@ public final class Entity {
         return this;
       }
 
-      private node.entity.Entity.Address from_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          node.entity.Entity.Address, node.entity.Entity.Address.Builder, node.entity.Entity.AddressOrBuilder> fromBuilder_;
+      private java.lang.Object from_ = "";
       /**
-       * <code>.node.entity.Address from = 1;</code>
+       * <code>string from = 1;</code>
        */
-      public boolean hasFrom() {
-        return fromBuilder_ != null || from_ != null;
-      }
-      /**
-       * <code>.node.entity.Address from = 1;</code>
-       */
-      public node.entity.Entity.Address getFrom() {
-        if (fromBuilder_ == null) {
-          return from_ == null ? node.entity.Entity.Address.getDefaultInstance() : from_;
+      public java.lang.String getFrom() {
+        java.lang.Object ref = from_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          from_ = s;
+          return s;
         } else {
-          return fromBuilder_.getMessage();
+          return (java.lang.String) ref;
         }
       }
       /**
-       * <code>.node.entity.Address from = 1;</code>
+       * <code>string from = 1;</code>
        */
-      public Builder setFrom(node.entity.Entity.Address value) {
-        if (fromBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          from_ = value;
-          onChanged();
+      public com.google.protobuf.ByteString
+          getFromBytes() {
+        java.lang.Object ref = from_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          from_ = b;
+          return b;
         } else {
-          fromBuilder_.setMessage(value);
+          return (com.google.protobuf.ByteString) ref;
         }
-
-        return this;
       }
       /**
-       * <code>.node.entity.Address from = 1;</code>
+       * <code>string from = 1;</code>
        */
       public Builder setFrom(
-          node.entity.Entity.Address.Builder builderForValue) {
-        if (fromBuilder_ == null) {
-          from_ = builderForValue.build();
-          onChanged();
-        } else {
-          fromBuilder_.setMessage(builderForValue.build());
-        }
-
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        from_ = value;
+        onChanged();
         return this;
       }
       /**
-       * <code>.node.entity.Address from = 1;</code>
-       */
-      public Builder mergeFrom(node.entity.Entity.Address value) {
-        if (fromBuilder_ == null) {
-          if (from_ != null) {
-            from_ =
-              node.entity.Entity.Address.newBuilder(from_).mergeFrom(value).buildPartial();
-          } else {
-            from_ = value;
-          }
-          onChanged();
-        } else {
-          fromBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.node.entity.Address from = 1;</code>
+       * <code>string from = 1;</code>
        */
       public Builder clearFrom() {
-        if (fromBuilder_ == null) {
-          from_ = null;
-          onChanged();
-        } else {
-          from_ = null;
-          fromBuilder_ = null;
-        }
-
+        
+        from_ = getDefaultInstance().getFrom();
+        onChanged();
         return this;
       }
       /**
-       * <code>.node.entity.Address from = 1;</code>
+       * <code>string from = 1;</code>
        */
-      public node.entity.Entity.Address.Builder getFromBuilder() {
+      public Builder setFromBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
         
+        from_ = value;
         onChanged();
-        return getFromFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.node.entity.Address from = 1;</code>
-       */
-      public node.entity.Entity.AddressOrBuilder getFromOrBuilder() {
-        if (fromBuilder_ != null) {
-          return fromBuilder_.getMessageOrBuilder();
-        } else {
-          return from_ == null ?
-              node.entity.Entity.Address.getDefaultInstance() : from_;
-        }
-      }
-      /**
-       * <code>.node.entity.Address from = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          node.entity.Entity.Address, node.entity.Entity.Address.Builder, node.entity.Entity.AddressOrBuilder> 
-          getFromFieldBuilder() {
-        if (fromBuilder_ == null) {
-          fromBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              node.entity.Entity.Address, node.entity.Entity.Address.Builder, node.entity.Entity.AddressOrBuilder>(
-                  getFrom(),
-                  getParentForChildren(),
-                  isClean());
-          from_ = null;
-        }
-        return fromBuilder_;
+        return this;
       }
 
       private int gas_ ;
@@ -1150,121 +1084,73 @@ public final class Entity {
         return this;
       }
 
-      private node.entity.Entity.Address to_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          node.entity.Entity.Address, node.entity.Entity.Address.Builder, node.entity.Entity.AddressOrBuilder> toBuilder_;
+      private java.lang.Object to_ = "";
       /**
-       * <code>.node.entity.Address to = 6;</code>
+       * <code>string to = 6;</code>
        */
-      public boolean hasTo() {
-        return toBuilder_ != null || to_ != null;
-      }
-      /**
-       * <code>.node.entity.Address to = 6;</code>
-       */
-      public node.entity.Entity.Address getTo() {
-        if (toBuilder_ == null) {
-          return to_ == null ? node.entity.Entity.Address.getDefaultInstance() : to_;
+      public java.lang.String getTo() {
+        java.lang.Object ref = to_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          to_ = s;
+          return s;
         } else {
-          return toBuilder_.getMessage();
+          return (java.lang.String) ref;
         }
       }
       /**
-       * <code>.node.entity.Address to = 6;</code>
+       * <code>string to = 6;</code>
        */
-      public Builder setTo(node.entity.Entity.Address value) {
-        if (toBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          to_ = value;
-          onChanged();
+      public com.google.protobuf.ByteString
+          getToBytes() {
+        java.lang.Object ref = to_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          to_ = b;
+          return b;
         } else {
-          toBuilder_.setMessage(value);
+          return (com.google.protobuf.ByteString) ref;
         }
-
-        return this;
       }
       /**
-       * <code>.node.entity.Address to = 6;</code>
+       * <code>string to = 6;</code>
        */
       public Builder setTo(
-          node.entity.Entity.Address.Builder builderForValue) {
-        if (toBuilder_ == null) {
-          to_ = builderForValue.build();
-          onChanged();
-        } else {
-          toBuilder_.setMessage(builderForValue.build());
-        }
-
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        to_ = value;
+        onChanged();
         return this;
       }
       /**
-       * <code>.node.entity.Address to = 6;</code>
-       */
-      public Builder mergeTo(node.entity.Entity.Address value) {
-        if (toBuilder_ == null) {
-          if (to_ != null) {
-            to_ =
-              node.entity.Entity.Address.newBuilder(to_).mergeFrom(value).buildPartial();
-          } else {
-            to_ = value;
-          }
-          onChanged();
-        } else {
-          toBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.node.entity.Address to = 6;</code>
+       * <code>string to = 6;</code>
        */
       public Builder clearTo() {
-        if (toBuilder_ == null) {
-          to_ = null;
-          onChanged();
-        } else {
-          to_ = null;
-          toBuilder_ = null;
-        }
-
+        
+        to_ = getDefaultInstance().getTo();
+        onChanged();
         return this;
       }
       /**
-       * <code>.node.entity.Address to = 6;</code>
+       * <code>string to = 6;</code>
        */
-      public node.entity.Entity.Address.Builder getToBuilder() {
+      public Builder setToBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
         
+        to_ = value;
         onChanged();
-        return getToFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.node.entity.Address to = 6;</code>
-       */
-      public node.entity.Entity.AddressOrBuilder getToOrBuilder() {
-        if (toBuilder_ != null) {
-          return toBuilder_.getMessageOrBuilder();
-        } else {
-          return to_ == null ?
-              node.entity.Entity.Address.getDefaultInstance() : to_;
-        }
-      }
-      /**
-       * <code>.node.entity.Address to = 6;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          node.entity.Entity.Address, node.entity.Entity.Address.Builder, node.entity.Entity.AddressOrBuilder> 
-          getToFieldBuilder() {
-        if (toBuilder_ == null) {
-          toBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              node.entity.Entity.Address, node.entity.Entity.Address.Builder, node.entity.Entity.AddressOrBuilder>(
-                  getTo(),
-                  getParentForChildren(),
-                  isClean());
-          to_ = null;
-        }
-        return toBuilder_;
+        return this;
       }
 
       private int value_ ;
@@ -1619,17 +1505,14 @@ public final class Entity {
         getParentHashBytes();
 
     /**
-     * <code>.node.entity.Address feeRecipient = 2;</code>
+     * <code>string feeRecipient = 2;</code>
      */
-    boolean hasFeeRecipient();
+    java.lang.String getFeeRecipient();
     /**
-     * <code>.node.entity.Address feeRecipient = 2;</code>
+     * <code>string feeRecipient = 2;</code>
      */
-    node.entity.Entity.Address getFeeRecipient();
-    /**
-     * <code>.node.entity.Address feeRecipient = 2;</code>
-     */
-    node.entity.Entity.AddressOrBuilder getFeeRecipientOrBuilder();
+    com.google.protobuf.ByteString
+        getFeeRecipientBytes();
 
     /**
      * <code>string hash = 3;</code>
@@ -1689,6 +1572,7 @@ public final class Entity {
     }
     private Block() {
       parentHash_ = "";
+      feeRecipient_ = "";
       hash_ = "";
       data_ = java.util.Collections.emptyList();
     }
@@ -1731,16 +1615,9 @@ public final class Entity {
               break;
             }
             case 18: {
-              node.entity.Entity.Address.Builder subBuilder = null;
-              if (feeRecipient_ != null) {
-                subBuilder = feeRecipient_.toBuilder();
-              }
-              feeRecipient_ = input.readMessage(node.entity.Entity.Address.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(feeRecipient_);
-                feeRecipient_ = subBuilder.buildPartial();
-              }
+              java.lang.String s = input.readStringRequireUtf8();
 
+              feeRecipient_ = s;
               break;
             }
             case 26: {
@@ -1838,24 +1715,37 @@ public final class Entity {
     }
 
     public static final int FEERECIPIENT_FIELD_NUMBER = 2;
-    private node.entity.Entity.Address feeRecipient_;
+    private volatile java.lang.Object feeRecipient_;
     /**
-     * <code>.node.entity.Address feeRecipient = 2;</code>
+     * <code>string feeRecipient = 2;</code>
      */
-    public boolean hasFeeRecipient() {
-      return feeRecipient_ != null;
+    public java.lang.String getFeeRecipient() {
+      java.lang.Object ref = feeRecipient_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        feeRecipient_ = s;
+        return s;
+      }
     }
     /**
-     * <code>.node.entity.Address feeRecipient = 2;</code>
+     * <code>string feeRecipient = 2;</code>
      */
-    public node.entity.Entity.Address getFeeRecipient() {
-      return feeRecipient_ == null ? node.entity.Entity.Address.getDefaultInstance() : feeRecipient_;
-    }
-    /**
-     * <code>.node.entity.Address feeRecipient = 2;</code>
-     */
-    public node.entity.Entity.AddressOrBuilder getFeeRecipientOrBuilder() {
-      return getFeeRecipient();
+    public com.google.protobuf.ByteString
+        getFeeRecipientBytes() {
+      java.lang.Object ref = feeRecipient_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        feeRecipient_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int HASH_FIELD_NUMBER = 3;
@@ -1962,8 +1852,8 @@ public final class Entity {
       if (!getParentHashBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, parentHash_);
       }
-      if (feeRecipient_ != null) {
-        output.writeMessage(2, getFeeRecipient());
+      if (!getFeeRecipientBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, feeRecipient_);
       }
       if (!getHashBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, hash_);
@@ -1989,9 +1879,8 @@ public final class Entity {
       if (!getParentHashBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, parentHash_);
       }
-      if (feeRecipient_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getFeeRecipient());
+      if (!getFeeRecipientBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, feeRecipient_);
       }
       if (!getHashBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, hash_);
@@ -2025,11 +1914,8 @@ public final class Entity {
 
       if (!getParentHash()
           .equals(other.getParentHash())) return false;
-      if (hasFeeRecipient() != other.hasFeeRecipient()) return false;
-      if (hasFeeRecipient()) {
-        if (!getFeeRecipient()
-            .equals(other.getFeeRecipient())) return false;
-      }
+      if (!getFeeRecipient()
+          .equals(other.getFeeRecipient())) return false;
       if (!getHash()
           .equals(other.getHash())) return false;
       if (getBlockNumber()
@@ -2051,10 +1937,8 @@ public final class Entity {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + PARENTHASH_FIELD_NUMBER;
       hash = (53 * hash) + getParentHash().hashCode();
-      if (hasFeeRecipient()) {
-        hash = (37 * hash) + FEERECIPIENT_FIELD_NUMBER;
-        hash = (53 * hash) + getFeeRecipient().hashCode();
-      }
+      hash = (37 * hash) + FEERECIPIENT_FIELD_NUMBER;
+      hash = (53 * hash) + getFeeRecipient().hashCode();
       hash = (37 * hash) + HASH_FIELD_NUMBER;
       hash = (53 * hash) + getHash().hashCode();
       hash = (37 * hash) + BLOCKNUMBER_FIELD_NUMBER;
@@ -2201,12 +2085,8 @@ public final class Entity {
         super.clear();
         parentHash_ = "";
 
-        if (feeRecipientBuilder_ == null) {
-          feeRecipient_ = null;
-        } else {
-          feeRecipient_ = null;
-          feeRecipientBuilder_ = null;
-        }
+        feeRecipient_ = "";
+
         hash_ = "";
 
         blockNumber_ = 0;
@@ -2247,11 +2127,7 @@ public final class Entity {
         node.entity.Entity.Block result = new node.entity.Entity.Block(this);
         int from_bitField0_ = bitField0_;
         result.parentHash_ = parentHash_;
-        if (feeRecipientBuilder_ == null) {
-          result.feeRecipient_ = feeRecipient_;
-        } else {
-          result.feeRecipient_ = feeRecipientBuilder_.build();
-        }
+        result.feeRecipient_ = feeRecipient_;
         result.hash_ = hash_;
         result.blockNumber_ = blockNumber_;
         if (dataBuilder_ == null) {
@@ -2316,8 +2192,9 @@ public final class Entity {
           parentHash_ = other.parentHash_;
           onChanged();
         }
-        if (other.hasFeeRecipient()) {
-          mergeFeeRecipient(other.getFeeRecipient());
+        if (!other.getFeeRecipient().isEmpty()) {
+          feeRecipient_ = other.feeRecipient_;
+          onChanged();
         }
         if (!other.getHash().isEmpty()) {
           hash_ = other.hash_;
@@ -2454,121 +2331,73 @@ public final class Entity {
         return this;
       }
 
-      private node.entity.Entity.Address feeRecipient_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          node.entity.Entity.Address, node.entity.Entity.Address.Builder, node.entity.Entity.AddressOrBuilder> feeRecipientBuilder_;
+      private java.lang.Object feeRecipient_ = "";
       /**
-       * <code>.node.entity.Address feeRecipient = 2;</code>
+       * <code>string feeRecipient = 2;</code>
        */
-      public boolean hasFeeRecipient() {
-        return feeRecipientBuilder_ != null || feeRecipient_ != null;
-      }
-      /**
-       * <code>.node.entity.Address feeRecipient = 2;</code>
-       */
-      public node.entity.Entity.Address getFeeRecipient() {
-        if (feeRecipientBuilder_ == null) {
-          return feeRecipient_ == null ? node.entity.Entity.Address.getDefaultInstance() : feeRecipient_;
+      public java.lang.String getFeeRecipient() {
+        java.lang.Object ref = feeRecipient_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          feeRecipient_ = s;
+          return s;
         } else {
-          return feeRecipientBuilder_.getMessage();
+          return (java.lang.String) ref;
         }
       }
       /**
-       * <code>.node.entity.Address feeRecipient = 2;</code>
+       * <code>string feeRecipient = 2;</code>
        */
-      public Builder setFeeRecipient(node.entity.Entity.Address value) {
-        if (feeRecipientBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          feeRecipient_ = value;
-          onChanged();
+      public com.google.protobuf.ByteString
+          getFeeRecipientBytes() {
+        java.lang.Object ref = feeRecipient_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          feeRecipient_ = b;
+          return b;
         } else {
-          feeRecipientBuilder_.setMessage(value);
+          return (com.google.protobuf.ByteString) ref;
         }
-
-        return this;
       }
       /**
-       * <code>.node.entity.Address feeRecipient = 2;</code>
+       * <code>string feeRecipient = 2;</code>
        */
       public Builder setFeeRecipient(
-          node.entity.Entity.Address.Builder builderForValue) {
-        if (feeRecipientBuilder_ == null) {
-          feeRecipient_ = builderForValue.build();
-          onChanged();
-        } else {
-          feeRecipientBuilder_.setMessage(builderForValue.build());
-        }
-
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        feeRecipient_ = value;
+        onChanged();
         return this;
       }
       /**
-       * <code>.node.entity.Address feeRecipient = 2;</code>
-       */
-      public Builder mergeFeeRecipient(node.entity.Entity.Address value) {
-        if (feeRecipientBuilder_ == null) {
-          if (feeRecipient_ != null) {
-            feeRecipient_ =
-              node.entity.Entity.Address.newBuilder(feeRecipient_).mergeFrom(value).buildPartial();
-          } else {
-            feeRecipient_ = value;
-          }
-          onChanged();
-        } else {
-          feeRecipientBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.node.entity.Address feeRecipient = 2;</code>
+       * <code>string feeRecipient = 2;</code>
        */
       public Builder clearFeeRecipient() {
-        if (feeRecipientBuilder_ == null) {
-          feeRecipient_ = null;
-          onChanged();
-        } else {
-          feeRecipient_ = null;
-          feeRecipientBuilder_ = null;
-        }
-
+        
+        feeRecipient_ = getDefaultInstance().getFeeRecipient();
+        onChanged();
         return this;
       }
       /**
-       * <code>.node.entity.Address feeRecipient = 2;</code>
+       * <code>string feeRecipient = 2;</code>
        */
-      public node.entity.Entity.Address.Builder getFeeRecipientBuilder() {
+      public Builder setFeeRecipientBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
         
+        feeRecipient_ = value;
         onChanged();
-        return getFeeRecipientFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.node.entity.Address feeRecipient = 2;</code>
-       */
-      public node.entity.Entity.AddressOrBuilder getFeeRecipientOrBuilder() {
-        if (feeRecipientBuilder_ != null) {
-          return feeRecipientBuilder_.getMessageOrBuilder();
-        } else {
-          return feeRecipient_ == null ?
-              node.entity.Entity.Address.getDefaultInstance() : feeRecipient_;
-        }
-      }
-      /**
-       * <code>.node.entity.Address feeRecipient = 2;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          node.entity.Entity.Address, node.entity.Entity.Address.Builder, node.entity.Entity.AddressOrBuilder> 
-          getFeeRecipientFieldBuilder() {
-        if (feeRecipientBuilder_ == null) {
-          feeRecipientBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              node.entity.Entity.Address, node.entity.Entity.Address.Builder, node.entity.Entity.AddressOrBuilder>(
-                  getFeeRecipient(),
-                  getParentForChildren(),
-                  isClean());
-          feeRecipient_ = null;
-        }
-        return feeRecipientBuilder_;
+        return this;
       }
 
       private java.lang.Object hash_ = "";
@@ -3943,20 +3772,18 @@ public final class Entity {
     java.lang.String[] descriptorData = {
       "\n\014Entity.proto\022\013node.entity\032\036google/prot" +
       "obuf/wrappers.proto\032\037google/protobuf/tim" +
-      "estamp.proto\"\337\001\n\013Transaction\022\"\n\004from\030\001 \001" +
-      "(\0132\024.node.entity.Address\022\013\n\003gas\030\002 \001(\005\022\023\n" +
-      "\013blockNumber\030\003 \001(\005\022\020\n\010gasPrice\030\004 \001(\005\022 \n\002" +
-      "to\030\006 \001(\0132\024.node.entity.Address\022\r\n\005value\030" +
-      "\007 \001(\005\022\014\n\004data\030\010 \001(\t\022\014\n\004sing\030\t \001(\t\022\r\n\005non" +
-      "ce\030\n \001(\005\022\014\n\004hash\030\013 \001(\t\022\016\n\006status\030\014 \001(\010\"\241" +
-      "\001\n\005Block\022\022\n\nparentHash\030\001 \001(\t\022*\n\014feeRecip" +
-      "ient\030\002 \001(\0132\024.node.entity.Address\022\014\n\004hash" +
-      "\030\003 \001(\t\022\023\n\013blockNumber\030\004 \001(\005\022&\n\004data\030\005 \003(" +
-      "\0132\030.node.entity.Transaction\022\r\n\005nonce\030\006 \001" +
-      "(\005\"u\n\007Address\022\021\n\tpublicKey\030\001 \001(\t\022\017\n\007bala" +
-      "nce\030\002 \001(\005\022\r\n\005nonce\030\003 \001(\005\022\024\n\014noncePending" +
-      "\030\004 \001(\005\022!\n\031hashTransactionsCompleted\030\005 \003(" +
-      "\tb\006proto3"
+      "estamp.proto\"\263\001\n\013Transaction\022\014\n\004from\030\001 \001" +
+      "(\t\022\013\n\003gas\030\002 \001(\005\022\023\n\013blockNumber\030\003 \001(\005\022\020\n\010" +
+      "gasPrice\030\004 \001(\005\022\n\n\002to\030\006 \001(\t\022\r\n\005value\030\007 \001(" +
+      "\005\022\014\n\004data\030\010 \001(\t\022\014\n\004sing\030\t \001(\t\022\r\n\005nonce\030\n" +
+      " \001(\005\022\014\n\004hash\030\013 \001(\t\022\016\n\006status\030\014 \001(\010\"\213\001\n\005B" +
+      "lock\022\022\n\nparentHash\030\001 \001(\t\022\024\n\014feeRecipient" +
+      "\030\002 \001(\t\022\014\n\004hash\030\003 \001(\t\022\023\n\013blockNumber\030\004 \001(" +
+      "\005\022&\n\004data\030\005 \003(\0132\030.node.entity.Transactio" +
+      "n\022\r\n\005nonce\030\006 \001(\005\"u\n\007Address\022\021\n\tpublicKey" +
+      "\030\001 \001(\t\022\017\n\007balance\030\002 \001(\005\022\r\n\005nonce\030\003 \001(\005\022\024" +
+      "\n\014noncePending\030\004 \001(\005\022!\n\031hashTransactions" +
+      "Completed\030\005 \003(\tb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

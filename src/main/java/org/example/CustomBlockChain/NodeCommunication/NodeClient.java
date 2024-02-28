@@ -92,25 +92,10 @@ public class NodeClient {
     }
 
     public void update() throws Exception {
-        ArrayList<String> IPs = nodeListDB.getAllIp();
-        for (String ip : IPs) {
-                Socket socket = new Socket(ip,1239);
-                PrintWriter out = new PrintWriter(socket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                out.println("updateCall");
-                out.flush();
-                out.println();
-                in.close();
-                socket.close();
-            }
+
 
 
     }
 
-    public static void main(String[] args) throws Exception {
-        NodeClient nodeClient = new NodeClient(new BlockChain<ArrayList<Transaction>>(new HashEncoder()));
-        IpConfigParser ipConfigParser = new IpConfigParser();
-        final String ipAddress = ipConfigParser.getIpAddress();
-        System.out.println(nodeClient.SynchronizationBlockChain(ipAddress,1));
-    }
+
 }

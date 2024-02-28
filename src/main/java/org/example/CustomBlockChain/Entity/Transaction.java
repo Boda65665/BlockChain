@@ -5,7 +5,7 @@ import org.example.BlockChainBase.Entity.Address;
 public class Transaction {
 
 
-    public Transaction(AddressCustom from, int gas, int gasPrice, String sing, AddressCustom to, int value, String data, int nonce, String hash) {
+    public Transaction(String from, int gas, int gasPrice, String sing, String to, int value, String data, int nonce, String hash) {
         this.from = from;
         this.gas = gas;
         this.gasPrice = gasPrice;
@@ -16,7 +16,8 @@ public class Transaction {
         this.nonce = nonce;
     }
 
-    public Transaction(AddressCustom from, int gas, int blockNumber, int gasPrice, String sing, AddressCustom to, int value, String data, int nonce,boolean status) {
+
+    public Transaction(String from, int gas, int blockNumber, int gasPrice, String sing, String to, int value, String data, int nonce, String hash, boolean status) {
         this.from = from;
         this.gas = gas;
         this.blockNumber = blockNumber;
@@ -26,6 +27,7 @@ public class Transaction {
         this.value = value;
         this.data = data;
         this.nonce = nonce;
+        this.hash = hash;
         this.status = status;
     }
 
@@ -33,12 +35,12 @@ public class Transaction {
     }
 
 
-    private AddressCustom from;
+    private String from;
     private int gas;
     private int blockNumber;
     private int gasPrice;
     private String sing;
-    private AddressCustom to;
+    private String to;
     private int value;
     private String data;
     private int nonce;
@@ -48,9 +50,6 @@ public class Transaction {
 
 
 
-    public AddressCustom getFrom() {
-        return from;
-    }
 
 
     public boolean isStatus() {
@@ -61,9 +60,6 @@ public class Transaction {
         this.status = status;
     }
 
-    public void setFrom(AddressCustom from) {
-        this.from = from;
-    }
 
     public int getGas() {
         return gas;
@@ -97,20 +93,28 @@ public class Transaction {
         this.sing = sing;
     }
 
-    public AddressCustom getTo() {
-        return to;
-    }
-
-    public void setTo(AddressCustom to) {
-        this.to = to;
-    }
-
     public int getValue() {
         return value;
     }
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 
     public String getData() {

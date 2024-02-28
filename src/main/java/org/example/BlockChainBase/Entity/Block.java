@@ -19,7 +19,7 @@ public class Block<T> {
     public Block() {
     }
 
-    public Block(String parentHash, Address feeRecipient, String hash, int blockNumber, T data, int nonce) {
+    public Block(String parentHash, String feeRecipient, String hash, int blockNumber, T data, int nonce) {
         this.parentHash = parentHash;
         this.feeRecipient = feeRecipient;
         this.hash = hash;
@@ -29,7 +29,7 @@ public class Block<T> {
     }
 
     private String parentHash;
-    private Address feeRecipient;
+    private String feeRecipient;
     private String hash;
     int blockNumber;
     T data;
@@ -76,13 +76,6 @@ public class Block<T> {
         this.blockNumber = blockNumber;
     }
 
-    public Address getFeeRecipient() {
-        return feeRecipient;
-    }
-
-    public void setFeeRecipient(Address feeRecipient) {
-        this.feeRecipient = feeRecipient;
-    }
 
     static public String calculateHash(Object objData, String parentHash, HashEncoder hashEncoder, int nonce) throws JsonProcessingException {
         String data = transactionsToJson(objData)+nonce;
@@ -93,6 +86,15 @@ public class Block<T> {
         return jsonObject.writeValueAsString(objData);
 
     }
+
+    public String getFeeRecipient() {
+        return feeRecipient;
+    }
+
+    public void setFeeRecipient(String feeRecipient) {
+        this.feeRecipient = feeRecipient;
+    }
+
     public BlockBuilder<T> newBlockBuilder(){
         return new BlockBuilder<T>();
     }

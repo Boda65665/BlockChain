@@ -33,11 +33,11 @@ public class TransactionRule implements RuleBase<Transaction> {
     @Override
     public boolean Execute(ArrayList<Block<Transaction>> blocks, Block<Transaction> newBlock) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
         Transaction transaction = newBlock.getData();
-        Address fromAddress = levelDbState.get(transaction.getFrom().getPublicKey());
+        Address fromAddress = levelDbState.get(transaction.getFrom());
 
         if (fromAddress==null) return false;
 
-        if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo().getPublicKey()+transaction.getNonce()),transaction.getFrom().getPublicKey(),transaction.getSing())) return false;
+        if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo()+transaction.getNonce()),transaction.getFrom(),transaction.getSing())) return false;
 
         if (transaction.getValue()>fromAddress.getBalance() || transaction.getValue()<0) return false;
         if(transaction.getNonce() < fromAddress.getNonce()) return false;
@@ -45,11 +45,11 @@ public class TransactionRule implements RuleBase<Transaction> {
     }
     public boolean validTransactions(ArrayList<Transaction> transactions) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
         for (Transaction transaction : transactions) {
-            Address fromAddress = levelDbState.get(transaction.getFrom().getPublicKey());
+            Address fromAddress = levelDbState.get(transaction.getFrom());
 
             if (fromAddress==null) return false;
 
-            if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo().getPublicKey()+transaction.getNonce()),transaction.getFrom().getPublicKey(),transaction.getSing())) return false;
+            if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo()+transaction.getNonce()),transaction.getFrom(),transaction.getSing())) return false;
 
             if (transaction.getValue()>fromAddress.getBalance() || transaction.getValue()<0) return false;
         }

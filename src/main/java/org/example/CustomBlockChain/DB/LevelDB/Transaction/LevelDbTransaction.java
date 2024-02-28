@@ -26,7 +26,7 @@ public class LevelDbTransaction {
         options.createIfMissing(true);
         try {
             String basePath = System.getProperty("user.dir");
-            String path = basePath+"\\src\\main\\java\\org\\example\\BlockChainBase\\DB\\LevelDb\\Transaction\\bd";
+            String path = basePath+"\\src\\main\\java\\org\\example\\CustomBlockChain\\DB\\LevelDb\\Transaction\\bd";
             return factory.open(new File(path), options);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -77,10 +77,5 @@ public class LevelDbTransaction {
         db.close();
     }
 
-    public static void main(String[] args) throws IOException {
-        LevelDbTransaction levelDbTransaction = new LevelDbTransaction();
-        for (Transaction transaction1 : levelDbTransaction.getAll()) {
-            System.out.println(transaction1.getHash());
-        }
-    }
-}
+
+}//4542

@@ -107,21 +107,6 @@ public class Asymmetric {
         }
         return null;
     }
-    public static void main(String[] args) throws Exception {
 
-    Asymmetric asymmetric = new Asymmetric();
-    Keys keys = asymmetric.generateKeys();
-    System.out.println(keys.publicKey);
-    System.out.println(keys.privateKey);
-    System.out.println(asymmetric.getPublicFromPrivateKey(keys.privateKey));
-    String sign = asymmetric.sign("dd", keys.privateKey);
-    System.out.println(sign);
-    System.out.println(asymmetric.verify("dd", keys.publicKey,sign));
-
-
-
-
-
-    }
 
 }

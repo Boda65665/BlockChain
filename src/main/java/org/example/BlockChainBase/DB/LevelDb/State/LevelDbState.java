@@ -95,8 +95,8 @@ public class LevelDbState {
 //        String states = "[{\"publicKey\":\"ddd\",\"balance\":0,\"nonce\":0,\"transactionsComplete\":[]},{\"publicKey\":\"s\",\"balance\":0,\"nonce\":0,\"transactionsComplete\":[]},{\"publicKey\":\"shh\",\"balance\":0,\"nonce\":0,\"transactionsComplete\":[]}]";
 //        levelDbState.buildStates(states);
 //
-//        AddressCustom address = new AddressCustom("MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEb4nj3zkZxQajjJXR7qR9v+tvlu+6JsmnDB8QGYBtTf54pw7CqTHxJuWfLVYPOBbu",4321,new ArrayList<>(),0);
-//        levelDbState.update(address);
+        AddressCustom address = new AddressCustom("MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEb4nj3zkZxQajjJXR7qR9v+tvlu+6JsmnDB8QGYBtTf54pw7CqTHxJuWfLVYPOBbu",4321,new ArrayList<>(),0,0);
+        levelDbState.update(address);
 //        System.out.println(levelDbState.get("MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEb4nj3zkZxQajjJXR7qR9v+tvlu+6JsmnDB8QGYBtTf54pw7CqTHxJuWfLVYPOBbu").getBalance());
 //        AddressCustom addressCustom = (AddressCustom)levelDbState.get("MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEb4nj3zkZxQajjJXR7qR9v+tvlu+6JsmnDB8QGYBtTf54pw7CqTHxJuWfLVYPOBbu",AddressCustom.class);
 //        System.out.println(addressCustom.getTransactionsComplete());

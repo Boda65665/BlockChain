@@ -2,9 +2,11 @@ package org.example.BlockChainBase.DB.LevelDb.PoolBlock;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
 import org.example.BlockChainBase.DB.LevelDb.PoolBlock.Keys.LevelDbKeysBlockPollStruct;
 import org.example.BlockChainBase.Entity.Block;
 
+import org.example.CustomBlockChain.Entity.Transaction;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.DBIterator;
 import org.iq80.leveldb.Options;
@@ -110,28 +112,11 @@ public class LevelDbPoolBlock<T> {
 
 
         public static void main (String[]args) throws IOException {
+            Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
 
-//            ArrayList<Transaction> transactions = new ArrayList<>();
-//            Transaction transaction = new Transaction(new Address("fdewf"), 0, 0, "fed", null, 0, "Fesf", 0, "d");
-//            transactions.add(transaction);
-//            transactions.add(transaction);
-//
-//
-//            Block<ArrayList<Transaction>> block = new Block<>(transactions);
-//            block.setHash("adwtdfsr");
-//            block.setBlockNumber(1);
-//            levelDbBlock.put(block);
-//            Block<ArrayList<Transaction>> block1 = new Block<>(transactions);
-//            block1.setHash("ab");
-//            block1.setBlockNumber(2);
-//            levelDbBlock.put(block1);
-//            Gson gson1 = new Gson();
-//            ArrayDeque<Block<ArrayList<Transaction>>> blocks = levelDbBlock.getAll();
-//            for (Block<ArrayList<Transaction>> block2 : blocks) {
-//                System.out.println(block2.getHash());
-//
-//            }
-//            System.out.println(levelDbBlock.getByHash("ab").getBlockNumber());
+
+            LevelDbPoolBlock<ArrayList<Transaction>> levelDbBlock= new LevelDbPoolBlock<>(typeData);
+            System.out.println(levelDbBlock.getAll().size());
 
 
             }

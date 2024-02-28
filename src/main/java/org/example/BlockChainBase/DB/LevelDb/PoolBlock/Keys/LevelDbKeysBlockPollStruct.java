@@ -44,8 +44,7 @@ public class LevelDbKeysBlockPollStruct {
 
         public static void main(String[] args) throws IOException {
             LevelDbKeysBlockPollStruct levelDbKeysBlockStruct = new LevelDbKeysBlockPollStruct();
-            levelDbKeysBlockStruct.put("dwdw",133);
-            System.out.println(levelDbKeysBlockStruct.get("dwdw"));
+
         }
     }
 

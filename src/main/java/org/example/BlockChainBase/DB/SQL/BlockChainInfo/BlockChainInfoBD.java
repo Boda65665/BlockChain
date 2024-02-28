@@ -21,6 +21,14 @@ public class BlockChainInfoBD {
     IpConfigParser ipConfigParser = new IpConfigParser();
     NodeListDB nodeListDB = new NodeListDB();
     AESEncryption encryption = new AESEncryption();
+
+    public int incHeight() throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        connectDb();
+        int height = 0;
+        if (this.getBlockChainInfo()!=null) height=getBlockChainInfo().height;
+        return getBlockChainInfo().height+height;
+    }
+
     public record BlockChainInfoStruct(String lastHsh,int height){
         public BlockChainInfoStruct(String lastHsh, int height) {
             this.lastHsh = lastHsh;

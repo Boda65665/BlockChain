@@ -2,7 +2,7 @@ package org.example.BlockChainBase.Entity;
 
 public class BlockBuilder<T> {
     private String parentHash;
-    private Address feeRecipient;
+    private String feeRecipient;
     private String hash;
     int blockNumber;
     T data;
@@ -12,7 +12,7 @@ public class BlockBuilder<T> {
         this.parentHash = parentHash;
         return this;}
 
-    public BlockBuilder<T> setFeeRecipient(Address feeRecipient) {
+    public BlockBuilder<T> setFeeRecipient(String feeRecipient) {
         this.feeRecipient = feeRecipient;
         return this;}
 

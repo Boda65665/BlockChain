@@ -54,12 +54,5 @@ public class AESEncryption {
         return new String(decryptedValue);
     }
 
-//    public static void main(String[] args) throws UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-//        AESEncryption aesEncryption = new AESEncryption();
-//        Wallet wallet = new Wallet("df","","dwa","dwd");
-//        wallet.setPrivateKey(aesEncryption.encode(wallet.getPrivateKey()));
-//        wallet.setSecretPhrase(aesEncryption.encode(wallet.getSecretPhrase()));
-//        String encode = aesEncryption.encode("gg");
-//        System.out.println(aesEncryption.decode("/X0BTt8skxplUGo1/zGz2M0/1bWO670w7AEVbfp8bHjNOuqc9tkH7x4F3803m3Yu10JEJea7U/t2EmeHPGlyzi3g8agqTfVewn2FspoEwNeVkV0aHRk2KYksV4CplPOPNNISzlQnzJ58iB11JoMCZg=="));
-//    }
+
 }

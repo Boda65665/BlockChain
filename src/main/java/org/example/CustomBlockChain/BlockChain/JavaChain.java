@@ -8,7 +8,6 @@ import org.example.BlockChainBase.BlockChain.BlockChainBase;
 import org.example.BlockChainBase.Cryptography.Asymmetric;
 import org.example.BlockChainBase.Cryptography.HashEncoder;
 import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
-import org.example.BlockChainBase.DB.LevelDb.State.LevelDbState;
 import org.example.CustomBlockChain.DB.LevelDB.State.LevelDBStateCustom;
 import org.example.CustomBlockChain.DB.LevelDB.Transaction.LevelDbTransaction;
 
@@ -25,10 +24,7 @@ import org.example.CustomBlockChain.Rules.TransactionRule;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SignatureException;
+import java.security.*;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -37,13 +33,12 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     private ArrayList<Transaction> poolTransactions = new ArrayList<>();
     private final Gson gson = new Gson();
     private final BlockChain<ArrayList<Transaction>> blockChain;
+    Asymmetric asymmetric = new Asymmetric();
     private final NodeClient nodeClient;
     private final LevelDbTransactionPool levelDbTransactionPool = new LevelDbTransactionPool();
     private final LevelDBStateCustom levelDbState = new LevelDBStateCustom();
     private final Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
     private final LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>(typeData);
-
-    private final Asymmetric asymmetric = new Asymmetric();
     LevelDbTransaction levelDbTransaction = new LevelDbTransaction();
     private final TransactionRule transactionRule = new TransactionRule();
     PoWRule<ArrayList<Transaction>> poWRule = new PoWRule<>();
@@ -65,17 +60,14 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
             return;
         };
         for (Transaction transaction : block.getData()) {
-            levelDbState.update(transaction.getTo());
-            AddressCustom addressCustom = transaction.getFrom();
-            levelDbState.update(addressCustom);
+            if (transaction.isStatus()) updateAddressFromTransaction(transaction);
             levelDbTransaction.update(transaction);
-
         }
         blockChain.addBlock(block);
         levelDbBlock.put(block);
 
         //начисляем награду за майнинг
-        AddressCustom feeRecipient = (AddressCustom) levelDbState.get(block.getFeeRecipient().getPublicKey());
+        AddressCustom feeRecipient = (AddressCustom) levelDbState.get(block.getFeeRecipient());
         if (feeRecipient==null) feeRecipient = new AddressCustom().newAddressBuilder()
                 .setBalance(0)
                 .setNonce(0)
@@ -89,6 +81,24 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateAddressFromTransaction(Transaction transaction) throws IOException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
+        AddressCustom to = levelDbState.get(transaction.getTo());
+        if (to==null) to = new AddressCustom(asymmetric.generateKeys().publicKey());
+        to.setBalance(to.getBalance()+transaction.getValue());
+        levelDbState.update(to);
+        AddressCustom from = levelDbState.get(transaction.getFrom());
+        from.setBalance(from.getBalance()-transaction.getValue());
+        ArrayList<String>transactionsCompletedAddressFrom = from.getTransactionsComplete();
+        transactionsCompletedAddressFrom.add(transaction.getHash());
+        from.setTransactionsComplete(transactionsCompletedAddressFrom);
+        if (!transaction.getFrom().equals(transaction.getTo())) {
+            ArrayList<String>transactionsCompletedAddressTo = to.getTransactionsComplete();
+            transactionsCompletedAddressTo.add(transaction.getHash());
+        }
+        levelDbState.update(to);
+        levelDbState.update(from);
     }
     @Override
     public ArrayList<Block<ArrayList<Transaction>>> getBlocksStartingFrom(int numberBlock) {
@@ -118,10 +128,10 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     }
     public String addTransactionToPoolTransactions(Transaction transaction) throws Exception {;
         if (transactionRule.Execute(transaction)) {
-            Address address = levelDbState.get(transaction.getFrom().getPublicKey());
+            Address address = levelDbState.get(transaction.getFrom());
             address.setNoncePending(address.getNoncePending()+1);
 
-            transaction.setHash(hashEncoder.SHA256(transaction.getFrom().getPublicKey()+transaction.getValue()+address.getNoncePending()));
+            transaction.setHash(hashEncoder.SHA256(transaction.getFrom()+transaction.getValue()+address.getNoncePending()));
             poolTransactions.add(transaction);
             levelDbState.update(address);
             if (poolTransactions.size()==1) {
@@ -135,8 +145,6 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         }
 
         return null;
-
-
 
     }
 
@@ -194,9 +202,5 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         return block;
     }
 
-    public static void main(String[] args) throws SQLException, IOException, BlockChainException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, ClassNotFoundException {
-        BlockChain<ArrayList<Transaction>> blockChain1 = new BlockChain<>(new HashEncoder());
-        JavaChain javaChain =new JavaChain(blockChain1);
-        System.out.println(javaChain.isValid(javaChain.getBlocks()));
-    }
+
 }
