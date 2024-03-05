@@ -17,7 +17,7 @@ import org.example.CustomBlockChain.Entity.AddressCustom;
 import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.BlockChainBase.Exeptions.BlockChainException;
 
-import org.example.CustomBlockChain.DB.LevelDB.NodeCommunication.NodeClient;
+import org.example.CustomBlockChain.NodeCommunication.NodeClient;
 import org.example.BlockChainBase.Rules.PoWRule;
 import org.example.CustomBlockChain.Rules.TransactionRule;
 
@@ -48,8 +48,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     public JavaChain(BlockChain<ArrayList<Transaction>> blockChain) throws IOException, SQLException, ClassNotFoundException {
         this.blockChain = blockChain;
         poolTransactions = levelDbTransactionPool.getAll();
-        nodeClient = new NodeClient(blockChain);
-
+        nodeClient = new NodeClient(this);
     }
 
     @Override
@@ -151,7 +150,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
     public void addBlockToPoll(Block<ArrayList<Transaction>> block) throws Exception {
         blockChain.addBlockToPoll(block);
-        nodeClient.update();
+        //nodeClient.update();
     }
 
     @Override
@@ -178,6 +177,18 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     public void addAll(ArrayList<Block<ArrayList<Transaction>>> blocks) throws Exception {
         for (Block<ArrayList<Transaction>> block : blocks) {
             addBlock(block);
+        }
+    }
+
+    @Override
+    public void addAllToBlockPoll(ArrayList<Block<ArrayList<Transaction>>> blocks) throws Exception {
+        for (Block<ArrayList<Transaction>> block : blocks) {
+            addBlock(block);
+        }
+    }
+    public void addAllTransactionToPoolTransactions(ArrayList<Transaction> transactions) throws Exception {
+        for (Transaction transaction : transactions) {
+            addTransactionToPoolTransactions(transaction);
         }
     }
 

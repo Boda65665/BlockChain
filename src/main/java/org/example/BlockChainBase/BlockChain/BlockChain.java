@@ -93,7 +93,6 @@ public class BlockChain<T> implements BlockChainBase<T>{
 
             constructBlockchain.add(block);
             if (!poWRule.Execute(constructBlockchain,block)) return false;
-            System.out.println(block);
             if (block.getParentHash()==null && block.getBlockNumber()==1){
                 String expectedHash = Block.calculateHash(block.getData(),null,hashEncoder,block.getNonce());
                 if (!expectedHash.equals(block.getHash())){
@@ -134,6 +133,13 @@ public class BlockChain<T> implements BlockChainBase<T>{
     public void addAll(ArrayList<Block<T>> blocks) throws Exception {
         for (Block<T> block : blocks) {
             addBlock(block);
+        }
+    }
+
+    @Override
+    public void addAllToBlockPoll(ArrayList<Block<T>> blocks) throws Exception {
+        for (Block<T> block : blocks) {
+            addBlockToPoll(block);
         }
     }
 

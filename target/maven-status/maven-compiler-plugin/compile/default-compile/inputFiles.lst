@@ -3,7 +3,6 @@ B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Entity\AddressCustom
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\BlockChain\BlockChain.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\DB\SQL\Node\IpConfigParser.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Rules\RuleBase.java
-B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\NodeCommunication\Rules\TransactionRule.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\DB\SQL\Node\NodeListDB.java
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\DB\LevelDB\State\LevelDBStateCustom.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Cryptography\Asymmetric.java
@@ -28,6 +27,7 @@ B:\ideaProject\s\src\main\java\org\example\BlockChainBase\DB\LevelDb\State\Level
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\DB\SQL\BlockChainInfo\BlockChainInfoBD.java
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Servise\ValidNodeCommunicationServise.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Rules\PoWRule.java
+B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Rules\TransactionRule.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\DB\LevelDb\PoolBlock\Keys\LevelDbKeysBlockPollStruct.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Entity\AddressBuilder.java
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\DB\LevelDB\Transaction\LevelDbTransaction.java
@@ -38,9 +38,10 @@ B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\DB\LevelDB\Transacto
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Entity\TransactionBuilder.java
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Entity\Wallet.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\DB\LevelDb\Block\Keys\LevelDbKeysBlockStruct.java
+B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Servise\BlockAdderServiseImpl.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\DB\LevelDb\PoolBlock\LevelDbPoolBlock.java
+B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Service\BlockAdderServise.java
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Entity\Transaction.java
-B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\API\GRPC\Client.java
 B:\ideaProject\s\target\generated-sources\protobuf\grpc-java\node\communication\base\NodeCommunicationGrpc.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Service\ProofOfWorkService.java
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\NodeCommunication\NodeClient.java

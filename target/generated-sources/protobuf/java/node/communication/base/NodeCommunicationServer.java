@@ -606,51 +606,75 @@ public final class NodeCommunicationServer {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     java.util.List<node.entity.Entity.Block> 
         getBlocksList();
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     node.entity.Entity.Block getBlocks(int index);
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     int getBlocksCount();
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     java.util.List<? extends node.entity.Entity.BlockOrBuilder> 
         getBlocksOrBuilderList();
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     node.entity.Entity.BlockOrBuilder getBlocksOrBuilder(
         int index);
 
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     java.util.List<node.entity.Entity.Block> 
         getPoolBLocksList();
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     node.entity.Entity.Block getPoolBLocks(int index);
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     int getPoolBLocksCount();
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     java.util.List<? extends node.entity.Entity.BlockOrBuilder> 
         getPoolBLocksOrBuilderList();
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     node.entity.Entity.BlockOrBuilder getPoolBLocksOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    java.util.List<node.entity.Entity.Transaction> 
+        getPoolTransactionsList();
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    node.entity.Entity.Transaction getPoolTransactions(int index);
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    int getPoolTransactionsCount();
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    java.util.List<? extends node.entity.Entity.TransactionOrBuilder> 
+        getPoolTransactionsOrBuilderList();
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    node.entity.Entity.TransactionOrBuilder getPoolTransactionsOrBuilder(
         int index);
   }
   /**
@@ -668,6 +692,7 @@ public final class NodeCommunicationServer {
     private DownloadResponse() {
       blocks_ = java.util.Collections.emptyList();
       poolBLocks_ = java.util.Collections.emptyList();
+      poolTransactions_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -701,7 +726,7 @@ public final class NodeCommunicationServer {
             case 0:
               done = true;
               break;
-            case 18: {
+            case 10: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
                 blocks_ = new java.util.ArrayList<node.entity.Entity.Block>();
                 mutable_bitField0_ |= 0x00000001;
@@ -710,13 +735,22 @@ public final class NodeCommunicationServer {
                   input.readMessage(node.entity.Entity.Block.parser(), extensionRegistry));
               break;
             }
-            case 34: {
+            case 18: {
               if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 poolBLocks_ = new java.util.ArrayList<node.entity.Entity.Block>();
                 mutable_bitField0_ |= 0x00000002;
               }
               poolBLocks_.add(
                   input.readMessage(node.entity.Entity.Block.parser(), extensionRegistry));
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+                poolTransactions_ = new java.util.ArrayList<node.entity.Entity.Transaction>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              poolTransactions_.add(
+                  input.readMessage(node.entity.Entity.Transaction.parser(), extensionRegistry));
               break;
             }
             default: {
@@ -740,6 +774,9 @@ public final class NodeCommunicationServer {
         if (((mutable_bitField0_ & 0x00000002) != 0)) {
           poolBLocks_ = java.util.Collections.unmodifiableList(poolBLocks_);
         }
+        if (((mutable_bitField0_ & 0x00000004) != 0)) {
+          poolTransactions_ = java.util.Collections.unmodifiableList(poolTransactions_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -757,74 +794,109 @@ public final class NodeCommunicationServer {
               node.communication.base.NodeCommunicationServer.DownloadResponse.class, node.communication.base.NodeCommunicationServer.DownloadResponse.Builder.class);
     }
 
-    public static final int BLOCKS_FIELD_NUMBER = 2;
+    public static final int BLOCKS_FIELD_NUMBER = 1;
     private java.util.List<node.entity.Entity.Block> blocks_;
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     public java.util.List<node.entity.Entity.Block> getBlocksList() {
       return blocks_;
     }
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     public java.util.List<? extends node.entity.Entity.BlockOrBuilder> 
         getBlocksOrBuilderList() {
       return blocks_;
     }
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     public int getBlocksCount() {
       return blocks_.size();
     }
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     public node.entity.Entity.Block getBlocks(int index) {
       return blocks_.get(index);
     }
     /**
-     * <code>repeated .node.entity.Block blocks = 2;</code>
+     * <code>repeated .node.entity.Block blocks = 1;</code>
      */
     public node.entity.Entity.BlockOrBuilder getBlocksOrBuilder(
         int index) {
       return blocks_.get(index);
     }
 
-    public static final int POOLBLOCKS_FIELD_NUMBER = 4;
+    public static final int POOLBLOCKS_FIELD_NUMBER = 2;
     private java.util.List<node.entity.Entity.Block> poolBLocks_;
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     public java.util.List<node.entity.Entity.Block> getPoolBLocksList() {
       return poolBLocks_;
     }
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     public java.util.List<? extends node.entity.Entity.BlockOrBuilder> 
         getPoolBLocksOrBuilderList() {
       return poolBLocks_;
     }
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     public int getPoolBLocksCount() {
       return poolBLocks_.size();
     }
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     public node.entity.Entity.Block getPoolBLocks(int index) {
       return poolBLocks_.get(index);
     }
     /**
-     * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+     * <code>repeated .node.entity.Block poolBLocks = 2;</code>
      */
     public node.entity.Entity.BlockOrBuilder getPoolBLocksOrBuilder(
         int index) {
       return poolBLocks_.get(index);
+    }
+
+    public static final int POOLTRANSACTIONS_FIELD_NUMBER = 3;
+    private java.util.List<node.entity.Entity.Transaction> poolTransactions_;
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    public java.util.List<node.entity.Entity.Transaction> getPoolTransactionsList() {
+      return poolTransactions_;
+    }
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    public java.util.List<? extends node.entity.Entity.TransactionOrBuilder> 
+        getPoolTransactionsOrBuilderList() {
+      return poolTransactions_;
+    }
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    public int getPoolTransactionsCount() {
+      return poolTransactions_.size();
+    }
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    public node.entity.Entity.Transaction getPoolTransactions(int index) {
+      return poolTransactions_.get(index);
+    }
+    /**
+     * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+     */
+    public node.entity.Entity.TransactionOrBuilder getPoolTransactionsOrBuilder(
+        int index) {
+      return poolTransactions_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -842,10 +914,13 @@ public final class NodeCommunicationServer {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       for (int i = 0; i < blocks_.size(); i++) {
-        output.writeMessage(2, blocks_.get(i));
+        output.writeMessage(1, blocks_.get(i));
       }
       for (int i = 0; i < poolBLocks_.size(); i++) {
-        output.writeMessage(4, poolBLocks_.get(i));
+        output.writeMessage(2, poolBLocks_.get(i));
+      }
+      for (int i = 0; i < poolTransactions_.size(); i++) {
+        output.writeMessage(3, poolTransactions_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -858,11 +933,15 @@ public final class NodeCommunicationServer {
       size = 0;
       for (int i = 0; i < blocks_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, blocks_.get(i));
+          .computeMessageSize(1, blocks_.get(i));
       }
       for (int i = 0; i < poolBLocks_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, poolBLocks_.get(i));
+          .computeMessageSize(2, poolBLocks_.get(i));
+      }
+      for (int i = 0; i < poolTransactions_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, poolTransactions_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -883,6 +962,8 @@ public final class NodeCommunicationServer {
           .equals(other.getBlocksList())) return false;
       if (!getPoolBLocksList()
           .equals(other.getPoolBLocksList())) return false;
+      if (!getPoolTransactionsList()
+          .equals(other.getPoolTransactionsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -901,6 +982,10 @@ public final class NodeCommunicationServer {
       if (getPoolBLocksCount() > 0) {
         hash = (37 * hash) + POOLBLOCKS_FIELD_NUMBER;
         hash = (53 * hash) + getPoolBLocksList().hashCode();
+      }
+      if (getPoolTransactionsCount() > 0) {
+        hash = (37 * hash) + POOLTRANSACTIONS_FIELD_NUMBER;
+        hash = (53 * hash) + getPoolTransactionsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1032,6 +1117,7 @@ public final class NodeCommunicationServer {
                 .alwaysUseFieldBuilders) {
           getBlocksFieldBuilder();
           getPoolBLocksFieldBuilder();
+          getPoolTransactionsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -1048,6 +1134,12 @@ public final class NodeCommunicationServer {
           bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           poolBLocksBuilder_.clear();
+        }
+        if (poolTransactionsBuilder_ == null) {
+          poolTransactions_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        } else {
+          poolTransactionsBuilder_.clear();
         }
         return this;
       }
@@ -1093,6 +1185,15 @@ public final class NodeCommunicationServer {
           result.poolBLocks_ = poolBLocks_;
         } else {
           result.poolBLocks_ = poolBLocksBuilder_.build();
+        }
+        if (poolTransactionsBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) != 0)) {
+            poolTransactions_ = java.util.Collections.unmodifiableList(poolTransactions_);
+            bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.poolTransactions_ = poolTransactions_;
+        } else {
+          result.poolTransactions_ = poolTransactionsBuilder_.build();
         }
         onBuilt();
         return result;
@@ -1194,6 +1295,32 @@ public final class NodeCommunicationServer {
             }
           }
         }
+        if (poolTransactionsBuilder_ == null) {
+          if (!other.poolTransactions_.isEmpty()) {
+            if (poolTransactions_.isEmpty()) {
+              poolTransactions_ = other.poolTransactions_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+            } else {
+              ensurePoolTransactionsIsMutable();
+              poolTransactions_.addAll(other.poolTransactions_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.poolTransactions_.isEmpty()) {
+            if (poolTransactionsBuilder_.isEmpty()) {
+              poolTransactionsBuilder_.dispose();
+              poolTransactionsBuilder_ = null;
+              poolTransactions_ = other.poolTransactions_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              poolTransactionsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getPoolTransactionsFieldBuilder() : null;
+            } else {
+              poolTransactionsBuilder_.addAllMessages(other.poolTransactions_);
+            }
+          }
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -1237,7 +1364,7 @@ public final class NodeCommunicationServer {
           node.entity.Entity.Block, node.entity.Entity.Block.Builder, node.entity.Entity.BlockOrBuilder> blocksBuilder_;
 
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public java.util.List<node.entity.Entity.Block> getBlocksList() {
         if (blocksBuilder_ == null) {
@@ -1247,7 +1374,7 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public int getBlocksCount() {
         if (blocksBuilder_ == null) {
@@ -1257,7 +1384,7 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public node.entity.Entity.Block getBlocks(int index) {
         if (blocksBuilder_ == null) {
@@ -1267,7 +1394,7 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public Builder setBlocks(
           int index, node.entity.Entity.Block value) {
@@ -1284,7 +1411,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public Builder setBlocks(
           int index, node.entity.Entity.Block.Builder builderForValue) {
@@ -1298,7 +1425,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public Builder addBlocks(node.entity.Entity.Block value) {
         if (blocksBuilder_ == null) {
@@ -1314,7 +1441,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public Builder addBlocks(
           int index, node.entity.Entity.Block value) {
@@ -1331,7 +1458,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public Builder addBlocks(
           node.entity.Entity.Block.Builder builderForValue) {
@@ -1345,7 +1472,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public Builder addBlocks(
           int index, node.entity.Entity.Block.Builder builderForValue) {
@@ -1359,7 +1486,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public Builder addAllBlocks(
           java.lang.Iterable<? extends node.entity.Entity.Block> values) {
@@ -1374,7 +1501,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public Builder clearBlocks() {
         if (blocksBuilder_ == null) {
@@ -1387,7 +1514,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public Builder removeBlocks(int index) {
         if (blocksBuilder_ == null) {
@@ -1400,14 +1527,14 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public node.entity.Entity.Block.Builder getBlocksBuilder(
           int index) {
         return getBlocksFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public node.entity.Entity.BlockOrBuilder getBlocksOrBuilder(
           int index) {
@@ -1417,7 +1544,7 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public java.util.List<? extends node.entity.Entity.BlockOrBuilder> 
            getBlocksOrBuilderList() {
@@ -1428,14 +1555,14 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public node.entity.Entity.Block.Builder addBlocksBuilder() {
         return getBlocksFieldBuilder().addBuilder(
             node.entity.Entity.Block.getDefaultInstance());
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public node.entity.Entity.Block.Builder addBlocksBuilder(
           int index) {
@@ -1443,7 +1570,7 @@ public final class NodeCommunicationServer {
             index, node.entity.Entity.Block.getDefaultInstance());
       }
       /**
-       * <code>repeated .node.entity.Block blocks = 2;</code>
+       * <code>repeated .node.entity.Block blocks = 1;</code>
        */
       public java.util.List<node.entity.Entity.Block.Builder> 
            getBlocksBuilderList() {
@@ -1477,7 +1604,7 @@ public final class NodeCommunicationServer {
           node.entity.Entity.Block, node.entity.Entity.Block.Builder, node.entity.Entity.BlockOrBuilder> poolBLocksBuilder_;
 
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public java.util.List<node.entity.Entity.Block> getPoolBLocksList() {
         if (poolBLocksBuilder_ == null) {
@@ -1487,7 +1614,7 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public int getPoolBLocksCount() {
         if (poolBLocksBuilder_ == null) {
@@ -1497,7 +1624,7 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public node.entity.Entity.Block getPoolBLocks(int index) {
         if (poolBLocksBuilder_ == null) {
@@ -1507,7 +1634,7 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public Builder setPoolBLocks(
           int index, node.entity.Entity.Block value) {
@@ -1524,7 +1651,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public Builder setPoolBLocks(
           int index, node.entity.Entity.Block.Builder builderForValue) {
@@ -1538,7 +1665,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public Builder addPoolBLocks(node.entity.Entity.Block value) {
         if (poolBLocksBuilder_ == null) {
@@ -1554,7 +1681,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public Builder addPoolBLocks(
           int index, node.entity.Entity.Block value) {
@@ -1571,7 +1698,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public Builder addPoolBLocks(
           node.entity.Entity.Block.Builder builderForValue) {
@@ -1585,7 +1712,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public Builder addPoolBLocks(
           int index, node.entity.Entity.Block.Builder builderForValue) {
@@ -1599,7 +1726,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public Builder addAllPoolBLocks(
           java.lang.Iterable<? extends node.entity.Entity.Block> values) {
@@ -1614,7 +1741,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public Builder clearPoolBLocks() {
         if (poolBLocksBuilder_ == null) {
@@ -1627,7 +1754,7 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public Builder removePoolBLocks(int index) {
         if (poolBLocksBuilder_ == null) {
@@ -1640,14 +1767,14 @@ public final class NodeCommunicationServer {
         return this;
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public node.entity.Entity.Block.Builder getPoolBLocksBuilder(
           int index) {
         return getPoolBLocksFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public node.entity.Entity.BlockOrBuilder getPoolBLocksOrBuilder(
           int index) {
@@ -1657,7 +1784,7 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public java.util.List<? extends node.entity.Entity.BlockOrBuilder> 
            getPoolBLocksOrBuilderList() {
@@ -1668,14 +1795,14 @@ public final class NodeCommunicationServer {
         }
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public node.entity.Entity.Block.Builder addPoolBLocksBuilder() {
         return getPoolBLocksFieldBuilder().addBuilder(
             node.entity.Entity.Block.getDefaultInstance());
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public node.entity.Entity.Block.Builder addPoolBLocksBuilder(
           int index) {
@@ -1683,7 +1810,7 @@ public final class NodeCommunicationServer {
             index, node.entity.Entity.Block.getDefaultInstance());
       }
       /**
-       * <code>repeated .node.entity.Block poolBLocks = 4;</code>
+       * <code>repeated .node.entity.Block poolBLocks = 2;</code>
        */
       public java.util.List<node.entity.Entity.Block.Builder> 
            getPoolBLocksBuilderList() {
@@ -1702,6 +1829,246 @@ public final class NodeCommunicationServer {
           poolBLocks_ = null;
         }
         return poolBLocksBuilder_;
+      }
+
+      private java.util.List<node.entity.Entity.Transaction> poolTransactions_ =
+        java.util.Collections.emptyList();
+      private void ensurePoolTransactionsIsMutable() {
+        if (!((bitField0_ & 0x00000004) != 0)) {
+          poolTransactions_ = new java.util.ArrayList<node.entity.Entity.Transaction>(poolTransactions_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          node.entity.Entity.Transaction, node.entity.Entity.Transaction.Builder, node.entity.Entity.TransactionOrBuilder> poolTransactionsBuilder_;
+
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public java.util.List<node.entity.Entity.Transaction> getPoolTransactionsList() {
+        if (poolTransactionsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(poolTransactions_);
+        } else {
+          return poolTransactionsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public int getPoolTransactionsCount() {
+        if (poolTransactionsBuilder_ == null) {
+          return poolTransactions_.size();
+        } else {
+          return poolTransactionsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public node.entity.Entity.Transaction getPoolTransactions(int index) {
+        if (poolTransactionsBuilder_ == null) {
+          return poolTransactions_.get(index);
+        } else {
+          return poolTransactionsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public Builder setPoolTransactions(
+          int index, node.entity.Entity.Transaction value) {
+        if (poolTransactionsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePoolTransactionsIsMutable();
+          poolTransactions_.set(index, value);
+          onChanged();
+        } else {
+          poolTransactionsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public Builder setPoolTransactions(
+          int index, node.entity.Entity.Transaction.Builder builderForValue) {
+        if (poolTransactionsBuilder_ == null) {
+          ensurePoolTransactionsIsMutable();
+          poolTransactions_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          poolTransactionsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public Builder addPoolTransactions(node.entity.Entity.Transaction value) {
+        if (poolTransactionsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePoolTransactionsIsMutable();
+          poolTransactions_.add(value);
+          onChanged();
+        } else {
+          poolTransactionsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public Builder addPoolTransactions(
+          int index, node.entity.Entity.Transaction value) {
+        if (poolTransactionsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePoolTransactionsIsMutable();
+          poolTransactions_.add(index, value);
+          onChanged();
+        } else {
+          poolTransactionsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public Builder addPoolTransactions(
+          node.entity.Entity.Transaction.Builder builderForValue) {
+        if (poolTransactionsBuilder_ == null) {
+          ensurePoolTransactionsIsMutable();
+          poolTransactions_.add(builderForValue.build());
+          onChanged();
+        } else {
+          poolTransactionsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public Builder addPoolTransactions(
+          int index, node.entity.Entity.Transaction.Builder builderForValue) {
+        if (poolTransactionsBuilder_ == null) {
+          ensurePoolTransactionsIsMutable();
+          poolTransactions_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          poolTransactionsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public Builder addAllPoolTransactions(
+          java.lang.Iterable<? extends node.entity.Entity.Transaction> values) {
+        if (poolTransactionsBuilder_ == null) {
+          ensurePoolTransactionsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, poolTransactions_);
+          onChanged();
+        } else {
+          poolTransactionsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public Builder clearPoolTransactions() {
+        if (poolTransactionsBuilder_ == null) {
+          poolTransactions_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+          onChanged();
+        } else {
+          poolTransactionsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public Builder removePoolTransactions(int index) {
+        if (poolTransactionsBuilder_ == null) {
+          ensurePoolTransactionsIsMutable();
+          poolTransactions_.remove(index);
+          onChanged();
+        } else {
+          poolTransactionsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public node.entity.Entity.Transaction.Builder getPoolTransactionsBuilder(
+          int index) {
+        return getPoolTransactionsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public node.entity.Entity.TransactionOrBuilder getPoolTransactionsOrBuilder(
+          int index) {
+        if (poolTransactionsBuilder_ == null) {
+          return poolTransactions_.get(index);  } else {
+          return poolTransactionsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public java.util.List<? extends node.entity.Entity.TransactionOrBuilder> 
+           getPoolTransactionsOrBuilderList() {
+        if (poolTransactionsBuilder_ != null) {
+          return poolTransactionsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(poolTransactions_);
+        }
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public node.entity.Entity.Transaction.Builder addPoolTransactionsBuilder() {
+        return getPoolTransactionsFieldBuilder().addBuilder(
+            node.entity.Entity.Transaction.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public node.entity.Entity.Transaction.Builder addPoolTransactionsBuilder(
+          int index) {
+        return getPoolTransactionsFieldBuilder().addBuilder(
+            index, node.entity.Entity.Transaction.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .node.entity.Transaction poolTransactions = 3;</code>
+       */
+      public java.util.List<node.entity.Entity.Transaction.Builder> 
+           getPoolTransactionsBuilderList() {
+        return getPoolTransactionsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          node.entity.Entity.Transaction, node.entity.Entity.Transaction.Builder, node.entity.Entity.TransactionOrBuilder> 
+          getPoolTransactionsFieldBuilder() {
+        if (poolTransactionsBuilder_ == null) {
+          poolTransactionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              node.entity.Entity.Transaction, node.entity.Entity.Transaction.Builder, node.entity.Entity.TransactionOrBuilder>(
+                  poolTransactions_,
+                  ((bitField0_ & 0x00000004) != 0),
+                  getParentForChildren(),
+                  isClean());
+          poolTransactions_ = null;
+        }
+        return poolTransactionsBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -4381,24 +4748,26 @@ public final class NodeCommunicationServer {
       "mmunication.base\032\036google/protobuf/wrappe" +
       "rs.proto\032\037google/protobuf/timestamp.prot" +
       "o\032\014Entity.proto\"*\n\017DownloadRequest\022\027\n\017la" +
-      "stNumberBlock\030\001 \001(\005\"^\n\020DownloadResponse\022" +
-      "\"\n\006blocks\030\002 \003(\0132\022.node.entity.Block\022&\n\np" +
-      "oolBLocks\030\004 \003(\0132\022.node.entity.Block\"&\n\013T" +
-      "estRequest\022\027\n\017lastNumberBlock\030\001 \001(\005\"\r\n\013P" +
-      "ingRequest\"\016\n\014PingResponse\"\034\n\014TestRespon" +
-      "se\022\014\n\004test\030\001 \001(\t\"y\n\021ExceptionResponse\022-\n" +
-      "\ttimestamp\030\001 \001(\0132\032.google.protobuf.Times" +
-      "tamp\0225\n\nerror_code\030\002 \001(\0162!.node.communic" +
-      "ation.base.ErrorCod*O\n\010ErrorCod\022\030\n\024INVAL" +
-      "ID_NUMBER_BLOCK\020\000\022\r\n\tNOT_FOUND\020\001\022\032\n\026THIS" +
-      "_NODE_IS_NOT_VALID\020\0022\236\002\n\021NodeCommunicati" +
-      "on\022S\n\004test\022$.node.communication.base.Tes" +
-      "tRequest\032%.node.communication.base.TestR" +
-      "esponse\022S\n\004ping\022$.node.communication.bas" +
-      "e.PingRequest\032%.node.communication.base." +
-      "PingResponse\022_\n\010download\022(.node.communic" +
-      "ation.base.DownloadRequest\032).node.commun" +
-      "ication.base.DownloadResponseb\006proto3"
+      "stNumberBlock\030\001 \001(\005\"\222\001\n\020DownloadResponse" +
+      "\022\"\n\006blocks\030\001 \003(\0132\022.node.entity.Block\022&\n\n" +
+      "poolBLocks\030\002 \003(\0132\022.node.entity.Block\0222\n\020" +
+      "poolTransactions\030\003 \003(\0132\030.node.entity.Tra" +
+      "nsaction\"&\n\013TestRequest\022\027\n\017lastNumberBlo" +
+      "ck\030\001 \001(\005\"\r\n\013PingRequest\"\016\n\014PingResponse\"" +
+      "\034\n\014TestResponse\022\014\n\004test\030\001 \001(\t\"y\n\021Excepti" +
+      "onResponse\022-\n\ttimestamp\030\001 \001(\0132\032.google.p" +
+      "rotobuf.Timestamp\0225\n\nerror_code\030\002 \001(\0162!." +
+      "node.communication.base.ErrorCod*O\n\010Erro" +
+      "rCod\022\030\n\024INVALID_NUMBER_BLOCK\020\000\022\r\n\tNOT_FO" +
+      "UND\020\001\022\032\n\026THIS_NODE_IS_NOT_VALID\020\0022\236\002\n\021No" +
+      "deCommunication\022S\n\004test\022$.node.communica" +
+      "tion.base.TestRequest\032%.node.communicati" +
+      "on.base.TestResponse\022S\n\004ping\022$.node.comm" +
+      "unication.base.PingRequest\032%.node.commun" +
+      "ication.base.PingResponse\022_\n\010download\022(." +
+      "node.communication.base.DownloadRequest\032" +
+      ").node.communication.base.DownloadRespon" +
+      "seb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -4418,7 +4787,7 @@ public final class NodeCommunicationServer {
     internal_static_node_communication_base_DownloadResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_node_communication_base_DownloadResponse_descriptor,
-        new java.lang.String[] { "Blocks", "PoolBLocks", });
+        new java.lang.String[] { "Blocks", "PoolBLocks", "PoolTransactions", });
     internal_static_node_communication_base_TestRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_node_communication_base_TestRequest_fieldAccessorTable = new

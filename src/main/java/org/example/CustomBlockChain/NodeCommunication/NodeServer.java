@@ -1,4 +1,4 @@
-package org.example.CustomBlockChain.DB.LevelDB.NodeCommunication;
+package org.example.CustomBlockChain.NodeCommunication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -12,6 +12,7 @@ import node.entity.Entity;
 import org.example.BlockChainBase.BlockChain.BlockChainBase;
 
 import org.example.BlockChainBase.Entity.Block;
+import org.example.CustomBlockChain.BlockChain.JavaChain;
 import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.CustomBlockChain.Servise.ConverterServiseGrpcEntityCustom;
 import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
@@ -23,6 +24,8 @@ import org.example.CustomBlockChain.Servise.ValidNodeCommunicationServise;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
+import java.time.chrono.JapaneseChronology;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
@@ -36,12 +39,12 @@ public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
     NodeClient nodeClient;
     private final ConverterServiseGrpcEntityCustom converterServise = new ConverterServiseGrpcEntityCustom();
     NodeListDB nodeListDB = new NodeListDB();
-    private final BlockChainBase<ArrayList<Transaction>> blockChain;
+    private final JavaChain blockChain;
 
     private final ValidNodeCommunicationServise validNodeCommunicationServise;
 
 
-    public NodeServer(BlockChainBase<ArrayList<Transaction>> blockChain) throws SQLException, IOException, ClassNotFoundException {
+    public NodeServer(JavaChain blockChain) throws SQLException, IOException, ClassNotFoundException {
         this.blockChain = blockChain;
         this.nodeClient=new NodeClient(blockChain);
         this.validNodeCommunicationServise = new ValidNodeCommunicationServise(blockChain);
@@ -56,27 +59,21 @@ public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
             responseObserver.onCompleted();
         }
         ArrayList<Block<ArrayList<Transaction>>> blocks = blockChain.getBlocksStartingFrom(request.getLastNumberBlock());
-        System.out.println(blocks.get(0).getData().get(0).toString());
+        ArrayDeque<Block<ArrayList<Transaction>>> blocksPool = blockChain.getBlocksPool();
+        ArrayList<Transaction> transactions = blockChain.getPoolTransactions();
+        ArrayList<Entity.Transaction> transactionsGrpc = new ArrayList<>();
         ArrayList<Entity.Block> blocksGrpc = new ArrayList<>();
-//        if (!javaChain.isQueryValid()){
-//
-//            Instant time = Instant.now();
-//            Timestamp timestamp = Timestamp.newBuilder().setSeconds(time.getEpochSecond())
-//                    .setNanos(time.getNano()).build();
-//            NodeCommunicationServer.ExceptionResponse exceptionResponse = NodeCommunicationServer.ExceptionResponse.newBuilder().setErrorCode(NodeCommunicationServer.ErrorCod.THIS_NODE_IS_NOT_VALID).setTimestamp(timestamp).build();
-//            statusErrorResponse = Status.newBuilder()
-//                    .setCode(Code.DATA_LOSS.getNumber())
-//                    .setMessage("size blocks this node is "+javaChain.getBlocks().size())
-//                    .addDetails(Any.pack(exceptionResponse))
-//                    .build();
-//            responseObserver.onError(StatusProto.toStatusRuntimeException(statusErrorResponse));
-//            responseObserver.onCompleted();
-//        }
-        for (Block<ArrayList<Transaction>> block : blocks) {
-            Entity.Block blockGrpc = converterServise.blockToGrpcBlock(block);
-            blocksGrpc.add(blockGrpc);
+        ArrayList<Entity.Block> blocksPoolGrpc = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            transactionsGrpc.add(converterServise.dataBlockToGrpcData(transaction));
         }
-        NodeCommunicationServer.DownloadResponse downloadResponse = NodeCommunicationServer.DownloadResponse.newBuilder().addAllBlocks(blocksGrpc).build();
+        for (Block<ArrayList<Transaction>> block : blocksPool) {
+            blocksPoolGrpc.add(converterServise.blockToGrpcBlock(block));
+        }
+        for (Block<ArrayList<Transaction>> block : blocks) {
+            blocksGrpc.add(converterServise.blockToGrpcBlock(block));
+        }
+        NodeCommunicationServer.DownloadResponse downloadResponse = NodeCommunicationServer.DownloadResponse.newBuilder().addAllPoolTransactions(transactionsGrpc).addAllPoolBLocks(blocksPoolGrpc).addAllBlocks(blocksGrpc).build();
         responseObserver.onNext(downloadResponse);
         responseObserver.onCompleted();
     }

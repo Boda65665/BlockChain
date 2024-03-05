@@ -27,5 +27,6 @@ public interface BlockChainBase<T> {
     void scanBlockChain() throws Exception;
 
     void addAll(ArrayList<Block<T>> blocks) throws Exception;
+    void addAllToBlockPoll(ArrayList<Block<T>> blocks) throws Exception;
     String getTailFromBlockPoll();
 }

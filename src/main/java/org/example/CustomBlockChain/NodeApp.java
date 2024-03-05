@@ -9,7 +9,7 @@ import org.example.BlockChainBase.Cryptography.HashEncoder;
 
 import org.example.CustomBlockChain.API.GRPC.NodeAPIGrpcServiseImpl;
 import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
-import org.example.CustomBlockChain.DB.LevelDB.NodeCommunication.NodeServer;
+import org.example.CustomBlockChain.NodeCommunication.NodeServer;
 import org.example.CustomBlockChain.Servise.BlockAdderServiseImpl;
 import org.example.CustomBlockChain.Servise.JavaChainMethodService;
 import org.example.BlockChainBase.Service.ProofOfWorkService;
@@ -55,7 +55,7 @@ public class NodeApp {
         serverApiThread.start();
         Scanner scanner = new Scanner(System.in);
         final HashEncoder hashEncoder = new HashEncoder();
-        final NodeServer nodeServer = new NodeServer(javaChainMethodService.getBlockChain());
+        final NodeServer nodeServer = new NodeServer(javaChainMethodService.getJavaChain());
         final IpConfigParser ipConfigParser = new IpConfigParser();
         final String ipAddress = ipConfigParser.getIpAddress();
         final NodeListDB nodeListDB = new NodeListDB();

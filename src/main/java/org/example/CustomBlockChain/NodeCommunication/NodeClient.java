@@ -1,4 +1,4 @@
-package org.example.CustomBlockChain.DB.LevelDB.NodeCommunication;
+package org.example.CustomBlockChain.NodeCommunication;
 
 import com.google.gson.reflect.TypeToken;
 import io.grpc.ManagedChannel;
@@ -18,6 +18,7 @@ import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
 import org.example.BlockChainBase.DB.SQL.Node.NodeListDB;
 import org.example.BlockChainBase.Entity.Block;
 
+import org.example.CustomBlockChain.BlockChain.JavaChain;
 import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.CustomBlockChain.Servise.ConverterServiseGrpcEntityCustom;
 
@@ -36,11 +37,11 @@ public class NodeClient {
     LevelDbBlock<Block<ArrayList<Transaction>>> levelDbBlock = new LevelDbBlock<>(typeData);
     private final LevelDbPoolBlock<ArrayList<Transaction>> levelDbPoolBlock = new LevelDbPoolBlock<>(typeData);
     LevelDbState levelDbState = new LevelDbState();
-    private final BlockChainBase<ArrayList<Transaction>> blockChain;
+    private final JavaChain blockChain;
     private final ConverterServiseGrpcEntityCustom converterServiseGrpc = new ConverterServiseGrpcEntityCustom();
     private final NodeListDB nodeListDB = new NodeListDB();
 
-    public NodeClient(BlockChainBase<ArrayList<Transaction>> blockChain) throws SQLException, IOException, ClassNotFoundException {
+    public NodeClient(JavaChain blockChain) throws SQLException, IOException, ClassNotFoundException {
         this.blockChain = blockChain;
     }
 
@@ -54,17 +55,33 @@ public class NodeClient {
         ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:8081").usePlaintext().build();
         NodeCommunicationGrpc.NodeCommunicationBlockingStub stub = NodeCommunicationGrpc.newBlockingStub(managedChannel);
         NodeCommunicationServer.DownloadRequest downloadRequest = NodeCommunicationServer.DownloadRequest.newBuilder().setLastNumberBlock(numberBlock).build();
-        ArrayList<Entity.Block> blocksGrpc = new ArrayList<>(stub.download(downloadRequest).getBlocksList());
+        NodeCommunicationServer.DownloadResponse response = stub.download(downloadRequest);
+        ArrayList<Entity.Transaction> transactionsGrpc = new ArrayList<>(response.getPoolTransactionsList());
+        ArrayList<Entity.Block> blocksPoolGrpc = new ArrayList<>(response.getPoolBLocksList());
+        ArrayList<Entity.Block> blocksGrpc = new ArrayList<>(response.getBlocksList());
         ArrayList<Block<ArrayList<Transaction>>> blocks = new ArrayList<>();
+        ArrayList<Transaction> transactions = new ArrayList<>();
+
+        ArrayList<Block<ArrayList<Transaction>>> blocksPool = new ArrayList<>();
+
         for (Entity.Block block : blocksGrpc) {
             blocks.add(converterServiseGrpc.grpcBlockToBlock(block));
         }
+        for (Entity.Block block : blocksPoolGrpc) {
+            blocksPool.add(converterServiseGrpc.grpcBlockToBlock(block));
+        }
+
+        for (Entity.Transaction transaction : transactionsGrpc) {
+            transactions.add(converterServiseGrpc.grpcDataToData(transaction));
+        }
+
         if (!blockChain.isValid(blocks)){
             nodeListDB.editStatusActive(IP,false);
             return false;
         }
         blockChain.addAll(blocks);
-
+        blockChain.addAllToBlockPoll(blocksPool);
+        blockChain.addAllTransactionToPoolTransactions(transactions);
         System.out.println();
         System.out.println("finishing download blockchain");
 

@@ -56,14 +56,13 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
 
             dataBlock.add(dataBlockToGrpcData(transaction));
         }
-        String parentHash = (block.getParentHash()==null) ? "": block.getParentHash();
         return Entity.Block.newBuilder()
                 .setBlockNumber(block.getBlockNumber())
                 .setHash(block.getHash())
                 .addAllData(dataBlock)
                 .setNonce(block.getNonce())
-                .setFeeRecipient(block.getFeeRecipient())
-                .setParentHash(parentHash)
+                .setFeeRecipient(block.getFeeRecipient()==null ? "": block.getFeeRecipient())
+                .setParentHash((block.getParentHash()==null) ? "": block.getParentHash())
                 .build();
     }
 
