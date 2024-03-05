@@ -53,7 +53,6 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
     public Entity.Block blockToGrpcBlock(Block<ArrayList<Transaction>> block) throws IOException {
         ArrayList<Entity.Transaction> dataBlock = new ArrayList<>();
         for (Transaction transaction : block.getData()) {
-
             dataBlock.add(dataBlockToGrpcData(transaction));
         }
         return Entity.Block.newBuilder()

@@ -30,7 +30,6 @@ public class LevelDbKeysBlockStruct {
 
         String value = String.format("block%d_%s",numberBlock,key);
         db.put(bytes(key),bytes(value));
-        System.out.println(numberBlock);
         db.put(bytes(String.valueOf(numberBlock)),bytes(value));
         db.close();
     }

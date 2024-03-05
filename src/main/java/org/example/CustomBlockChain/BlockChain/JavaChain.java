@@ -59,7 +59,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         };
         for (Transaction transaction : block.getData()) {
             if (transaction.isStatus()) updateAddressFromTransaction(transaction);
-            levelDbTransaction.update(transaction);
+            levelDbTransaction.put(transaction);
         }
         blockChain.addBlock(block);
         levelDbBlock.put(block);
@@ -70,7 +70,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
                 .setBalance(0)
                 .setNonce(0)
                 .setNoncePending(0)
-                .setPublicKey(feeRecipient.getPublicKey())
+                .setPublicKey(block.getFeeRecipient())
                 .setHashTransactionComplete(new ArrayList<>()).build();
         feeRecipient.setBalance(feeRecipient.getBalance()+100);
         levelDbState.update(feeRecipient);
@@ -100,9 +100,8 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         levelDbState.update(from);
     }
     @Override
-    public ArrayList<Block<ArrayList<Transaction>>> getBlocksStartingFrom(int numberBlock) {
+    public ArrayList<Block<ArrayList<Transaction>>> getBlocksStartingFrom(int numberBlock){
         return new ArrayList<>(getBlocks().subList(numberBlock, getBlocks().size()));
-
     }
 
     public ArrayList<Block<ArrayList<Transaction>>> getBlocks(){

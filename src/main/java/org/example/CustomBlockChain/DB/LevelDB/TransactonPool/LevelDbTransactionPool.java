@@ -26,7 +26,7 @@ public class LevelDbTransactionPool {
         options.createIfMissing(true);
         try {
             String basePath = System.getProperty("user.dir");
-            String path = basePath+"\\src\\main\\java\\org\\example\\BlockChainBase\\DB\\LevelDb\\TransactonPool\\bd";
+            String path = basePath+"\\src\\main\\java\\org\\example\\CustomBlockChain\\DB\\LevelDb\\TransactonPool\\bd";
             return factory.open(new File(path), options);
         } catch (IOException e) {
             throw new RuntimeException(e);

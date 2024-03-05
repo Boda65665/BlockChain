@@ -26,9 +26,9 @@ public class BlockAdderServiseImpl implements BlockAdderServise
         java.time.LocalTime currentTimeUTC = java.time.LocalTime.now(java.time.ZoneOffset.UTC);
         int milliseconds = currentTimeUTC.getNano() / 1_000_000; // Получаем миллисекунды из наносекунд
         // Вычисляем время до первого вызова(следующей минуты)
-        long initialDelay = 60000 - (currentTimeUTC.getSecond()*1000+milliseconds);
+        long initialDelay = 600000000 - (currentTimeUTC.getSecond()*1000+milliseconds);
         scheduler.scheduleAtFixedRate(() -> {
-        }, initialDelay, 60000, TimeUnit.MILLISECONDS);
+        }, initialDelay, 120000000, TimeUnit.MILLISECONDS);
         ArrayList<Transaction> dataBlock = new ArrayList<>(javaChain.getPoolTransactions());
         Block<ArrayList<Transaction>> newBlock = buildBlockPending(dataBlock);
         javaChain.clearPoolTransaction();
