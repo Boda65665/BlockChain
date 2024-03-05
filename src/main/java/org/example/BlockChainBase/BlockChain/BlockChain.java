@@ -154,6 +154,14 @@ public class BlockChain<T> implements BlockChainBase<T>{
     public ArrayDeque<Block<T>> getBlocksPool() {
         return blocksPool;
     }
+    public int getBlockNumberFromBlockPool(){
+        return blocksPool.size();
+    }
+    @Override
+    public String getTailFromBlockPoll(){
+        if (blocksPool.isEmpty()) return null;
+        return blocksPool.getLast().getHash();
+    }
 
     @Override
     public ArrayList<Address> getAllAddresses() {

@@ -9,8 +9,8 @@ import org.example.BlockChainBase.Cryptography.HashEncoder;
 
 import org.example.CustomBlockChain.API.GRPC.NodeAPIGrpcServiseImpl;
 import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
-import org.example.CustomBlockChain.Entity.AddressCustom;
-import org.example.CustomBlockChain.NodeCommunication.NodeServer;
+import org.example.CustomBlockChain.DB.LevelDB.NodeCommunication.NodeServer;
+import org.example.CustomBlockChain.Servise.BlockAdderServiseImpl;
 import org.example.CustomBlockChain.Servise.JavaChainMethodService;
 import org.example.BlockChainBase.Service.ProofOfWorkService;
 import org.example.CustomBlockChain.Entity.Transaction;
@@ -29,7 +29,16 @@ public class NodeApp {
     public static void main(String[] args) throws Exception {
         final WalletDB walletDB = new WalletDB();
         JavaChainMethodService javaChainMethodService = new JavaChainMethodService();
+        BlockAdderServiseImpl blockAdderServise = new BlockAdderServiseImpl(javaChainMethodService.getJavaChain());
         NodeAPIGrpcServiseImpl nodeAPIGrpcServise = new NodeAPIGrpcServiseImpl(javaChainMethodService);
+        Thread adderBlockThread =new Thread(()->{
+            try {
+                blockAdderServise.run();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        adderBlockThread.start();
         Thread serverApiThread = new Thread(() -> {
 //            System.setErr(new PrintStream(new OutputStream() {
 //                @Override
@@ -61,6 +70,7 @@ public class NodeApp {
                 e.printStackTrace();
             }
         });
+
         serverThread.start();
         while (true){
             System.out.println("\nВыберите действие из выпадающего списка:\n1)Синхронизация с блокчейном\n2)Кошелек\n3)Майнинг\n4)Настройки ноды");
@@ -333,8 +343,6 @@ public class NodeApp {
                 e.printStackTrace();
             }
         }
-
-
     }
 
 }

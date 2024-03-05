@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import org.example.BlockChainBase.BlockChain.BlockChain;
 import org.example.BlockChainBase.Cryptography.Asymmetric;
 import org.example.BlockChainBase.Cryptography.HashEncoder;
-
 import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
 import org.example.CustomBlockChain.DB.LevelDB.State.LevelDBStateCustom;
 import org.example.CustomBlockChain.DB.LevelDB.Transaction.LevelDbTransaction;
@@ -14,9 +13,7 @@ import org.example.CustomBlockChain.Entity.AddressCustom;
 import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.CustomBlockChain.BlockChain.JavaChain;
 import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
-import org.example.CustomBlockChain.NodeCommunication.NodeClient;
-import org.example.CustomBlockChain.Rules.TransactionRule;
-
+import org.example.CustomBlockChain.DB.LevelDB.NodeCommunication.NodeClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.security.*;
@@ -25,16 +22,17 @@ import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
+
 public class JavaChainMethodService {
     LevelDBStateCustom levelDbState = new LevelDBStateCustom();
     LevelDbTransaction levelDbTransaction = new LevelDbTransaction();
     Asymmetric asymmetric = new Asymmetric();
-    TransactionRule transactionRule = new TransactionRule();
     final IpConfigParser ipConfigParser = new IpConfigParser();
     final String ipAddress = ipConfigParser.getIpAddress();
     NodeListDB nodeListDB = new NodeListDB();
     HashEncoder hashEncoder = new HashEncoder();
-    private final Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
+    private final Type typeData = new TypeToken<ArrayList<Transaction>>() {
+    }.getType();
     BlockChain<ArrayList<Transaction>> blockChain = new BlockChain<>(hashEncoder);
     LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>(typeData);
     JavaChain javaChain = new JavaChain(blockChain);
@@ -42,13 +40,6 @@ public class JavaChainMethodService {
 
     public JavaChainMethodService() throws IOException, SQLException, ClassNotFoundException {
     }
-    public JavaChainMethodService(BlockChain<ArrayList<Transaction>> blockChain,JavaChain javaChain) throws IOException, SQLException, ClassNotFoundException {
-        this.blockChain=blockChain;
-        this.javaChain=javaChain;
-    }
-
-
-
     public AddressCustom getAddress(String address) throws IOException {
         return levelDbState.get(address);
     }
@@ -73,44 +64,22 @@ public class JavaChainMethodService {
 
         return javaChain.addTransactionToPoolTransactions(transaction);
     }
-
     public ArrayDeque<Block<ArrayList<Transaction>>> getBlocksPoll() {
         return blockChain.getBlocksPool();
     }
-
     public int getBlockNumber() {
         return blockChain.getBlockNumber();
     }
-
-    public boolean synchronizationBlockChain() throws Exception {
-        String randomIpNode = nodeListDB.getRandomIp();
-        while (randomIpNode != null && !nodeClient.SynchronizationBlockChain(randomIpNode,getBlockNumber())) {
-            randomIpNode = nodeListDB.getRandomIp();
-        }
-        if (randomIpNode == null) {
-            nodeListDB.editStatusActive(ipAddress, true);
-            return false;
-        }
-        return true;
-
-    }
-
     public String singTransaction(String privateKey, String publicKey, String to) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchProviderException {
-        return asymmetric.sign(hashEncoder.SHA256(to+getNoncePending(publicKey)),privateKey);
-    }
-
-    public int getTransactionNonce(String address) throws IOException {
-        return levelDbState.get(address).getNonce();
+        return asymmetric.sign(hashEncoder.SHA256(to + getNoncePending(publicKey)), privateKey);
     }
     public int getNoncePending(String address) throws IOException {
         return levelDbState.get(address).getNoncePending();
 
     }
-
     public Transaction getTransaction(String hash) throws IOException {
         return levelDbTransaction.get(hash);
     }
-
     public Block<ArrayList<Transaction>> popBlockFromPoll() throws IOException {
         return blockChain.popBlockFromPoll();
     }
@@ -125,7 +94,16 @@ public class JavaChainMethodService {
         block.setHash(Block.calculateHash(block.getData(), blockChain.getTail(), hashEncoder, block.getNonce()));
         return block;
     }
+    public boolean synchronizationBlockChain() throws Exception {
+        String randomIpNode = nodeListDB.getRandomIp();
+        while (randomIpNode != null && !nodeClient.SynchronizationBlockChain(randomIpNode, getBlockNumber())) {
+            randomIpNode = nodeListDB.getRandomIp();
+        }
+        if (randomIpNode == null) {
+            nodeListDB.editStatusActive(ipAddress, true);
+            return false;
+        }
+        return true;
 
-
-
+    }
 }

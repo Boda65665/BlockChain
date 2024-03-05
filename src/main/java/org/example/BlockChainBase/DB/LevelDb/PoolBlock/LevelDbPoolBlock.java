@@ -2,7 +2,6 @@ package org.example.BlockChainBase.DB.LevelDb.PoolBlock;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
 import org.example.BlockChainBase.DB.LevelDb.PoolBlock.Keys.LevelDbKeysBlockPollStruct;
 import org.example.BlockChainBase.Entity.Block;
 
@@ -34,7 +33,8 @@ public class LevelDbPoolBlock<T> {
         options.createIfMissing(true);
         try {
             String basePath = System.getProperty("user.dir");
-            String path = basePath + "\\src\\main\\java\\org\\example\\BlockChainBase\\LevelDb\\PoolBlock\\bd";
+            String path = basePath + "\\src\\main\\java\\org\\example\\BlockChainBase\\DB\\LevelDb\\PoolBlock\\bd";
+
             return factory.open(new File(path), options);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -88,20 +88,7 @@ public class LevelDbPoolBlock<T> {
         return blocks;
     }
 
-    public void buildBlockChain(String blocksJson) throws IOException {
-        DB db = connectDb();
-        Type blocksType = new TypeToken<ArrayList<Block<T>>>() {
-        }.getType();
-        Type poolBlocksType = new TypeToken<ArrayDeque<Block<T>>>() {
-        }.getType();
-        ArrayList<Block<T>> blocks = gson.fromJson(blocksJson, blocksType);
-        for (Block<T> block : blocks) {
-            String key = block.getHash();
-            String value = gson.toJson(block);
-            db.put(bytes(key), bytes(value));
-        }
-        db.close();
-    }
+
 
     public void deleteByHash(String hash) throws IOException {
         if (get(hash)== null) return;
@@ -113,12 +100,9 @@ public class LevelDbPoolBlock<T> {
 
         public static void main (String[]args) throws IOException {
             Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
+            LevelDbPoolBlock<ArrayList<Transaction>> levelDbPoolBlock = new LevelDbPoolBlock<>(typeData);
 
-
-            LevelDbPoolBlock<ArrayList<Transaction>> levelDbBlock= new LevelDbPoolBlock<>(typeData);
-            System.out.println(levelDbBlock.getAll().size());
-
-
+            levelDbPoolBlock.getAll();
             }
 
         }

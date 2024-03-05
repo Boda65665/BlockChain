@@ -41,10 +41,18 @@ public class LevelDbKeysBlockPollStruct {
             return value;
 
         }
+        public boolean deleteByHash(String key) throws IOException {
+            if (get(key)==null)return false;
+            DB db = connectDb();
+            db.delete(bytes(key));
+            db.close();
+            return true;
+
+        }
 
         public static void main(String[] args) throws IOException {
             LevelDbKeysBlockPollStruct levelDbKeysBlockStruct = new LevelDbKeysBlockPollStruct();
-
+            System.out.println(levelDbKeysBlockStruct.get("c6df7dd32737c7ffdc3a96245df5715fb995a965e18e09d9298202da0a37d90a"));
         }
     }
 

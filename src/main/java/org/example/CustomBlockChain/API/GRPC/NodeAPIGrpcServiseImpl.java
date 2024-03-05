@@ -32,8 +32,6 @@ public class NodeAPIGrpcServiseImpl extends NodeAPIServiseGrpc.NodeAPIServiseImp
     ValidationServiseNodeAPI validationServiseNodeAPI;
     BlockChainInfoBD blockChainInfoBD = new BlockChainInfoBD();
     private final ConverterServiseGrpcEntityCustom converterServise = new ConverterServiseGrpcEntityCustom();
-
-
     public NodeAPIGrpcServiseImpl(JavaChainMethodService javaChainMethodService) throws SQLException, IOException, ClassNotFoundException {
         this.javaChainMethodService = javaChainMethodService;
         validationServiseNodeAPI = new ValidationServiseNodeAPI(javaChainMethodService);
