@@ -129,6 +129,16 @@ public final class NodeCommunicationServer {
      * <code>int32 lastNumberBlock = 1;</code>
      */
     int getLastNumberBlock();
+
+    /**
+     * <code>string type = 2;</code>
+     */
+    java.lang.String getType();
+    /**
+     * <code>string type = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getTypeBytes();
   }
   /**
    * Protobuf type {@code node.communication.base.DownloadRequest}
@@ -143,6 +153,7 @@ public final class NodeCommunicationServer {
       super(builder);
     }
     private DownloadRequest() {
+      type_ = "";
     }
 
     @java.lang.Override
@@ -178,6 +189,12 @@ public final class NodeCommunicationServer {
             case 8: {
 
               lastNumberBlock_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              type_ = s;
               break;
             }
             default: {
@@ -221,6 +238,40 @@ public final class NodeCommunicationServer {
       return lastNumberBlock_;
     }
 
+    public static final int TYPE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object type_;
+    /**
+     * <code>string type = 2;</code>
+     */
+    public java.lang.String getType() {
+      java.lang.Object ref = type_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        type_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string type = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTypeBytes() {
+      java.lang.Object ref = type_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        type_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -238,6 +289,9 @@ public final class NodeCommunicationServer {
       if (lastNumberBlock_ != 0) {
         output.writeInt32(1, lastNumberBlock_);
       }
+      if (!getTypeBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, type_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -250,6 +304,9 @@ public final class NodeCommunicationServer {
       if (lastNumberBlock_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, lastNumberBlock_);
+      }
+      if (!getTypeBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, type_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -268,6 +325,8 @@ public final class NodeCommunicationServer {
 
       if (getLastNumberBlock()
           != other.getLastNumberBlock()) return false;
+      if (!getType()
+          .equals(other.getType())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -281,6 +340,8 @@ public final class NodeCommunicationServer {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + LASTNUMBERBLOCK_FIELD_NUMBER;
       hash = (53 * hash) + getLastNumberBlock();
+      hash = (37 * hash) + TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + getType().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -416,6 +477,8 @@ public final class NodeCommunicationServer {
         super.clear();
         lastNumberBlock_ = 0;
 
+        type_ = "";
+
         return this;
       }
 
@@ -443,6 +506,7 @@ public final class NodeCommunicationServer {
       public node.communication.base.NodeCommunicationServer.DownloadRequest buildPartial() {
         node.communication.base.NodeCommunicationServer.DownloadRequest result = new node.communication.base.NodeCommunicationServer.DownloadRequest(this);
         result.lastNumberBlock_ = lastNumberBlock_;
+        result.type_ = type_;
         onBuilt();
         return result;
       }
@@ -493,6 +557,10 @@ public final class NodeCommunicationServer {
         if (other == node.communication.base.NodeCommunicationServer.DownloadRequest.getDefaultInstance()) return this;
         if (other.getLastNumberBlock() != 0) {
           setLastNumberBlock(other.getLastNumberBlock());
+        }
+        if (!other.getType().isEmpty()) {
+          type_ = other.type_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -545,6 +613,75 @@ public final class NodeCommunicationServer {
       public Builder clearLastNumberBlock() {
         
         lastNumberBlock_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object type_ = "";
+      /**
+       * <code>string type = 2;</code>
+       */
+      public java.lang.String getType() {
+        java.lang.Object ref = type_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          type_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string type = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTypeBytes() {
+        java.lang.Object ref = type_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          type_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string type = 2;</code>
+       */
+      public Builder setType(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string type = 2;</code>
+       */
+      public Builder clearType() {
+        
+        type_ = getDefaultInstance().getType();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string type = 2;</code>
+       */
+      public Builder setTypeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        type_ = value;
         onChanged();
         return this;
       }
@@ -676,6 +813,19 @@ public final class NodeCommunicationServer {
      */
     node.entity.Entity.TransactionOrBuilder getPoolTransactionsOrBuilder(
         int index);
+
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    boolean hasBlockChainInfo();
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    node.entity.Entity.BlockChainInfoConstruct getBlockChainInfo();
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    node.entity.Entity.BlockChainInfoConstructOrBuilder getBlockChainInfoOrBuilder();
   }
   /**
    * Protobuf type {@code node.communication.base.DownloadResponse}
@@ -751,6 +901,19 @@ public final class NodeCommunicationServer {
               }
               poolTransactions_.add(
                   input.readMessage(node.entity.Entity.Transaction.parser(), extensionRegistry));
+              break;
+            }
+            case 34: {
+              node.entity.Entity.BlockChainInfoConstruct.Builder subBuilder = null;
+              if (blockChainInfo_ != null) {
+                subBuilder = blockChainInfo_.toBuilder();
+              }
+              blockChainInfo_ = input.readMessage(node.entity.Entity.BlockChainInfoConstruct.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(blockChainInfo_);
+                blockChainInfo_ = subBuilder.buildPartial();
+              }
+
               break;
             }
             default: {
@@ -899,6 +1062,27 @@ public final class NodeCommunicationServer {
       return poolTransactions_.get(index);
     }
 
+    public static final int BLOCKCHAININFO_FIELD_NUMBER = 4;
+    private node.entity.Entity.BlockChainInfoConstruct blockChainInfo_;
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    public boolean hasBlockChainInfo() {
+      return blockChainInfo_ != null;
+    }
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    public node.entity.Entity.BlockChainInfoConstruct getBlockChainInfo() {
+      return blockChainInfo_ == null ? node.entity.Entity.BlockChainInfoConstruct.getDefaultInstance() : blockChainInfo_;
+    }
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    public node.entity.Entity.BlockChainInfoConstructOrBuilder getBlockChainInfoOrBuilder() {
+      return getBlockChainInfo();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -922,6 +1106,9 @@ public final class NodeCommunicationServer {
       for (int i = 0; i < poolTransactions_.size(); i++) {
         output.writeMessage(3, poolTransactions_.get(i));
       }
+      if (blockChainInfo_ != null) {
+        output.writeMessage(4, getBlockChainInfo());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -942,6 +1129,10 @@ public final class NodeCommunicationServer {
       for (int i = 0; i < poolTransactions_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, poolTransactions_.get(i));
+      }
+      if (blockChainInfo_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getBlockChainInfo());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -964,6 +1155,11 @@ public final class NodeCommunicationServer {
           .equals(other.getPoolBLocksList())) return false;
       if (!getPoolTransactionsList()
           .equals(other.getPoolTransactionsList())) return false;
+      if (hasBlockChainInfo() != other.hasBlockChainInfo()) return false;
+      if (hasBlockChainInfo()) {
+        if (!getBlockChainInfo()
+            .equals(other.getBlockChainInfo())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -986,6 +1182,10 @@ public final class NodeCommunicationServer {
       if (getPoolTransactionsCount() > 0) {
         hash = (37 * hash) + POOLTRANSACTIONS_FIELD_NUMBER;
         hash = (53 * hash) + getPoolTransactionsList().hashCode();
+      }
+      if (hasBlockChainInfo()) {
+        hash = (37 * hash) + BLOCKCHAININFO_FIELD_NUMBER;
+        hash = (53 * hash) + getBlockChainInfo().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1141,6 +1341,12 @@ public final class NodeCommunicationServer {
         } else {
           poolTransactionsBuilder_.clear();
         }
+        if (blockChainInfoBuilder_ == null) {
+          blockChainInfo_ = null;
+        } else {
+          blockChainInfo_ = null;
+          blockChainInfoBuilder_ = null;
+        }
         return this;
       }
 
@@ -1194,6 +1400,11 @@ public final class NodeCommunicationServer {
           result.poolTransactions_ = poolTransactions_;
         } else {
           result.poolTransactions_ = poolTransactionsBuilder_.build();
+        }
+        if (blockChainInfoBuilder_ == null) {
+          result.blockChainInfo_ = blockChainInfo_;
+        } else {
+          result.blockChainInfo_ = blockChainInfoBuilder_.build();
         }
         onBuilt();
         return result;
@@ -1320,6 +1531,9 @@ public final class NodeCommunicationServer {
               poolTransactionsBuilder_.addAllMessages(other.poolTransactions_);
             }
           }
+        }
+        if (other.hasBlockChainInfo()) {
+          mergeBlockChainInfo(other.getBlockChainInfo());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2069,6 +2283,123 @@ public final class NodeCommunicationServer {
           poolTransactions_ = null;
         }
         return poolTransactionsBuilder_;
+      }
+
+      private node.entity.Entity.BlockChainInfoConstruct blockChainInfo_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          node.entity.Entity.BlockChainInfoConstruct, node.entity.Entity.BlockChainInfoConstruct.Builder, node.entity.Entity.BlockChainInfoConstructOrBuilder> blockChainInfoBuilder_;
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public boolean hasBlockChainInfo() {
+        return blockChainInfoBuilder_ != null || blockChainInfo_ != null;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public node.entity.Entity.BlockChainInfoConstruct getBlockChainInfo() {
+        if (blockChainInfoBuilder_ == null) {
+          return blockChainInfo_ == null ? node.entity.Entity.BlockChainInfoConstruct.getDefaultInstance() : blockChainInfo_;
+        } else {
+          return blockChainInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public Builder setBlockChainInfo(node.entity.Entity.BlockChainInfoConstruct value) {
+        if (blockChainInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          blockChainInfo_ = value;
+          onChanged();
+        } else {
+          blockChainInfoBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public Builder setBlockChainInfo(
+          node.entity.Entity.BlockChainInfoConstruct.Builder builderForValue) {
+        if (blockChainInfoBuilder_ == null) {
+          blockChainInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          blockChainInfoBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public Builder mergeBlockChainInfo(node.entity.Entity.BlockChainInfoConstruct value) {
+        if (blockChainInfoBuilder_ == null) {
+          if (blockChainInfo_ != null) {
+            blockChainInfo_ =
+              node.entity.Entity.BlockChainInfoConstruct.newBuilder(blockChainInfo_).mergeFrom(value).buildPartial();
+          } else {
+            blockChainInfo_ = value;
+          }
+          onChanged();
+        } else {
+          blockChainInfoBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public Builder clearBlockChainInfo() {
+        if (blockChainInfoBuilder_ == null) {
+          blockChainInfo_ = null;
+          onChanged();
+        } else {
+          blockChainInfo_ = null;
+          blockChainInfoBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public node.entity.Entity.BlockChainInfoConstruct.Builder getBlockChainInfoBuilder() {
+        
+        onChanged();
+        return getBlockChainInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public node.entity.Entity.BlockChainInfoConstructOrBuilder getBlockChainInfoOrBuilder() {
+        if (blockChainInfoBuilder_ != null) {
+          return blockChainInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return blockChainInfo_ == null ?
+              node.entity.Entity.BlockChainInfoConstruct.getDefaultInstance() : blockChainInfo_;
+        }
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          node.entity.Entity.BlockChainInfoConstruct, node.entity.Entity.BlockChainInfoConstruct.Builder, node.entity.Entity.BlockChainInfoConstructOrBuilder> 
+          getBlockChainInfoFieldBuilder() {
+        if (blockChainInfoBuilder_ == null) {
+          blockChainInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              node.entity.Entity.BlockChainInfoConstruct, node.entity.Entity.BlockChainInfoConstruct.Builder, node.entity.Entity.BlockChainInfoConstructOrBuilder>(
+                  getBlockChainInfo(),
+                  getParentForChildren(),
+                  isClean());
+          blockChainInfo_ = null;
+        }
+        return blockChainInfoBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -4747,27 +5078,29 @@ public final class NodeCommunicationServer {
       "\n\035NodeCommunicationServer.proto\022\027node.co" +
       "mmunication.base\032\036google/protobuf/wrappe" +
       "rs.proto\032\037google/protobuf/timestamp.prot" +
-      "o\032\014Entity.proto\"*\n\017DownloadRequest\022\027\n\017la" +
-      "stNumberBlock\030\001 \001(\005\"\222\001\n\020DownloadResponse" +
-      "\022\"\n\006blocks\030\001 \003(\0132\022.node.entity.Block\022&\n\n" +
-      "poolBLocks\030\002 \003(\0132\022.node.entity.Block\0222\n\020" +
-      "poolTransactions\030\003 \003(\0132\030.node.entity.Tra" +
-      "nsaction\"&\n\013TestRequest\022\027\n\017lastNumberBlo" +
-      "ck\030\001 \001(\005\"\r\n\013PingRequest\"\016\n\014PingResponse\"" +
-      "\034\n\014TestResponse\022\014\n\004test\030\001 \001(\t\"y\n\021Excepti" +
-      "onResponse\022-\n\ttimestamp\030\001 \001(\0132\032.google.p" +
-      "rotobuf.Timestamp\0225\n\nerror_code\030\002 \001(\0162!." +
-      "node.communication.base.ErrorCod*O\n\010Erro" +
-      "rCod\022\030\n\024INVALID_NUMBER_BLOCK\020\000\022\r\n\tNOT_FO" +
-      "UND\020\001\022\032\n\026THIS_NODE_IS_NOT_VALID\020\0022\236\002\n\021No" +
-      "deCommunication\022S\n\004test\022$.node.communica" +
-      "tion.base.TestRequest\032%.node.communicati" +
-      "on.base.TestResponse\022S\n\004ping\022$.node.comm" +
-      "unication.base.PingRequest\032%.node.commun" +
-      "ication.base.PingResponse\022_\n\010download\022(." +
-      "node.communication.base.DownloadRequest\032" +
-      ").node.communication.base.DownloadRespon" +
-      "seb\006proto3"
+      "o\032\014Entity.proto\"8\n\017DownloadRequest\022\027\n\017la" +
+      "stNumberBlock\030\001 \001(\005\022\014\n\004type\030\002 \001(\t\"\320\001\n\020Do" +
+      "wnloadResponse\022\"\n\006blocks\030\001 \003(\0132\022.node.en" +
+      "tity.Block\022&\n\npoolBLocks\030\002 \003(\0132\022.node.en" +
+      "tity.Block\0222\n\020poolTransactions\030\003 \003(\0132\030.n" +
+      "ode.entity.Transaction\022<\n\016blockChainInfo" +
+      "\030\004 \001(\0132$.node.entity.BlockChainInfoConst" +
+      "ruct\"&\n\013TestRequest\022\027\n\017lastNumberBlock\030\001" +
+      " \001(\005\"\r\n\013PingRequest\"\016\n\014PingResponse\"\034\n\014T" +
+      "estResponse\022\014\n\004test\030\001 \001(\t\"y\n\021ExceptionRe" +
+      "sponse\022-\n\ttimestamp\030\001 \001(\0132\032.google.proto" +
+      "buf.Timestamp\0225\n\nerror_code\030\002 \001(\0162!.node" +
+      ".communication.base.ErrorCod*O\n\010ErrorCod" +
+      "\022\030\n\024INVALID_NUMBER_BLOCK\020\000\022\r\n\tNOT_FOUND\020" +
+      "\001\022\032\n\026THIS_NODE_IS_NOT_VALID\020\0022\236\002\n\021NodeCo" +
+      "mmunication\022S\n\004test\022$.node.communication" +
+      ".base.TestRequest\032%.node.communication.b" +
+      "ase.TestResponse\022S\n\004ping\022$.node.communic" +
+      "ation.base.PingRequest\032%.node.communicat" +
+      "ion.base.PingResponse\022_\n\010download\022(.node" +
+      ".communication.base.DownloadRequest\032).no" +
+      "de.communication.base.DownloadResponseb\006" +
+      "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -4781,13 +5114,13 @@ public final class NodeCommunicationServer {
     internal_static_node_communication_base_DownloadRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_node_communication_base_DownloadRequest_descriptor,
-        new java.lang.String[] { "LastNumberBlock", });
+        new java.lang.String[] { "LastNumberBlock", "Type", });
     internal_static_node_communication_base_DownloadResponse_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_node_communication_base_DownloadResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_node_communication_base_DownloadResponse_descriptor,
-        new java.lang.String[] { "Blocks", "PoolBLocks", "PoolTransactions", });
+        new java.lang.String[] { "Blocks", "PoolBLocks", "PoolTransactions", "BlockChainInfo", });
     internal_static_node_communication_base_TestRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_node_communication_base_TestRequest_fieldAccessorTable = new

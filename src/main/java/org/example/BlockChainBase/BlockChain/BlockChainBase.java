@@ -1,5 +1,6 @@
 package org.example.BlockChainBase.BlockChain;
 
+import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
 import org.example.BlockChainBase.Entity.Address;
 import org.example.BlockChainBase.Entity.Block;
 import org.example.BlockChainBase.Exeptions.BlockChainException;
@@ -22,8 +23,7 @@ public interface BlockChainBase<T> {
 
     boolean isValid(ArrayList<Block<T>> blocks) throws IOException, BlockChainException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
 
-    boolean isQueryValid();
-
+    public boolean isQueryValid(String lastHash, int height, BlockChainInfoBD.BlockChainInfoStruct blockChainInfoStruct);
     void scanBlockChain() throws Exception;
 
     void addAll(ArrayList<Block<T>> blocks) throws Exception;

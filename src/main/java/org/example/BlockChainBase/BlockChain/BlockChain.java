@@ -53,7 +53,10 @@ public class BlockChain<T> implements BlockChainBase<T>{
     public void addBlock(Block<T> block) throws Exception {
         if (blocks.isEmpty()){
             String expectedHash = Block.calculateHash(block.getData(),tail,hashEncoder,block.getNonce());
-            if (expectedHash.equals(block.getHash())) blocks.add(block);
+            if (expectedHash.equals(block.getHash())) {
+                levelDbBlock.put(block);
+                blocks.add(block);
+            }
             else throw new BlockChainException("invalid hash");
             tail=block.getHash();
             return;
@@ -62,6 +65,7 @@ public class BlockChain<T> implements BlockChainBase<T>{
 
             String expectedHash = Block.calculateHash(block.getData(),tail,hashEncoder,block.getNonce());
             if (expectedHash.equals(block.getHash())) {
+                levelDbBlock.put(block);
                 blocks.add(block);
                 tail=block.getHash();
              //   blockChainInfoBD.addInfo(block.getHash(),blockChainInfoBD.incHeight());
@@ -115,10 +119,8 @@ public class BlockChain<T> implements BlockChainBase<T>{
     }
 
     @Override
-    public boolean isQueryValid() {
-        int height = getBlocks().size();
-        String lastHash = blocks.getLast().getHash();
-        return true;
+    public boolean isQueryValid(String lastHash, int height, BlockChainInfoBD.BlockChainInfoStruct actualInfoBlock) {
+        return actualInfoBlock.lastHsh().equals(lastHash) && actualInfoBlock.height() == height;
     }
 
     @Override
@@ -161,7 +163,7 @@ public class BlockChain<T> implements BlockChainBase<T>{
         return blocksPool;
     }
     public int getBlockNumberFromBlockPool(){
-        return blocksPool.size();
+        return blocksPool.size()+1;
     }
     @Override
     public String getTailFromBlockPoll(){

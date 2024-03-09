@@ -26,6 +26,10 @@ message Block {
   repeated Transaction data = 5;
   int32 nonce = 6;
 }
+message BlockChainInfoConstruct{
+  string hashLastBlock = 1;
+  string numberLastBlock = 2;
+}
 
 message Address {
   string publicKey = 1;

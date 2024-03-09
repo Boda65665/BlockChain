@@ -18,8 +18,7 @@ import java.sql.*;
 
 public class BlockChainInfoBD {
     Connection connection = null;
-    IpConfigParser ipConfigParser = new IpConfigParser();
-    NodeListDB nodeListDB = new NodeListDB();
+
     AESEncryption encryption = new AESEncryption();
 
     public int incHeight() throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
@@ -106,9 +105,10 @@ public class BlockChainInfoBD {
         connection.close();
         return blockChainInfoStruct;
     }
+
 public static void main(String[] args) throws Exception {
     BlockChainInfoBD blockChainInfoBD = new BlockChainInfoBD();
-    System.out.println(blockChainInfoBD.getBlockChainInfo());
+    blockChainInfoBD.addInfo("00f9835b424bf46852dce01da9b66c37fb6f490f941d0a3af5aed9fe0581754c",9);
 }
 
 }

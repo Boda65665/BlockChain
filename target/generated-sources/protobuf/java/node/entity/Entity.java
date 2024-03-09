@@ -2813,6 +2813,698 @@ public final class Entity {
 
   }
 
+  public interface BlockChainInfoConstructOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:node.entity.BlockChainInfoConstruct)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string hashLastBlock = 1;</code>
+     */
+    java.lang.String getHashLastBlock();
+    /**
+     * <code>string hashLastBlock = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getHashLastBlockBytes();
+
+    /**
+     * <code>string numberLastBlock = 2;</code>
+     */
+    java.lang.String getNumberLastBlock();
+    /**
+     * <code>string numberLastBlock = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getNumberLastBlockBytes();
+  }
+  /**
+   * Protobuf type {@code node.entity.BlockChainInfoConstruct}
+   */
+  public  static final class BlockChainInfoConstruct extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:node.entity.BlockChainInfoConstruct)
+      BlockChainInfoConstructOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use BlockChainInfoConstruct.newBuilder() to construct.
+    private BlockChainInfoConstruct(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private BlockChainInfoConstruct() {
+      hashLastBlock_ = "";
+      numberLastBlock_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BlockChainInfoConstruct();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private BlockChainInfoConstruct(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              hashLastBlock_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              numberLastBlock_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return node.entity.Entity.internal_static_node_entity_BlockChainInfoConstruct_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return node.entity.Entity.internal_static_node_entity_BlockChainInfoConstruct_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              node.entity.Entity.BlockChainInfoConstruct.class, node.entity.Entity.BlockChainInfoConstruct.Builder.class);
+    }
+
+    public static final int HASHLASTBLOCK_FIELD_NUMBER = 1;
+    private volatile java.lang.Object hashLastBlock_;
+    /**
+     * <code>string hashLastBlock = 1;</code>
+     */
+    public java.lang.String getHashLastBlock() {
+      java.lang.Object ref = hashLastBlock_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        hashLastBlock_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string hashLastBlock = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHashLastBlockBytes() {
+      java.lang.Object ref = hashLastBlock_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        hashLastBlock_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NUMBERLASTBLOCK_FIELD_NUMBER = 2;
+    private volatile java.lang.Object numberLastBlock_;
+    /**
+     * <code>string numberLastBlock = 2;</code>
+     */
+    public java.lang.String getNumberLastBlock() {
+      java.lang.Object ref = numberLastBlock_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        numberLastBlock_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string numberLastBlock = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNumberLastBlockBytes() {
+      java.lang.Object ref = numberLastBlock_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        numberLastBlock_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getHashLastBlockBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, hashLastBlock_);
+      }
+      if (!getNumberLastBlockBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, numberLastBlock_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getHashLastBlockBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, hashLastBlock_);
+      }
+      if (!getNumberLastBlockBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, numberLastBlock_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof node.entity.Entity.BlockChainInfoConstruct)) {
+        return super.equals(obj);
+      }
+      node.entity.Entity.BlockChainInfoConstruct other = (node.entity.Entity.BlockChainInfoConstruct) obj;
+
+      if (!getHashLastBlock()
+          .equals(other.getHashLastBlock())) return false;
+      if (!getNumberLastBlock()
+          .equals(other.getNumberLastBlock())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + HASHLASTBLOCK_FIELD_NUMBER;
+      hash = (53 * hash) + getHashLastBlock().hashCode();
+      hash = (37 * hash) + NUMBERLASTBLOCK_FIELD_NUMBER;
+      hash = (53 * hash) + getNumberLastBlock().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.entity.Entity.BlockChainInfoConstruct parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(node.entity.Entity.BlockChainInfoConstruct prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code node.entity.BlockChainInfoConstruct}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:node.entity.BlockChainInfoConstruct)
+        node.entity.Entity.BlockChainInfoConstructOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return node.entity.Entity.internal_static_node_entity_BlockChainInfoConstruct_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return node.entity.Entity.internal_static_node_entity_BlockChainInfoConstruct_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                node.entity.Entity.BlockChainInfoConstruct.class, node.entity.Entity.BlockChainInfoConstruct.Builder.class);
+      }
+
+      // Construct using node.entity.Entity.BlockChainInfoConstruct.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        hashLastBlock_ = "";
+
+        numberLastBlock_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return node.entity.Entity.internal_static_node_entity_BlockChainInfoConstruct_descriptor;
+      }
+
+      @java.lang.Override
+      public node.entity.Entity.BlockChainInfoConstruct getDefaultInstanceForType() {
+        return node.entity.Entity.BlockChainInfoConstruct.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public node.entity.Entity.BlockChainInfoConstruct build() {
+        node.entity.Entity.BlockChainInfoConstruct result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public node.entity.Entity.BlockChainInfoConstruct buildPartial() {
+        node.entity.Entity.BlockChainInfoConstruct result = new node.entity.Entity.BlockChainInfoConstruct(this);
+        result.hashLastBlock_ = hashLastBlock_;
+        result.numberLastBlock_ = numberLastBlock_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof node.entity.Entity.BlockChainInfoConstruct) {
+          return mergeFrom((node.entity.Entity.BlockChainInfoConstruct)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(node.entity.Entity.BlockChainInfoConstruct other) {
+        if (other == node.entity.Entity.BlockChainInfoConstruct.getDefaultInstance()) return this;
+        if (!other.getHashLastBlock().isEmpty()) {
+          hashLastBlock_ = other.hashLastBlock_;
+          onChanged();
+        }
+        if (!other.getNumberLastBlock().isEmpty()) {
+          numberLastBlock_ = other.numberLastBlock_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        node.entity.Entity.BlockChainInfoConstruct parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (node.entity.Entity.BlockChainInfoConstruct) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object hashLastBlock_ = "";
+      /**
+       * <code>string hashLastBlock = 1;</code>
+       */
+      public java.lang.String getHashLastBlock() {
+        java.lang.Object ref = hashLastBlock_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          hashLastBlock_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string hashLastBlock = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHashLastBlockBytes() {
+        java.lang.Object ref = hashLastBlock_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          hashLastBlock_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string hashLastBlock = 1;</code>
+       */
+      public Builder setHashLastBlock(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        hashLastBlock_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string hashLastBlock = 1;</code>
+       */
+      public Builder clearHashLastBlock() {
+        
+        hashLastBlock_ = getDefaultInstance().getHashLastBlock();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string hashLastBlock = 1;</code>
+       */
+      public Builder setHashLastBlockBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        hashLastBlock_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object numberLastBlock_ = "";
+      /**
+       * <code>string numberLastBlock = 2;</code>
+       */
+      public java.lang.String getNumberLastBlock() {
+        java.lang.Object ref = numberLastBlock_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          numberLastBlock_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string numberLastBlock = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNumberLastBlockBytes() {
+        java.lang.Object ref = numberLastBlock_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          numberLastBlock_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string numberLastBlock = 2;</code>
+       */
+      public Builder setNumberLastBlock(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        numberLastBlock_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string numberLastBlock = 2;</code>
+       */
+      public Builder clearNumberLastBlock() {
+        
+        numberLastBlock_ = getDefaultInstance().getNumberLastBlock();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string numberLastBlock = 2;</code>
+       */
+      public Builder setNumberLastBlockBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        numberLastBlock_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:node.entity.BlockChainInfoConstruct)
+    }
+
+    // @@protoc_insertion_point(class_scope:node.entity.BlockChainInfoConstruct)
+    private static final node.entity.Entity.BlockChainInfoConstruct DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new node.entity.Entity.BlockChainInfoConstruct();
+    }
+
+    public static node.entity.Entity.BlockChainInfoConstruct getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<BlockChainInfoConstruct>
+        PARSER = new com.google.protobuf.AbstractParser<BlockChainInfoConstruct>() {
+      @java.lang.Override
+      public BlockChainInfoConstruct parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BlockChainInfoConstruct(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<BlockChainInfoConstruct> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BlockChainInfoConstruct> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public node.entity.Entity.BlockChainInfoConstruct getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface AddressOrBuilder extends
       // @@protoc_insertion_point(interface_extends:node.entity.Address)
       com.google.protobuf.MessageOrBuilder {
@@ -3757,6 +4449,11 @@ public final class Entity {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_node_entity_Block_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_node_entity_BlockChainInfoConstruct_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_node_entity_BlockChainInfoConstruct_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_node_entity_Address_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -3780,10 +4477,12 @@ public final class Entity {
       "lock\022\022\n\nparentHash\030\001 \001(\t\022\024\n\014feeRecipient" +
       "\030\002 \001(\t\022\014\n\004hash\030\003 \001(\t\022\023\n\013blockNumber\030\004 \001(" +
       "\005\022&\n\004data\030\005 \003(\0132\030.node.entity.Transactio" +
-      "n\022\r\n\005nonce\030\006 \001(\005\"u\n\007Address\022\021\n\tpublicKey" +
-      "\030\001 \001(\t\022\017\n\007balance\030\002 \001(\005\022\r\n\005nonce\030\003 \001(\005\022\024" +
-      "\n\014noncePending\030\004 \001(\005\022!\n\031hashTransactions" +
-      "Completed\030\005 \003(\tb\006proto3"
+      "n\022\r\n\005nonce\030\006 \001(\005\"I\n\027BlockChainInfoConstr" +
+      "uct\022\025\n\rhashLastBlock\030\001 \001(\t\022\027\n\017numberLast" +
+      "Block\030\002 \001(\t\"u\n\007Address\022\021\n\tpublicKey\030\001 \001(" +
+      "\t\022\017\n\007balance\030\002 \001(\005\022\r\n\005nonce\030\003 \001(\005\022\024\n\014non" +
+      "cePending\030\004 \001(\005\022!\n\031hashTransactionsCompl" +
+      "eted\030\005 \003(\tb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3803,8 +4502,14 @@ public final class Entity {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_node_entity_Block_descriptor,
         new java.lang.String[] { "ParentHash", "FeeRecipient", "Hash", "BlockNumber", "Data", "Nonce", });
-    internal_static_node_entity_Address_descriptor =
+    internal_static_node_entity_BlockChainInfoConstruct_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_node_entity_BlockChainInfoConstruct_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_node_entity_BlockChainInfoConstruct_descriptor,
+        new java.lang.String[] { "HashLastBlock", "NumberLastBlock", });
+    internal_static_node_entity_Address_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_node_entity_Address_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_node_entity_Address_descriptor,

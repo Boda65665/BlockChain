@@ -2,11 +2,13 @@ package org.example.CustomBlockChain.BlockChain;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import node.entity.Entity;
 import org.example.BlockChainBase.BlockChain.BlockChain;
 import org.example.BlockChainBase.BlockChain.BlockChainBase;
 import org.example.BlockChainBase.Cryptography.Asymmetric;
 import org.example.BlockChainBase.Cryptography.HashEncoder;
 import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
+import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
 import org.example.CustomBlockChain.DB.LevelDB.State.LevelDBStateCustom;
 import org.example.CustomBlockChain.DB.LevelDB.Transaction.LevelDbTransaction;
 
@@ -27,6 +29,7 @@ import java.security.*;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.List;
 
 public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     private ArrayList<Transaction> poolTransactions = new ArrayList<>();
@@ -62,8 +65,6 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
             levelDbTransaction.put(transaction);
         }
         blockChain.addBlock(block);
-        levelDbBlock.put(block);
-
         //начисляем награду за майнинг
         AddressCustom feeRecipient = (AddressCustom) levelDbState.get(block.getFeeRecipient());
         if (feeRecipient==null) feeRecipient = new AddressCustom().newAddressBuilder()
@@ -163,8 +164,8 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     }
 
     @Override
-    public boolean isQueryValid() {
-        return false;
+    public boolean isQueryValid(String lastHash, int height, BlockChainInfoBD.BlockChainInfoStruct actualInfoBlockChain) {
+        return blockChain.isQueryValid(lastHash,height,actualInfoBlockChain);
     }
 
     @Override
@@ -182,7 +183,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     @Override
     public void addAllToBlockPoll(ArrayList<Block<ArrayList<Transaction>>> blocks) throws Exception {
         for (Block<ArrayList<Transaction>> block : blocks) {
-            addBlock(block);
+            addBlockToPoll(block);
         }
     }
     public void addAllTransactionToPoolTransactions(ArrayList<Transaction> transactions) throws Exception {
@@ -210,4 +211,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     }
 
 
+    public boolean isValidPools(List<Entity.Block> blocksPool, List<Entity.Transaction> transactions) {
+        return true;
+    }
 }

@@ -13,6 +13,7 @@ import org.example.CustomBlockChain.Entity.AddressCustom;
 import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.CustomBlockChain.BlockChain.JavaChain;
 import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
+import org.example.CustomBlockChain.Entity.TypeRequestNodeCommunication;
 import org.example.CustomBlockChain.NodeCommunication.NodeClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -96,8 +97,12 @@ public class JavaChainMethodService {
     }
     public boolean synchronizationBlockChain() throws Exception {
         String randomIpNode = nodeListDB.getRandomIp();
-        while (randomIpNode != null && !nodeClient.SynchronizationBlockChain(randomIpNode, getBlockNumber())) {
+        TypeRequestNodeCommunication typeRequest = TypeRequestNodeCommunication.ALL;
+        while (randomIpNode != null) {
+            typeRequest = nodeClient.SynchronizationBlockChain(randomIpNode, getBlockNumber(),typeRequest);
+            if (typeRequest==null) break;
             randomIpNode = nodeListDB.getRandomIp();
+
         }
         if (randomIpNode == null) {
             nodeListDB.editStatusActive(ipAddress, true);

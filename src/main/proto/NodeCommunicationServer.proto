@@ -5,11 +5,13 @@ import "google/protobuf/timestamp.proto";
 import "Entity.proto";
 message DownloadRequest{
   int32 lastNumberBlock = 1;
+  string type = 2;
 }
 message DownloadResponse{
   repeated entity.Block blocks = 1;
   repeated entity.Block poolBLocks = 2;
   repeated entity.Transaction poolTransactions = 3;
+  entity.BlockChainInfoConstruct blockChainInfo = 4;
 }
 message TestRequest{
   int32 lastNumberBlock = 1;

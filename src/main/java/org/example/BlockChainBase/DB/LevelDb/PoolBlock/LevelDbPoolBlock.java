@@ -44,28 +44,44 @@ public class LevelDbPoolBlock<T> {
 
     public void put(Block<T> block) throws IOException {
         DB db = connectDb();
-        String key = String.format("block%d_%s", block.getBlockNumber(), block.getHash());
-        levelDbKeysBlockPollStruct.put(block.getHash(), block.getBlockNumber());
+        String key = block.getHash();
+        levelDbKeysBlockPollStruct.put(block.getHash());
         String value = gson.toJson(block);
         db.put(bytes(key), bytes(value));
         db.close();
     }
 
-    public Block<T> get(String key) throws IOException {
+    public Block<T> getByHash(String key) throws IOException {
         DB db = connectDb();
-        key = levelDbKeysBlockPollStruct.get(key);
-        String blockJson = asString(db.get(bytes(key)));
+        String value = asString(db.get(bytes(key)));
+        if (value==null) {
+            db.close();
+            return null;
+        }
         Type blockType = new TypeToken<Block<T>>() {
         }.getType();
-        Block<T> block = gson.fromJson(blockJson, blockType);
-        if (block == null) {
+        Block<T> block = gson.fromJson(value, blockType);
+        block.setData(gson.fromJson(gson.toJson(block.getData()), typeData));
+        db.close();
+        return block;
+    }
+
+    public Block<T> getByNumber(long number) throws IOException {
+        DB db = connectDb();
+        String key = levelDbKeysBlockPollStruct.getByNumber(number);
+        if (key == null) {
             db.close();
             return null;
 
         }
+        String value = asString(db.get(bytes(key)));
+        Type blockType = new TypeToken<Block<T>>() {
+        }.getType();
+        Block<T> block = gson.fromJson(value, blockType);
         block.setData(gson.fromJson(gson.toJson(block.getData()), typeData));
         db.close();
         return block;
+
     }
 
     public ArrayDeque<Block<T>> getAll() throws IOException {
@@ -73,13 +89,12 @@ public class LevelDbPoolBlock<T> {
         DBIterator iterator = db.iterator();
 
         iterator.seekToFirst();
+        ArrayList<String> hashes = levelDbKeysBlockPollStruct.getAll();
         ArrayDeque<Block<T>> blocks = new ArrayDeque<>();
         Type blockType = new TypeToken<Block<T>>() {
         }.getType();
-        while (iterator.hasNext()) {
-            Map.Entry<byte[], byte[]> entry = iterator.next();
-            String value = asString(entry.getValue());
-            String key = asString(entry.getKey());
+        for (String hash : hashes) {
+            String value = asString(db.get(bytes(hash)));
             Block<T> block = gson.fromJson(value, blockType);
             block.setData(gson.fromJson(gson.toJson(block.getData()), typeData));
             blocks.add(block);
@@ -89,20 +104,22 @@ public class LevelDbPoolBlock<T> {
     }
 
 
-
     public void deleteByHash(String hash) throws IOException {
-        if (get(hash)== null) return;
+        if (getByHash(hash) == null) return;
+        levelDbKeysBlockPollStruct.deleteByNumber(getByHash(hash).getBlockNumber());
         DB db = connectDb();
-        db.delete(bytes(levelDbKeysBlockPollStruct.get(hash)));
+        db.delete(bytes(hash));
         db.close();
-    }
+        }
 
-
-        public static void main (String[]args) throws IOException {
-            Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
+    public static void main(String[] args) throws IOException {
+            Type typeData = new TypeToken<ArrayList<Transaction>>() {
+            }.getType();
             LevelDbPoolBlock<ArrayList<Transaction>> levelDbPoolBlock = new LevelDbPoolBlock<>(typeData);
-
             levelDbPoolBlock.getAll();
-            }
+
 
         }
+
+    }
+

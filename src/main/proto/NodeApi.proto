@@ -24,6 +24,7 @@ message GetBlockRequest {
   //selecting 1 of 2 arguments to search for a block
   string hash = 1;
   int64 number = 2;
+
 }
 message GetBlockResponse {
   entity.Block block = 1;
