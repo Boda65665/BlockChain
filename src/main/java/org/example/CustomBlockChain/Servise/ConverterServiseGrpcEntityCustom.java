@@ -1,24 +1,18 @@
 package org.example.CustomBlockChain.Servise;
 
-import com.google.gson.reflect.TypeToken;
 import node.entity.Entity;
-import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
 import org.example.BlockChainBase.Entity.Block;
 import org.example.BlockChainBase.Service.ConverterServiseGrpcEntityBase;
-import org.example.CustomBlockChain.DB.LevelDB.State.LevelDBStateCustom;
 import org.example.CustomBlockChain.Entity.AddressCustom;
 import org.example.CustomBlockChain.Entity.Transaction;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEntityBase<Entity.Transaction,Transaction, Entity.Address,AddressCustom,
         Entity.Block,Block<ArrayList<Transaction>>> {
-    LevelDBStateCustom levelDBStateCustom = new LevelDBStateCustom();
     public ConverterServiseGrpcEntityCustom() throws SQLException, IOException, ClassNotFoundException {
     }
 
@@ -50,7 +44,7 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
                 .build();
     }
     @Override
-    public Entity.Block blockToGrpcBlock(Block<ArrayList<Transaction>> block) throws IOException {
+    public Entity.Block blockToGrpcBlock(Block<ArrayList<Transaction>> block) {
         ArrayList<Entity.Transaction> dataBlock = new ArrayList<>();
         for (Transaction transaction : block.getData()) {
             dataBlock.add(dataBlockToGrpcData(transaction));
@@ -108,7 +102,34 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
                 .setFeeRecipient(block.getFeeRecipient())
                 .setParentHash(block.getParentHash().isEmpty()?null:block.getParentHash()).build();
     }
-
+    public ArrayList<Block<ArrayList<Transaction>>> convertAllGrpcBlock(List<Entity.Block> blocksGrpc){
+        ArrayList<Block<ArrayList<Transaction>>> blocks = new ArrayList<>();
+        for (Entity.Block block : blocksGrpc) {
+            blocks.add(grpcBlockToBlock(block));
+        }
+        return blocks;
+    }
+    public ArrayList<Transaction> convertAllGrpcData(List<Entity.Transaction> transactionsGrpc){
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        for (Entity.Transaction transaction : transactionsGrpc) {
+            transactions.add(grpcDataToData(transaction));
+        }
+        return transactions;
+    }
+    public ArrayList<Entity.Block> convertAllBlock(ArrayList<Block<ArrayList<Transaction>>> blocks) {
+        ArrayList<Entity.Block> blocksGrpc = new ArrayList<>();
+        for (Block<ArrayList<Transaction>> block : blocks) {
+            blocksGrpc.add(blockToGrpcBlock(block));
+        }
+        return blocksGrpc;
+    }
+    public ArrayList<Entity.Transaction> convertAllData(ArrayList<Transaction> transactions){
+        ArrayList<Entity.Transaction> grpcTransaction = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            grpcTransaction.add(dataBlockToGrpcData(transaction));
+        }
+        return grpcTransaction;
+    }
 
 
 }

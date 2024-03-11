@@ -108,7 +108,7 @@ public class BlockChainInfoBD {
 
 public static void main(String[] args) throws Exception {
     BlockChainInfoBD blockChainInfoBD = new BlockChainInfoBD();
-    blockChainInfoBD.addInfo("00f9835b424bf46852dce01da9b66c37fb6f490f941d0a3af5aed9fe0581754c",9);
+    blockChainInfoBD.addInfo("00b63e53785fd143b3c25549f7febe230e02f1592705fa30fd7f5767a0dc3403",1);
 }
 
 }

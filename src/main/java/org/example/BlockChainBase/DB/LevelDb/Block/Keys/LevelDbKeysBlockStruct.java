@@ -65,6 +65,5 @@ public class LevelDbKeysBlockStruct {
 
     public static void main(String[] args) throws IOException {
         LevelDbKeysBlockStruct levelDbKeysBlockStruct = new LevelDbKeysBlockStruct();
-        levelDbKeysBlockStruct.getAll();
     }
 }

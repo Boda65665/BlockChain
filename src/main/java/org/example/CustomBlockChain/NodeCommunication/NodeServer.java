@@ -32,18 +32,10 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
-    private final Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
-
-    LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>(typeData);
-
-    LevelDbPoolBlock<ArrayList<Transaction>> levelDbPoolBlock = new LevelDbPoolBlock<>(typeData);
-    LevelDbState levelDbState = new LevelDbState();
     private final BlockChainInfoBD blockChainInfoBD = new BlockChainInfoBD();
     AESEncryption encryption = new AESEncryption();
-    Gson gson = new Gson();
     NodeClient nodeClient;
     private final ConverterServiseGrpcEntityCustom converterServise = new ConverterServiseGrpcEntityCustom();
-    NodeListDB nodeListDB = new NodeListDB();
     private final JavaChain blockChain;
 
     private final ValidNodeCommunicationServise validNodeCommunicationServise;
@@ -67,10 +59,7 @@ public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
         NodeCommunicationServer.DownloadResponse downloadResponse;
         if (typeRequest==TypeRequestNodeCommunication.ALL) {
             BlockChainInfoBD.BlockChainInfoStruct blockChainInfoStruct = blockChainInfoBD.getBlockChainInfo();
-            ArrayList<Entity.Block> blocksGrpc = new ArrayList<>();
-            for (Block<ArrayList<Transaction>> block : blockChain.getBlocksStartingFrom(request.getLastNumberBlock())) {
-                blocksGrpc.add(converterServise.blockToGrpcBlock(block));
-            }
+            ArrayList<Entity.Block> blocksGrpc = converterServise.convertAllBlock(blockChain.getBlocksStartingFrom(request.getLastNumberBlock()));
             Entity.BlockChainInfoConstruct blockChainInfoConstruct = Entity.BlockChainInfoConstruct.newBuilder()
                     .setHashLastBlock(encryption.encode(blockChainInfoStruct.lastHsh()))
                     .setNumberLastBlock(encryption.encode(String.valueOf(blockChainInfoStruct.height())))
@@ -89,13 +78,8 @@ public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
     }
 
     private NodeCommunicationServer.DownloadResponse.Builder downloadOnlyPools() throws IOException {
-        ArrayList<Entity.Transaction> transactionsGrpc = new ArrayList<>();
-        ArrayList<Entity.Block> blocksPoolGrpc = new ArrayList<>();
-
-        for (Block<ArrayList<Transaction>> block : blockChain.getBlocksPool()) {blocksPoolGrpc.add(converterServise.blockToGrpcBlock(block));}
-        for (Transaction transaction : blockChain.getPoolTransactions()) {
-            transactionsGrpc.add(converterServise.dataBlockToGrpcData(transaction));
-        }
+        ArrayList<Entity.Transaction> transactionsGrpc = converterServise.convertAllData(blockChain.getPoolTransactions());
+        ArrayList<Entity.Block> blocksPoolGrpc = converterServise.convertAllBlock(new ArrayList<>(blockChain.getBlocksPool()));
         return NodeCommunicationServer.DownloadResponse.newBuilder().addAllPoolBLocks(blocksPoolGrpc).addAllPoolTransactions(transactionsGrpc);
     }
 

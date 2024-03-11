@@ -51,32 +51,12 @@ public class BlockChain<T> implements BlockChainBase<T>{
         if (!blocks.isEmpty()) tail = blocks.get(blocks.size()-1).getHash();
     }
     public void addBlock(Block<T> block) throws Exception {
-        if (blocks.isEmpty()){
-            String expectedHash = Block.calculateHash(block.getData(),tail,hashEncoder,block.getNonce());
-            if (expectedHash.equals(block.getHash())) {
-                levelDbBlock.put(block);
-                blocks.add(block);
-            }
-            else throw new BlockChainException("invalid hash");
+        if (isValid(block,tail)) {
+            levelDbBlock.put(block);
+            blocks.add(block);
             tail=block.getHash();
-            return;
         }
-        if (block.getParentHash().equals(tail)){
-
-            String expectedHash = Block.calculateHash(block.getData(),tail,hashEncoder,block.getNonce());
-            if (expectedHash.equals(block.getHash())) {
-                levelDbBlock.put(block);
-                blocks.add(block);
-                tail=block.getHash();
-             //   blockChainInfoBD.addInfo(block.getHash(),blockChainInfoBD.incHeight());
-            }
-            else {
-                throw new BlockChainException("Invalid hash");
-            }
-
-        }
-        else {
-            throw new BlockChainException("Invalid parent hash");}
+        else throw new BlockChainException("Invalid block");
     }
     public void addBlockToPoll(Block<T> block) throws IOException {
         blocksPool.add(block);
@@ -86,36 +66,17 @@ public class BlockChain<T> implements BlockChainBase<T>{
 
 
     @Override
-    public boolean isValid(ArrayList<Block<T>> blocks) throws JsonProcessingException, BlockChainException {
-        if (blocks.isEmpty()) return false;
-
-        ArrayList<Block<T>> constructBlockchain = new ArrayList<>();
-
-        for (int i = 0;i<blocks.size();i++) {
-            Block<T> block = blocks.get(i);
-
-
-            constructBlockchain.add(block);
-            if (!poWRule.Execute(constructBlockchain,block)) return false;
-            if (block.getParentHash()==null && block.getBlockNumber()==1){
-                String expectedHash = Block.calculateHash(block.getData(),null,hashEncoder,block.getNonce());
-                if (!expectedHash.equals(block.getHash())){
-                    return false;
-                }
-            }
-            else {
-                String expectedHash = Block.calculateHash(block.getData(),block.getParentHash(),hashEncoder,block.getNonce());
-
-                if (!block.getParentHash().equals(blocks.get(i-1).getHash()) || !expectedHash.equals(block.getHash())) {
-
-                    return false;
-                }
-
-            }
-
+    public boolean isValid(Block<T> block,String tail) throws JsonProcessingException {
+        if (block==null) return false;
+        if (!poWRule.Execute(blocks,block)) return false;
+        if (block.getParentHash()==null && block.getBlockNumber()==1){
+            if (tail!=null)return false;
+            String expectedHash = Block.calculateHash(block.getData(),tail,hashEncoder,block.getNonce());
+            return expectedHash.equals(block.getHash());
         }
-
-        return true;
+        if (!block.getParentHash().equals(tail))return false;
+        String expectedHash = Block.calculateHash(block.getData(), block.getParentHash(), hashEncoder, block.getNonce());
+        return  expectedHash.equals(block.getHash());
     }
 
     @Override
@@ -129,6 +90,14 @@ public class BlockChain<T> implements BlockChainBase<T>{
         for (String ipsNode : ipsNodes) {
 
         }
+    }
+
+    @Override
+    public boolean isValidAllBlock(ArrayList<Block<T>> blocks) throws JsonProcessingException {
+        for (Block<T> block : blocks) {
+            if (!isValid(block,block.getParentHash())) return false;
+        }
+        return true;
     }
 
     @Override
@@ -181,7 +150,7 @@ public class BlockChain<T> implements BlockChainBase<T>{
     }
 
     public int getBlockNumber() {
-        return blockNumber;
+        return blocks.size();
     }
 
 

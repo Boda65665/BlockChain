@@ -1,5 +1,6 @@
 package org.example.BlockChainBase.BlockChain;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
 import org.example.BlockChainBase.Entity.Address;
 import org.example.BlockChainBase.Entity.Block;
@@ -21,10 +22,11 @@ public interface BlockChainBase<T> {
     ArrayList<Address> getAllAddresses();
     void addBlockToPoll(Block<T> block) throws Exception;
 
-    boolean isValid(ArrayList<Block<T>> blocks) throws IOException, BlockChainException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
+    boolean isValid(Block<T> blocks, String tail) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
 
     public boolean isQueryValid(String lastHash, int height, BlockChainInfoBD.BlockChainInfoStruct blockChainInfoStruct);
     void scanBlockChain() throws Exception;
+    boolean isValidAllBlock(ArrayList<Block<T>> blocks) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException;
 
     void addAll(ArrayList<Block<T>> blocks) throws Exception;
     void addAllToBlockPoll(ArrayList<Block<T>> blocks) throws Exception;

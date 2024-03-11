@@ -1,5 +1,6 @@
 package org.example.CustomBlockChain.BlockChain;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import node.entity.Entity;
@@ -45,7 +46,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     private final TransactionRule transactionRule = new TransactionRule();
     PoWRule<ArrayList<Transaction>> poWRule = new PoWRule<>();
     private final HashEncoder hashEncoder = new HashEncoder();
-
+    BlockChainInfoBD blockChainInfoBD = new BlockChainInfoBD();
 
 
     public JavaChain(BlockChain<ArrayList<Transaction>> blockChain) throws IOException, SQLException, ClassNotFoundException {
@@ -56,30 +57,29 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
     @Override
     public void addBlock(Block<ArrayList<Transaction>> block) throws Exception {
-        if (!poWRule.Execute(block.getBlockNumber(),block.getHash())) {
-            System.out.println("Данный блок был найден раньше вас( ");
-            return;
-        };
+        blockChain.addBlock(block);
         for (Transaction transaction : block.getData()) {
             if (transaction.isStatus()) updateAddressFromTransaction(transaction);
             levelDbTransaction.put(transaction);
         }
-        blockChain.addBlock(block);
-        //начисляем награду за майнинг
-        AddressCustom feeRecipient = (AddressCustom) levelDbState.get(block.getFeeRecipient());
-        if (feeRecipient==null) feeRecipient = new AddressCustom().newAddressBuilder()
-                .setBalance(0)
-                .setNonce(0)
-                .setNoncePending(0)
-                .setPublicKey(block.getFeeRecipient())
-                .setHashTransactionComplete(new ArrayList<>()).build();
-        feeRecipient.setBalance(feeRecipient.getBalance()+100);
-        levelDbState.update(feeRecipient);
+        blockChainInfoBD.addInfo(block.getHash(),blockChain.getBlockNumber());
+        awardRewardsForMining(block.getFeeRecipient());
         try {
             nodeClient.update();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void awardRewardsForMining(String addressFeeRecipient) throws IOException {
+        AddressCustom feeRecipient = (AddressCustom) levelDbState.get(addressFeeRecipient);
+        if (feeRecipient==null) feeRecipient = new AddressCustom().newAddressBuilder()
+                .setBalance(0)
+                .setNonce(0)
+                .setNoncePending(0)
+                .setPublicKey(addressFeeRecipient)
+                .setHashTransactionComplete(new ArrayList<>()).build();
+        feeRecipient.setBalance(feeRecipient.getBalance()+100);
+        levelDbState.update(feeRecipient);
     }
 
     public void updateAddressFromTransaction(Transaction transaction) throws IOException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchProviderException {
@@ -154,13 +154,9 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     }
 
     @Override
-    public boolean isValid(ArrayList<Block<ArrayList<Transaction>>> blocks) throws BlockChainException, IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
-
-        if (!blockChain.isValid(blocks)) return false;
-        for (Block<ArrayList<Transaction>> block : blocks) {
-            if (!transactionRule.validTransactions(block.getData())) return false;
-        }
-        return true;
+    public boolean isValid(Block<ArrayList<Transaction>> block,String tail) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
+        if (!blockChain.isValid(block,tail)) return false;
+        return transactionRule.validTransactions(block.getData());
     }
 
     @Override
@@ -171,6 +167,12 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     @Override
     public void scanBlockChain() throws Exception {
         blockChain.scanBlockChain();
+    }
+
+    @Override
+    public boolean isValidAllBlock(ArrayList<Block<ArrayList<Transaction>>> blocks) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
+        for (Block<ArrayList<Transaction>> block : blocks) if(!isValid(block,block.getParentHash())) return false;
+        return true;
     }
 
     @Override
@@ -211,7 +213,8 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     }
 
 
-    public boolean isValidPools(List<Entity.Block> blocksPool, List<Entity.Transaction> transactions) {
-        return true;
+    public boolean isValidPools(ArrayList<Block<ArrayList<Transaction>>> blocksPool, ArrayList<Transaction> transactions) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, BlockChainException {
+//        return isValid(blocksPool) && transactionRule.validTransactions(transactions);
+    return true;
     }
 }

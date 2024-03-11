@@ -7,6 +7,7 @@ import com.google.rpc.Status;
 import node.communication.base.NodeCommunicationServer;
 import org.example.BlockChainBase.BlockChain.BlockChainBase;
 import org.example.CustomBlockChain.Entity.Transaction;
+import org.example.CustomBlockChain.Entity.TypeRequestNodeCommunication;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class ValidNodeCommunicationServise {
                     .addDetails(Any.pack(exceptionResponse))
                     .build();
         }
-        if (request.getLastNumberBlock()>blockChain.getBlocks().size()-1){
+        if (request.getLastNumberBlock()>blockChain.getBlocks().size()-1 && TypeRequestNodeCommunication.valueOf(request.getType())==TypeRequestNodeCommunication.ALL){
             NodeCommunicationServer.ExceptionResponse exceptionResponse = NodeCommunicationServer.ExceptionResponse.newBuilder().setErrorCode(NodeCommunicationServer.ErrorCod.NOT_FOUND).setTimestamp(getTimeNow()).build();
             return Status.newBuilder()
                     .setCode(Code.NOT_FOUND.getNumber())

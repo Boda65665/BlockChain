@@ -1,6 +1,6 @@
 package org.example.CustomBlockChain.NodeCommunication;
 
-import com.google.gson.reflect.TypeToken;
+
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
@@ -8,13 +8,7 @@ import io.grpc.StatusRuntimeException;
 import node.communication.base.NodeCommunicationGrpc;
 import node.communication.base.NodeCommunicationServer;
 import node.entity.Entity;
-import org.example.BlockChainBase.BlockChain.BlockChain;
-import org.example.BlockChainBase.BlockChain.BlockChainBase;
 import org.example.BlockChainBase.Cryptography.AESEncryption;
-import org.example.BlockChainBase.Cryptography.HashEncoder;
-import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
-import org.example.BlockChainBase.DB.LevelDb.PoolBlock.LevelDbPoolBlock;
-import org.example.BlockChainBase.DB.LevelDb.State.LevelDbState;
 import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
 import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
 import org.example.BlockChainBase.DB.SQL.Node.NodeListDB;
@@ -25,22 +19,13 @@ import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.CustomBlockChain.Entity.TypeRequestNodeCommunication;
 import org.example.CustomBlockChain.Servise.ConverterServiseGrpcEntityCustom;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.lang.reflect.Type;
-import java.net.Socket;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NodeClient {
-    private final Type typeData = new TypeToken<ArrayList<Transaction>>() {
-    }.getType();
-    LevelDbBlock<Block<ArrayList<Transaction>>> levelDbBlock = new LevelDbBlock<>(typeData);
-    private final LevelDbPoolBlock<ArrayList<Transaction>> levelDbPoolBlock = new LevelDbPoolBlock<>(typeData);
-    LevelDbState levelDbState = new LevelDbState();
     private final JavaChain blockChain;
     AESEncryption encryption = new AESEncryption();
 
@@ -70,10 +55,8 @@ public class NodeClient {
                 nodeListDB.editStatusActive(IP, false);
                 return TypeRequestNodeCommunication.ALL;
             }
-            ArrayList<Block<ArrayList<Transaction>>> blocks = new ArrayList<>();
-            for (Entity.Block block : response.getBlocksList()) blocks.add(converterServiseGrpc.grpcBlockToBlock(block));
+            ArrayList<Block<ArrayList<Transaction>>> blocks = converterServiseGrpc.convertAllGrpcBlock(response.getBlocksList());
             blockChain.addAll(blocks);
-
             if (!downloadOnlyPools(response.getPoolTransactionsList(),response.getPoolBLocksList())) {
                 nodeListDB.editStatusActive(IP, false);
                 return TypeRequestNodeCommunication.ONLY_POOLS;
@@ -110,19 +93,15 @@ public class NodeClient {
         }
     }
 
-    public void update() throws Exception {
+    public void update() {
 
     }
     public boolean downloadOnlyPools(List<Entity.Transaction> transactionsGrpc, List<Entity.Block> blocksPoolGrpc) throws Exception {
-
-        if (!blockChain.isValidPools(blocksPoolGrpc, transactionsGrpc)) {
+        if (!blockChain.isValidPools(converterServiseGrpc.convertAllGrpcBlock(blocksPoolGrpc), converterServiseGrpc.convertAllGrpcData(transactionsGrpc))) {
             return false;
         }
-        ArrayList<Transaction> transactions = new ArrayList<>();
-        ArrayList<Block<ArrayList<Transaction>>> blocksPool = new ArrayList<>();
-
-        for (Entity.Block block : blocksPoolGrpc) blocksPool.add(converterServiseGrpc.grpcBlockToBlock(block));
-        for (Entity.Transaction transaction : transactionsGrpc) transactions.add(converterServiseGrpc.grpcDataToData(transaction));
+        ArrayList<Transaction> transactions = converterServiseGrpc.convertAllGrpcData(transactionsGrpc);
+        ArrayList<Block<ArrayList<Transaction>>> blocksPool = converterServiseGrpc.convertAllGrpcBlock(blocksPoolGrpc);
         blockChain.addAllToBlockPoll(blocksPool);
         blockChain.addAllTransactionToPoolTransactions(transactions);
         return true;
