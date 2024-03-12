@@ -1,6 +1,9 @@
 package org.example.CustomBlockChain;
 
+import org.example.BlockChainBase.BlockChain.BlockChain;
+import org.example.BlockChainBase.BlockChain.BlockChainBase;
 import org.example.BlockChainBase.DB.LevelDb.State.LevelDbState;
+import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
 import org.example.BlockChainBase.DB.SQL.Node.NodeListDB;
 import org.example.BlockChainBase.DB.SQL.Wallets.WalletDB;
 import org.example.BlockChainBase.Entity.*;
@@ -9,6 +12,7 @@ import org.example.BlockChainBase.Cryptography.HashEncoder;
 
 import org.example.CustomBlockChain.API.GRPC.NodeAPIGrpcServiseImpl;
 import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
+import org.example.CustomBlockChain.BlockChain.JavaChain;
 import org.example.CustomBlockChain.NodeCommunication.NodeServer;
 import org.example.CustomBlockChain.Servise.BlockAdderServiseImpl;
 import org.example.CustomBlockChain.Servise.JavaChainMethodService;
@@ -28,7 +32,9 @@ import java.util.Scanner;
 public class NodeApp {
     public static void main(String[] args) throws Exception {
         final WalletDB walletDB = new WalletDB();
+
         JavaChainMethodService javaChainMethodService = new JavaChainMethodService();
+
         BlockAdderServiseImpl blockAdderServise = new BlockAdderServiseImpl(javaChainMethodService.getJavaChain());
         NodeAPIGrpcServiseImpl nodeAPIGrpcServise = new NodeAPIGrpcServiseImpl(javaChainMethodService);
         Thread adderBlockThread =new Thread(()->{

@@ -1,4 +1,5 @@
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Entity\AddressCustomBuilder.java
+B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Servise\BlockKeyService.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\BlockChain\BlockChain.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Rules\RuleBase.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\DB\SQL\Node\NodeListDB.java
@@ -12,6 +13,7 @@ B:\ideaProject\s\target\generated-sources\protobuf\java\node\communication\base\
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Servise\ValidNodeCommunicationServise.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Rules\PoWRule.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\DB\LevelDb\PoolBlock\Keys\LevelDbKeysBlockPollStruct.java
+B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Entity\BlockType.java
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\DB\LevelDB\Transaction\LevelDbTransaction.java
 B:\ideaProject\s\src\main\java\org\example\BlockChainBase\Service\ConverterServiseGrpcEntityBase.java
 B:\ideaProject\s\src\main\java\org\example\CustomBlockChain\Entity\Wallet.java

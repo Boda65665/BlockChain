@@ -75,4 +75,11 @@ public class LevelDbState {
         db.close();
         return addresses;
         }
+
+    public static void main(String[] args) throws IOException {
+        LevelDbState levelDbState = new LevelDbState();
+        Address address = new Address("MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEb4nj3zkZxQajjJXR7qR9v+tvlu+6JsmnDB8QGYBtTf54pw7CqTHxJuWfLVYPOBbu",100000,0,0);
+        levelDbState.put(address);
+        System.out.println(levelDbState.get("MEkwEwYHKoZIzj0CAQYIKoZIzj0DAQEDMgAEb4nj3zkZxQajjJXR7qR9v+tvlu+6JsmnDB8QGYBtTf54pw7CqTHxJuWfLVYPOBbu").getNonce());
+    }
 }

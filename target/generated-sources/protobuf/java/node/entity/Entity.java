@@ -14,6 +14,104 @@ public final class Entity {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  /**
+   * Protobuf enum {@code node.entity.BlockType}
+   */
+  public enum BlockType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>CONFIRMED = 0;</code>
+     */
+    CONFIRMED(0),
+    /**
+     * <code>PENDING = 1;</code>
+     */
+    PENDING(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>CONFIRMED = 0;</code>
+     */
+    public static final int CONFIRMED_VALUE = 0;
+    /**
+     * <code>PENDING = 1;</code>
+     */
+    public static final int PENDING_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static BlockType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static BlockType forNumber(int value) {
+      switch (value) {
+        case 0: return CONFIRMED;
+        case 1: return PENDING;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<BlockType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        BlockType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<BlockType>() {
+            public BlockType findValueByNumber(int number) {
+              return BlockType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return node.entity.Entity.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final BlockType[] VALUES = values();
+
+    public static BlockType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private BlockType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:node.entity.BlockType)
+  }
+
   public interface TransactionOrBuilder extends
       // @@protoc_insertion_point(interface_extends:node.entity.Transaction)
       com.google.protobuf.MessageOrBuilder {
@@ -1557,6 +1655,15 @@ public final class Entity {
      * <code>int32 nonce = 6;</code>
      */
     int getNonce();
+
+    /**
+     * <code>.node.entity.BlockType blockType = 7;</code>
+     */
+    int getBlockTypeValue();
+    /**
+     * <code>.node.entity.BlockType blockType = 7;</code>
+     */
+    node.entity.Entity.BlockType getBlockType();
   }
   /**
    * Protobuf type {@code node.entity.Block}
@@ -1575,6 +1682,7 @@ public final class Entity {
       feeRecipient_ = "";
       hash_ = "";
       data_ = java.util.Collections.emptyList();
+      blockType_ = 0;
     }
 
     @java.lang.Override
@@ -1643,6 +1751,12 @@ public final class Entity {
             case 48: {
 
               nonce_ = input.readInt32();
+              break;
+            }
+            case 56: {
+              int rawValue = input.readEnum();
+
+              blockType_ = rawValue;
               break;
             }
             default: {
@@ -1835,6 +1949,23 @@ public final class Entity {
       return nonce_;
     }
 
+    public static final int BLOCKTYPE_FIELD_NUMBER = 7;
+    private int blockType_;
+    /**
+     * <code>.node.entity.BlockType blockType = 7;</code>
+     */
+    public int getBlockTypeValue() {
+      return blockType_;
+    }
+    /**
+     * <code>.node.entity.BlockType blockType = 7;</code>
+     */
+    public node.entity.Entity.BlockType getBlockType() {
+      @SuppressWarnings("deprecation")
+      node.entity.Entity.BlockType result = node.entity.Entity.BlockType.valueOf(blockType_);
+      return result == null ? node.entity.Entity.BlockType.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1867,6 +1998,9 @@ public final class Entity {
       if (nonce_ != 0) {
         output.writeInt32(6, nonce_);
       }
+      if (blockType_ != node.entity.Entity.BlockType.CONFIRMED.getNumber()) {
+        output.writeEnum(7, blockType_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1897,6 +2031,10 @@ public final class Entity {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(6, nonce_);
       }
+      if (blockType_ != node.entity.Entity.BlockType.CONFIRMED.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(7, blockType_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1924,6 +2062,7 @@ public final class Entity {
           .equals(other.getDataList())) return false;
       if (getNonce()
           != other.getNonce()) return false;
+      if (blockType_ != other.blockType_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1949,6 +2088,8 @@ public final class Entity {
       }
       hash = (37 * hash) + NONCE_FIELD_NUMBER;
       hash = (53 * hash) + getNonce();
+      hash = (37 * hash) + BLOCKTYPE_FIELD_NUMBER;
+      hash = (53 * hash) + blockType_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2099,6 +2240,8 @@ public final class Entity {
         }
         nonce_ = 0;
 
+        blockType_ = 0;
+
         return this;
       }
 
@@ -2140,6 +2283,7 @@ public final class Entity {
           result.data_ = dataBuilder_.build();
         }
         result.nonce_ = nonce_;
+        result.blockType_ = blockType_;
         onBuilt();
         return result;
       }
@@ -2231,6 +2375,9 @@ public final class Entity {
         }
         if (other.getNonce() != 0) {
           setNonce(other.getNonce());
+        }
+        if (other.blockType_ != 0) {
+          setBlockTypeValue(other.getBlockTypeValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2757,6 +2904,51 @@ public final class Entity {
       public Builder clearNonce() {
         
         nonce_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int blockType_ = 0;
+      /**
+       * <code>.node.entity.BlockType blockType = 7;</code>
+       */
+      public int getBlockTypeValue() {
+        return blockType_;
+      }
+      /**
+       * <code>.node.entity.BlockType blockType = 7;</code>
+       */
+      public Builder setBlockTypeValue(int value) {
+        blockType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockType blockType = 7;</code>
+       */
+      public node.entity.Entity.BlockType getBlockType() {
+        @SuppressWarnings("deprecation")
+        node.entity.Entity.BlockType result = node.entity.Entity.BlockType.valueOf(blockType_);
+        return result == null ? node.entity.Entity.BlockType.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.node.entity.BlockType blockType = 7;</code>
+       */
+      public Builder setBlockType(node.entity.Entity.BlockType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        blockType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockType blockType = 7;</code>
+       */
+      public Builder clearBlockType() {
+        
+        blockType_ = 0;
         onChanged();
         return this;
       }
@@ -4473,16 +4665,18 @@ public final class Entity {
       "(\t\022\013\n\003gas\030\002 \001(\005\022\023\n\013blockNumber\030\003 \001(\005\022\020\n\010" +
       "gasPrice\030\004 \001(\005\022\n\n\002to\030\006 \001(\t\022\r\n\005value\030\007 \001(" +
       "\005\022\014\n\004data\030\010 \001(\t\022\014\n\004sing\030\t \001(\t\022\r\n\005nonce\030\n" +
-      " \001(\005\022\014\n\004hash\030\013 \001(\t\022\016\n\006status\030\014 \001(\010\"\213\001\n\005B" +
+      " \001(\005\022\014\n\004hash\030\013 \001(\t\022\016\n\006status\030\014 \001(\010\"\266\001\n\005B" +
       "lock\022\022\n\nparentHash\030\001 \001(\t\022\024\n\014feeRecipient" +
       "\030\002 \001(\t\022\014\n\004hash\030\003 \001(\t\022\023\n\013blockNumber\030\004 \001(" +
       "\005\022&\n\004data\030\005 \003(\0132\030.node.entity.Transactio" +
-      "n\022\r\n\005nonce\030\006 \001(\005\"I\n\027BlockChainInfoConstr" +
-      "uct\022\025\n\rhashLastBlock\030\001 \001(\t\022\027\n\017numberLast" +
-      "Block\030\002 \001(\t\"u\n\007Address\022\021\n\tpublicKey\030\001 \001(" +
-      "\t\022\017\n\007balance\030\002 \001(\005\022\r\n\005nonce\030\003 \001(\005\022\024\n\014non" +
-      "cePending\030\004 \001(\005\022!\n\031hashTransactionsCompl" +
-      "eted\030\005 \003(\tb\006proto3"
+      "n\022\r\n\005nonce\030\006 \001(\005\022)\n\tblockType\030\007 \001(\0162\026.no" +
+      "de.entity.BlockType\"I\n\027BlockChainInfoCon" +
+      "struct\022\025\n\rhashLastBlock\030\001 \001(\t\022\027\n\017numberL" +
+      "astBlock\030\002 \001(\t\"u\n\007Address\022\021\n\tpublicKey\030\001" +
+      " \001(\t\022\017\n\007balance\030\002 \001(\005\022\r\n\005nonce\030\003 \001(\005\022\024\n\014" +
+      "noncePending\030\004 \001(\005\022!\n\031hashTransactionsCo" +
+      "mpleted\030\005 \003(\t*\'\n\tBlockType\022\r\n\tCONFIRMED\020" +
+      "\000\022\013\n\007PENDING\020\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -4501,7 +4695,7 @@ public final class Entity {
     internal_static_node_entity_Block_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_node_entity_Block_descriptor,
-        new java.lang.String[] { "ParentHash", "FeeRecipient", "Hash", "BlockNumber", "Data", "Nonce", });
+        new java.lang.String[] { "ParentHash", "FeeRecipient", "Hash", "BlockNumber", "Data", "Nonce", "BlockType", });
     internal_static_node_entity_BlockChainInfoConstruct_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_node_entity_BlockChainInfoConstruct_fieldAccessorTable = new

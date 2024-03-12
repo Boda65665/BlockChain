@@ -116,7 +116,9 @@ public class LevelDbPoolBlock<T> {
             Type typeData = new TypeToken<ArrayList<Transaction>>() {
             }.getType();
             LevelDbPoolBlock<ArrayList<Transaction>> levelDbPoolBlock = new LevelDbPoolBlock<>(typeData);
-            levelDbPoolBlock.getAll();
+        for (Block<ArrayList<Transaction>> block : levelDbPoolBlock.getAll()) {
+            System.out.println(block.getBlockNumber());
+        }
 
 
         }

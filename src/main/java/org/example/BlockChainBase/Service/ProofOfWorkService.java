@@ -6,12 +6,12 @@ import org.example.BlockChainBase.Entity.Address;
 import org.example.BlockChainBase.Entity.Block;
 import org.example.BlockChainBase.Exeptions.BlockChainException;
 import org.example.BlockChainBase.Rules.PoWRule;
+import org.example.CustomBlockChain.BlockChain.JavaChain;
+
 public class ProofOfWorkService<T> {
     private final BlockChainBase<T> blockChain;
     private final PoWRule<T> poWRule = new PoWRule<>();
     private final String feeRecipient;
-
-
     public ProofOfWorkService(BlockChainBase<T> blockChain, String feeRecipient) {
         this.blockChain = blockChain;
         this.feeRecipient = feeRecipient;

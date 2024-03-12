@@ -48,10 +48,11 @@ public class TransactionRule implements RuleBase<Transaction> {
             Address fromAddress = levelDbState.get(transaction.getFrom());
 
             if (fromAddress==null) return false;
-
-            if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo()+transaction.getNonce()),transaction.getFrom(),transaction.getSing())) return false;
+            if (!hashEncoder.SHA256(transaction.getFrom()+transaction.getValue()+transaction.getNonce()).equals(transaction.getHash())) return false;
+            if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo() + transaction.getNonce()), transaction.getFrom(), transaction.getSing())) return false;
 
             if (transaction.getValue()>fromAddress.getBalance() || transaction.getValue()<0) return false;
+
         }
         //sss
         return true;

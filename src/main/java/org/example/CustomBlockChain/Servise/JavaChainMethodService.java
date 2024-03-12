@@ -86,14 +86,7 @@ public class JavaChainMethodService {
     }
     //if transaction already invalid than update data block and hash
     public Block<ArrayList<Transaction>> updateBlockInformation(Block<ArrayList<Transaction>> block) throws IOException {
-        block.setBlockNumber(blockChain.getBlocks().size() + 1);
-        block.setParentHash(blockChain.getTail());
-        for (Transaction transaction : block.getData()) {
-            transaction.setBlockNumber(block.getBlockNumber());
-            transaction.setStatus(true);
-        }
-        block.setHash(Block.calculateHash(block.getData(), blockChain.getTail(), hashEncoder, block.getNonce()));
-        return block;
+        return javaChain.updateBlockInformation(block);
     }
     public boolean synchronizationBlockChain() throws Exception {
         String randomIpNode = nodeListDB.getRandomIp();

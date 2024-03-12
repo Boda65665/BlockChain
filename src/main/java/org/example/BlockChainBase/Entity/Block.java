@@ -33,6 +33,16 @@ public class Block<T> {
     private String hash;
     int blockNumber;
     T data;
+    BlockType blockType;
+
+    public BlockType getBlockType() {
+        return blockType;
+    }
+
+    public void setBlockType(BlockType blockType) {
+        this.blockType = blockType;
+    }
+
     int nonce;
 
     public int getNonce() {

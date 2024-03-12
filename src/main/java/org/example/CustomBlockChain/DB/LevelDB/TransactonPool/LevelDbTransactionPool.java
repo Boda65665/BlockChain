@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.example.BlockChainBase.Cryptography.HashEncoder;
+import org.example.CustomBlockChain.DB.LevelDB.Transaction.LevelDbTransaction;
 import org.example.CustomBlockChain.Entity.Transaction;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.DBIterator;
@@ -86,6 +87,10 @@ public class LevelDbTransactionPool {
             db.delete(bytes(key));
         }
         db.close();
+    }
+    public static void main(String[] args) throws IOException {
+        LevelDbTransactionPool levelDbTransaction = new LevelDbTransactionPool();
+        System.out.println(levelDbTransaction.getAll().size());
     }
 
 

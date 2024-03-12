@@ -3,6 +3,7 @@ package org.example.CustomBlockChain.Servise;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.example.BlockChainBase.Cryptography.HashEncoder;
 import org.example.BlockChainBase.Entity.Block;
+import org.example.BlockChainBase.Entity.BlockType;
 import org.example.BlockChainBase.Service.BlockAdderServise;
 import org.example.CustomBlockChain.BlockChain.JavaChain;
 import org.example.CustomBlockChain.Entity.Transaction;
@@ -49,7 +50,9 @@ public class BlockAdderServiseImpl implements BlockAdderServise
         Block<ArrayList<Transaction>> block = new Block<>(data);
         block.setBlockNumber(javaChain.getBlockNumberFromBlockPool());
         block.setParentHash(javaChain.getTailFromBlockPoll());
-        block.setHash(Block.calculateHash(data,block.getParentHash(),hashEncoder, block.getBlockNumber()));
+        block.setNonce(-1);
+        block.setHash(Block.calculateHash(data,block.getParentHash(),hashEncoder,block.getNonce()));
+        block.setBlockType(BlockType.PENDING);
         return block;
     }
 }

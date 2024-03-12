@@ -66,15 +66,14 @@ public class LevelDbTransaction {
         db.close();
         return transactions;
     }
-    public void buildTransactionPool(String transactionJson) throws IOException {
-        DB db = connectDb();
-        Type transactionType = new TypeToken<ArrayList<Transaction>>(){}.getType();
-        ArrayList<Transaction> transactions = gson.fromJson(transactionJson,transactionType);
-        for (Transaction transaction : transactions) {
-            String key = new HashEncoder().SHA256(transaction.getHash());
-            db.put(bytes(key),bytes(gson.toJson(transaction)));
+
+    public static void main(String[] args) throws IOException {
+        LevelDbTransaction levelDbTransaction = new LevelDbTransaction();
+        for (Transaction transaction : levelDbTransaction.getAll()) {
+            System.out.println(transaction.getNonce());
+            System.out.println(new HashEncoder().SHA256(transaction.getFrom()+transaction.getValue()+transaction.getNonce()).equals(transaction.getHash()));
         }
-        db.close();
+
     }
 
 

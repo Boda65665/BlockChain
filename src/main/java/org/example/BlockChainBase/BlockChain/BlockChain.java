@@ -6,7 +6,7 @@ import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
 import org.example.BlockChainBase.DB.LevelDb.PoolBlock.LevelDbPoolBlock;
 import org.example.BlockChainBase.DB.LevelDb.State.LevelDbState;
 import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
-import org.example.BlockChainBase.DB.SQL.Node.NodeListDB;
+import org.example.BlockChainBase.Entity.BlockType;
 import org.example.CustomBlockChain.Entity.Transaction;
 
 import org.example.BlockChainBase.Entity.Address;
@@ -32,10 +32,7 @@ public class BlockChain<T> implements BlockChainBase<T>{
     private final HashEncoder hashEncoder;
     private final ArrayList<Address> addresses;
     PoWRule<T> poWRule = new PoWRule<>();
-    private final LevelDbState levelDbState = new LevelDbState();
-    NodeListDB nodeListDB = new NodeListDB();
     String tail = null;
-    int blockNumber = 0;
     private final BlockChainInfoBD blockChainInfoBD = new BlockChainInfoBD();
     private final Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
     private final ArrayDeque<Block<T>> blocksPool;
@@ -47,13 +44,16 @@ public class BlockChain<T> implements BlockChainBase<T>{
         this.hashEncoder = hashEncoder;
         blocks=levelDbBlock.getAll();
         blocksPool = levelDbPoolBlock.getAll();
+        LevelDbState levelDbState = new LevelDbState();
         addresses = levelDbState.getAll();
-        if (!blocks.isEmpty()) tail = blocks.get(blocks.size()-1).getHash();
+        if (!blocks.isEmpty()) tail = blocks.getLast().getHash();
     }
-    public void addBlock(Block<T> block) throws Exception {
+    public void addBlock(Block<T> block) throws BlockChainException, IOException, SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         if (isValid(block,tail)) {
+            block.setBlockType(BlockType.CONFIRMED);
             levelDbBlock.put(block);
             blocks.add(block);
+            blockChainInfoBD.addInfo(block.getHash(), getBlockNumber());
             tail=block.getHash();
         }
         else throw new BlockChainException("Invalid block");
@@ -68,10 +68,11 @@ public class BlockChain<T> implements BlockChainBase<T>{
     @Override
     public boolean isValid(Block<T> block,String tail) throws JsonProcessingException {
         if (block==null) return false;
-        if (!poWRule.Execute(blocks,block)) return false;
+        if (block.getBlockType()==BlockType.CONFIRMED && !poWRule.Execute(blocks,block)) return false;
+
         if (block.getParentHash()==null && block.getBlockNumber()==1){
             if (tail!=null)return false;
-            String expectedHash = Block.calculateHash(block.getData(),tail,hashEncoder,block.getNonce());
+            String expectedHash = Block.calculateHash(block.getData(),null,hashEncoder,block.getNonce());
             return expectedHash.equals(block.getHash());
         }
         if (!block.getParentHash().equals(tail))return false;
@@ -85,11 +86,8 @@ public class BlockChain<T> implements BlockChainBase<T>{
     }
 
     @Override
-    public void scanBlockChain() throws Exception {
-        ArrayList<String> ipsNodes = nodeListDB.getAllIp();
-        for (String ipsNode : ipsNodes) {
+    public void scanBlockChain()  {
 
-        }
     }
 
     @Override

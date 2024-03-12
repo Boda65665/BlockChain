@@ -1,4 +1,7 @@
+org\example\BlockChainBase\Entity\BlockType.class
+node\entity\Entity$BlockType$1.class
 org\example\CustomBlockChain\Entity\TypeRequestNodeCommunication.class
+node\entity\Entity$BlockType.class
 node\entity\Entity$BlockChainInfoConstructOrBuilder.class
 node\entity\Entity$BlockChainInfoConstruct$Builder.class
 node\entity\Entity$BlockChainInfoConstruct$1.class

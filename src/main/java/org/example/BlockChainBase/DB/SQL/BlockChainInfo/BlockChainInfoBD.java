@@ -57,7 +57,7 @@ public class BlockChainInfoBD {
             e.printStackTrace();
         }
     }
-    public void addInfo(String lastHash,int height) throws Exception {
+    public void addInfo(String lastHash,int height) throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         if (!isAddingInfo()) {
 
             connectDb();
@@ -84,7 +84,7 @@ public class BlockChainInfoBD {
         connection.close();
         return isAddingInfo;
     }
-    public void updateInfo(String lastHash,int height) throws Exception {
+    public void updateInfo(String lastHash,int height) throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         connectDb();
 
         String sql = "UPDATE block_chain_info SET last_hash=?, height=?";

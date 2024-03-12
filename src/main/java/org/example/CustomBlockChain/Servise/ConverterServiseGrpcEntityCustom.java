@@ -2,6 +2,7 @@ package org.example.CustomBlockChain.Servise;
 
 import node.entity.Entity;
 import org.example.BlockChainBase.Entity.Block;
+import org.example.BlockChainBase.Entity.BlockType;
 import org.example.BlockChainBase.Service.ConverterServiseGrpcEntityBase;
 import org.example.CustomBlockChain.Entity.AddressCustom;
 import org.example.CustomBlockChain.Entity.Transaction;
@@ -52,6 +53,7 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
         return Entity.Block.newBuilder()
                 .setBlockNumber(block.getBlockNumber())
                 .setHash(block.getHash())
+                .setBlockType(block.getBlockType()== BlockType.CONFIRMED? Entity.BlockType.CONFIRMED: Entity.BlockType.PENDING)
                 .addAllData(dataBlock)
                 .setNonce(block.getNonce())
                 .setFeeRecipient(block.getFeeRecipient()==null ? "": block.getFeeRecipient())
@@ -99,6 +101,7 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
                 .setData(new ArrayList<>(transactions))
                 .setHash(block.getHash())
                 .setNonce(block.getNonce())
+                .setBlockType(block.getBlockType()== Entity.BlockType.CONFIRMED?BlockType.CONFIRMED:BlockType.PENDING)
                 .setFeeRecipient(block.getFeeRecipient())
                 .setParentHash(block.getParentHash().isEmpty()?null:block.getParentHash()).build();
     }

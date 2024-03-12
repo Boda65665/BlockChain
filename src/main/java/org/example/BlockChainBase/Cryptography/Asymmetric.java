@@ -6,6 +6,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
@@ -25,6 +27,8 @@ public class Asymmetric {
             this.privateKey = privateKey;
         }
     }
+    Logger logger = Logger.getLogger("Assymetric");
+
 
 
 
@@ -39,16 +43,19 @@ public class Asymmetric {
 
     }
 
-    public  boolean verify(String plaintext, String publicKey,String signature) throws SignatureException,
-            InvalidKeyException, UnsupportedEncodingException,
-            NoSuchAlgorithmException, NoSuchProviderException {
-        Security.addProvider(new BouncyCastleProvider());
-
-        Signature ecdsaVerify = Signature.getInstance("SHA256withECDSA",
-                "BC");
-        ecdsaVerify.initVerify(getPublicKeyFromString(publicKey));
-        ecdsaVerify.update(plaintext.getBytes("UTF-8"));
-        return ecdsaVerify.verify(Base64.getDecoder().decode(signature));
+    public  boolean verify(String plaintext, String publicKey,String signature){
+        try {
+            Security.addProvider(new BouncyCastleProvider());
+            Signature ecdsaVerify = Signature.getInstance("SHA256withECDSA",
+                    "BC");
+            ecdsaVerify.initVerify(getPublicKeyFromString(publicKey));
+            ecdsaVerify.update(plaintext.getBytes("UTF-8"));
+            return ecdsaVerify.verify(Base64.getDecoder().decode(signature));
+        }
+        catch (Exception err){
+            logger.log(Level.WARNING,"invalid transaction");
+            return false;
+        }
     }
 
     public  Keys generateKeys() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {

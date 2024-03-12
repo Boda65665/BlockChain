@@ -5,6 +5,7 @@ public class BlockBuilder<T> {
     private String feeRecipient;
     private String hash;
     int blockNumber;
+    BlockType blockType;
     T data;
     int nonce;
 
@@ -31,6 +32,10 @@ public class BlockBuilder<T> {
     public BlockBuilder<T> setNonce(int nonce) {
         this.nonce = nonce;
         return this;}
+    public BlockBuilder<T> setBlockType(BlockType blockType){
+        this.blockType = blockType;
+        return this;
+    }
     public Block<T> build(){
         return new Block<T>(parentHash,feeRecipient,hash,blockNumber,data,nonce);
     }
