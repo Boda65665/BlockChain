@@ -24,11 +24,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class NodeClient {
     private final JavaChain blockChain;
     AESEncryption encryption = new AESEncryption();
-
+    Logger logger = Logger.getLogger("NodeClient");
     private final ConverterServiseGrpcEntityCustom converterServiseGrpc = new ConverterServiseGrpcEntityCustom();
     private final NodeListDB nodeListDB = new NodeListDB();
 
@@ -37,42 +39,47 @@ public class NodeClient {
     }
 
 
-    public TypeRequestNodeCommunication SynchronizationBlockChain(String IP, int numberBlock,TypeRequestNodeCommunication typeRequest) throws Exception {
-        if (!ping(IP)) {
-            nodeListDB.editStatusActive(IP,false);
-            return TypeRequestNodeCommunication.ALL;
-        }
-        IpConfigParser ipConfigParser = new IpConfigParser();
-        final String ipAddress = ipConfigParser.getIpAddress();
-        ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:8081").usePlaintext().build();
-        NodeCommunicationGrpc.NodeCommunicationBlockingStub stub = NodeCommunicationGrpc.newBlockingStub(managedChannel);
-        if (typeRequest==TypeRequestNodeCommunication.ALL) {
-            NodeCommunicationServer.DownloadRequest downloadRequest = NodeCommunicationServer.DownloadRequest.newBuilder().setLastNumberBlock(numberBlock).setType("ALL").build();
-            NodeCommunicationServer.DownloadResponse response = stub.download(downloadRequest);
+    public TypeRequestNodeCommunication SynchronizationBlockChain(String IP, int numberBlock,TypeRequestNodeCommunication typeRequest) {
+        try {
+//            if (!ping(IP)) {
+//                nodeListDB.editStatusActive(IP, false);
+//                return TypeRequestNodeCommunication.ALL;
+//            }
+            IpConfigParser ipConfigParser = new IpConfigParser();
+            final String ipAddress = ipConfigParser.getIpAddress();
+            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:8081").usePlaintext().build();
+            NodeCommunicationGrpc.NodeCommunicationBlockingStub stub = NodeCommunicationGrpc.newBlockingStub(managedChannel);
+            if (typeRequest == TypeRequestNodeCommunication.ALL) {
+                NodeCommunicationServer.DownloadRequest downloadRequest = NodeCommunicationServer.DownloadRequest.newBuilder().setLastNumberBlock(numberBlock).setType("ALL").build();
+                NodeCommunicationServer.DownloadResponse response = stub.download(downloadRequest);
 
-            BlockChainInfoBD.BlockChainInfoStruct blockChainInfoStruct = new BlockChainInfoBD.BlockChainInfoStruct(encryption.decode(response.getBlockChainInfo().getHashLastBlock()), Integer.parseInt(encryption.decode(response.getBlockChainInfo().getNumberLastBlock())));
-            if (!blockChain.isQueryValid(response.getBlocksList().getLast().getHash(), response.getBlocksList().getLast().getBlockNumber(), blockChainInfoStruct)) {
-                nodeListDB.editStatusActive(IP, false);
-                return TypeRequestNodeCommunication.ALL;
+                BlockChainInfoBD.BlockChainInfoStruct blockChainInfoStruct = new BlockChainInfoBD.BlockChainInfoStruct(encryption.decode(response.getBlockChainInfo().getHashLastBlock()), Integer.parseInt(encryption.decode(response.getBlockChainInfo().getNumberLastBlock())));
+                if (!blockChain.isQueryValid(response.getBlocksList().getLast().getHash(), response.getBlocksList().getLast().getBlockNumber(), blockChainInfoStruct)) {
+                    nodeListDB.editStatusActive(IP, false);
+                    return TypeRequestNodeCommunication.ALL;
+                }
+                ArrayList<Block<ArrayList<Transaction>>> blocks = converterServiseGrpc.convertAllGrpcBlock(response.getBlocksList());
+                blockChain.addAll(blocks);
+                if (!downloadOnlyPools(response.getPoolTransactionsList(), response.getPoolBLocksList())) {
+                    nodeListDB.editStatusActive(IP, false);
+                    return TypeRequestNodeCommunication.ONLY_POOLS;
+                }
+            } else {
+                NodeCommunicationServer.DownloadRequest downloadRequest = NodeCommunicationServer.DownloadRequest.newBuilder().setLastNumberBlock(numberBlock).setType("ONLY_POOLS").build();
+                NodeCommunicationServer.DownloadResponse response = stub.download(downloadRequest);
+                if (!downloadOnlyPools(response.getPoolTransactionsList(), response.getPoolBLocksList())) {
+                    nodeListDB.editStatusActive(IP, false);
+                    return TypeRequestNodeCommunication.ONLY_POOLS;
+                }
             }
-            ArrayList<Block<ArrayList<Transaction>>> blocks = converterServiseGrpc.convertAllGrpcBlock(response.getBlocksList());
-            blockChain.addAll(blocks);
-            if (!downloadOnlyPools(response.getPoolTransactionsList(),response.getPoolBLocksList())) {
-                nodeListDB.editStatusActive(IP, false);
-                return TypeRequestNodeCommunication.ONLY_POOLS;
-            }
+            nodeListDB.editStatusActive(ipAddress, true);
+            return null;
+        } catch (Exception err) {
+            logger.log(Level.WARNING,err.toString());
+            return typeRequest;
         }
-        else {
-            NodeCommunicationServer.DownloadRequest downloadRequest = NodeCommunicationServer.DownloadRequest.newBuilder().setLastNumberBlock(numberBlock).setType("ONLY_POOLS").build();
-            NodeCommunicationServer.DownloadResponse response = stub.download(downloadRequest);
-            if (!downloadOnlyPools(response.getPoolTransactionsList(),response.getPoolBLocksList())) {
-                nodeListDB.editStatusActive(IP, false);
-                return TypeRequestNodeCommunication.ONLY_POOLS;
-            }
-        }
-        nodeListDB.editStatusActive(ipAddress,true);
-        return null;
     }
+
 
     private boolean ping(String ip) {
         try {

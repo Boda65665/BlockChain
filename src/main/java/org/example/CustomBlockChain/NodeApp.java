@@ -1,9 +1,6 @@
 package org.example.CustomBlockChain;
 
-import org.example.BlockChainBase.BlockChain.BlockChain;
-import org.example.BlockChainBase.BlockChain.BlockChainBase;
-import org.example.BlockChainBase.DB.LevelDb.State.LevelDbState;
-import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
+
 import org.example.BlockChainBase.DB.SQL.Node.NodeListDB;
 import org.example.BlockChainBase.DB.SQL.Wallets.WalletDB;
 import org.example.BlockChainBase.Entity.*;
@@ -12,72 +9,64 @@ import org.example.BlockChainBase.Cryptography.HashEncoder;
 
 import org.example.CustomBlockChain.API.GRPC.NodeAPIGrpcServiseImpl;
 import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
-import org.example.CustomBlockChain.BlockChain.JavaChain;
+import org.example.CustomBlockChain.Entity.TypeRequestNodeCommunication;
+import org.example.CustomBlockChain.NodeCommunication.NodeClient;
 import org.example.CustomBlockChain.NodeCommunication.NodeServer;
 import org.example.CustomBlockChain.Servise.BlockAdderServiseImpl;
 import org.example.CustomBlockChain.Servise.JavaChainMethodService;
 import org.example.BlockChainBase.Service.ProofOfWorkService;
 import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.CustomBlockChain.Entity.Wallet;
-
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Hello world!
  *
  */
 public class NodeApp {
+    final static IpConfigParser ipConfigParser = new IpConfigParser();
+    final static String ipAddress;
+    final static NodeListDB nodeListDB;
+    final static JavaChainMethodService javaChainMethodService;
+    final static Asymmetric asymmetricEncoder = new Asymmetric();
+    final static NodeServer nodeServer;
+    final static NodeClient nodeClient;
+    final static Logger logger = Logger.getLogger("NodeApp");
+    final static WalletDB walletDB;
+    final static HashEncoder hashEncoder = new HashEncoder();
+    final static BlockAdderServiseImpl blockAdderServise;
+    final static NodeAPIGrpcServiseImpl nodeAPIGrpcServise;
+    static Scanner scanner = new Scanner(System.in);
+
+    static {
+        try {
+            walletDB = new WalletDB();
+            ipAddress = ipConfigParser.getIpAddress();
+            nodeListDB = new NodeListDB();
+            javaChainMethodService = new JavaChainMethodService();
+            nodeServer = new NodeServer(javaChainMethodService.getJavaChain());
+            nodeClient = new NodeClient(javaChainMethodService.getJavaChain());
+            blockAdderServise = new BlockAdderServiseImpl(javaChainMethodService.getJavaChain());
+            nodeAPIGrpcServise = new NodeAPIGrpcServiseImpl(javaChainMethodService);
+        } catch (IOException | SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static void main(String[] args) throws Exception {
-        final WalletDB walletDB = new WalletDB();
+        startBlockAdderServise();
 
-        JavaChainMethodService javaChainMethodService = new JavaChainMethodService();
+        startServersTheard();
 
-        BlockAdderServiseImpl blockAdderServise = new BlockAdderServiseImpl(javaChainMethodService.getJavaChain());
-        NodeAPIGrpcServiseImpl nodeAPIGrpcServise = new NodeAPIGrpcServiseImpl(javaChainMethodService);
-        Thread adderBlockThread =new Thread(()->{
-            try {
-                blockAdderServise.run();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        adderBlockThread.start();
-        Thread serverApiThread = new Thread(() -> {
-//            System.setErr(new PrintStream(new OutputStream() {
-//                @Override
-//                public void write(int b) {
-//                    // Игнорируем сообщения об ошибках
-//                }
-//            }));
-            try {
-                nodeAPIGrpcServise.startServerAPi();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        serverApiThread.start();
-        Scanner scanner = new Scanner(System.in);
-        final HashEncoder hashEncoder = new HashEncoder();
-        final NodeServer nodeServer = new NodeServer(javaChainMethodService.getJavaChain());
-        final IpConfigParser ipConfigParser = new IpConfigParser();
-        final String ipAddress = ipConfigParser.getIpAddress();
-        final NodeListDB nodeListDB = new NodeListDB();
-        final Asymmetric asymmetricEncoder = new Asymmetric();
-        if (!nodeListDB.isCreated(ipAddress)) nodeListDB.addNode(ipAddress);
-        else nodeListDB.editStatusActive(ipAddress,false);
-        //startServerNode
-        Thread serverThread = new Thread(() -> {
-            try {
-                nodeServer.startServerNodeCommunication();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        registerNode();
 
-        serverThread.start();
+
         while (true){
             System.out.println("\nВыберите действие из выпадающего списка:\n1)Синхронизация с блокчейном\n2)Кошелек\n3)Майнинг\n4)Настройки ноды");
             try {
@@ -86,30 +75,26 @@ public class NodeApp {
                     //synchronizationBlockChain
                     case 1: {
                         System.out.println("\nЗапуск поиска нод в сети...");
-                        if (!javaChainMethodService.synchronizationBlockChain()) {
+                        if (!synchronizationBlockChain()) {
                             System.out.println("Вы единственная Node в сети");
                         }
                         break;
                     }
                     case 2: {
                         //wallet
-                        LevelDbState levelDbState = new LevelDbState();
-
                         System.out.println("1)Мои кошельки\n2)Создать кошелек\n3)Востановить кошелек\n4)Назад");
                         numberExecute = scanner.nextInt();
                         switch (numberExecute) {
-                            //myWallets
                             case 1: {
-                                ArrayList<Wallet> wallets = walletDB.getAllWallets();
-                                if (wallets.isEmpty()) {
-                                    System.out.println("У вас нет еще ни 1 кошелька");
-                                    break;
-                                } else {
-                                    System.out.println("Выберите кошелек,которым хотите воспользоваться:");
-                                    for (int i = 0; i < wallets.size(); i++) {
-                                        System.out.printf("%d) %s%n", i + 1, wallets.get(i).getPublicKey());
+                                    ArrayList<Wallet> wallets = walletDB.getAllWallets();
+                                    if (wallets.isEmpty()){
+                                        System.out.println("У вас нет ни 1 кошелька");
                                     }
-                                    System.out.println("0) Exit");
+                                    for (int i = 0;i<wallets.size();i++) {
+                                    System.out.printf("%d) %s%n", i + 1, wallets.get(i).getPublicKey());
+                                    }
+                                    System.out.println("0)exit");
+
                                     int numberWallet = scanner.nextInt();
                                     while (numberWallet > wallets.size()) {
                                         System.out.println("Вы ввели недействительный номер кошелька");
@@ -121,9 +106,9 @@ public class NodeApp {
                                     System.out.println("Для выхода из меню ввода пороля введите: 'exit'");
                                     scanner = new Scanner(System.in);
                                     String password = scanner.nextLine();
-                                    while (!password.equals("exit") && !hashEncoder.SHA256(password).equals(wallet.getPassword())) {
-                                        password = scanner.nextLine();
+                                    while (!checkPasswordInvalid(wallet.getPassword(), password) && !password.equals("exit")) {
                                         System.out.println("Введен неверный пароль!Для выхода из меню ввода пороля введите: 'exit'");
+                                        password = scanner.nextLine();
                                     }
                                     if (password.equals("exit")) break;
                                     System.out.println("\nYour Wallet:");
@@ -149,28 +134,21 @@ public class NodeApp {
                                                 System.out.println("Некорректный адресс");
                                                 break;
                                             }
-                                            if (!asymmetricEncoder.isValidPublicKey(wallet.getPublicKey())) {
-                                                break;
-                                            }
+                                            if (!asymmetricEncoder.isValidPublicKey(wallet.getPublicKey())) break;
                                             System.out.println("Введите суммы, которую хотите отправить");
                                             int value = scanner.nextInt();
                                             if (value < 0 || value > balance || balance==0) {
                                                 System.out.println("Некорректная сумма или недостаточный баланс");
                                                 break;
                                             }
-                                            Transaction transaction = Transaction.newTransactionBuilder()
-                                                    .setFrom(wallet.getPublicKey())
-                                                    .setData("send transaction to "+to)
-                                                    .setTo(to).setValue(value)
-                                                    .setNonce(javaChainMethodService.getNoncePending(wallet.getPublicKey()))
-                                                    .setSing(javaChainMethodService.singTransaction(wallet.getPrivateKey(),wallet.getPublicKey(),to)).build();
-
-                                            if (javaChainMethodService.sendTransaction(transaction)==null){
+                                            String hashTransaction = sendTransaction(wallet.getPublicKey(),to,value,wallet.getPrivateKey());
+                                            if (hashTransaction==null){
                                                 System.out.println("invalid transaction");
                                                 break;
                                             }
                                             System.out.println("Успешно отправленно!");
                                             System.out.println("ждите подтверждение отправки транзакции в блокчейне");
+                                            System.out.format("Хэш транзакции: %s",hashTransaction);
                                             break;
                                         }
                                         //deleteWallet
@@ -178,7 +156,7 @@ public class NodeApp {
                                             System.out.println("Введите пароль от кошелька,который хотите удалить");
                                             scanner = new Scanner(System.in);
                                             password = scanner.nextLine();
-                                            if (!hashEncoder.SHA256(password).equals(wallet.getPassword())) {
+                                            if (!checkPasswordInvalid(wallet.getPassword(), password)) {
                                                 System.out.println("Неверный пароль");
                                                 break;
                                             }
@@ -190,7 +168,7 @@ public class NodeApp {
                                             System.out.println("Введите пароль: ");
                                             scanner = new Scanner(System.in);
                                             password = scanner.nextLine();
-                                            if (!hashEncoder.SHA256(password).equals(wallet.getPassword())) {
+                                            if (!checkPasswordInvalid(wallet.getPassword(), password)) {
                                                 System.out.println("Неверный пароль");
                                                 break;
                                             }
@@ -200,8 +178,6 @@ public class NodeApp {
                                             break;
                                         }
                                     }
-
-                                }
                                 break;
                             }
                             //createWallet
@@ -215,15 +191,12 @@ public class NodeApp {
                                     password = scanner.nextLine();
                                 }
                                 if (password.equals("exit")) break;
-                                Asymmetric.Keys keys = asymmetricEncoder.generateKeys();
-                                Wallet newWallet = new Wallet(password, keys.publicKey(), keys.privateKey());
-                                walletDB.createNewWallet(newWallet);
+                                if (createNewWallet(password)) System.out.println("Успешно создано");
                                 break;
                             }
                             case 3: {
                                 //restoreWallet
                                 System.out.println("Что хотите сделать?\n1)Востановить при помощи Private key\n0)Exit");
-
                                 numberExecute = scanner.nextInt();
                                 switch (numberExecute) {
                                     case 0:
@@ -232,60 +205,28 @@ public class NodeApp {
                                         scanner = new Scanner(System.in);
                                         System.out.println("Введите Private Key");
                                         String privateKey = scanner.nextLine();
-                                        String publicKey = asymmetricEncoder.getPublicFromPrivateKey(privateKey);
-                                        if (publicKey == null) {
-                                            System.out.println("Неверный privateKey");
-                                            break;
-
-                                        }
-                                        if (walletDB.getWalletByAddress(publicKey) != null) {
-                                            System.out.println("Данный кошелек уже добавлен!");
-                                            break;
-                                        }
+                                        String password = scanner.nextLine();
                                         System.out.println("Придумайте новый пароль для своего кошелька,минимум 5 символов");
                                         System.out.println("Или введите exit для выхожа из меню.");
-                                        scanner = new Scanner(System.in);
-                                        String password = scanner.nextLine();
                                         while (!password.equals("exit") && password.length() < 5) {
                                             System.out.println("Пароль слишком короткий,введите пароль длинной более 5 символов");
                                             password = scanner.nextLine();
                                         }
-                                        if (password.equals("exit")) break;
-                                        Wallet newWallet = new Wallet(password, publicKey, privateKey);
-                                        walletDB.createNewWallet(newWallet);
-                                        System.out.println("Кошелек успешно добавлен!");
+                                        if (password.equals("exit")) return;
+                                        String result = restoreWallet(privateKey,password);
+                                        if (result==null)break;
+                                        System.out.println(result);
                                         break;
-
                                     }
                                 }
                             }
-                            break;
-
                         }
                     }
                     break;
                     //mining
                     case 3: {
                         System.out.println("Майнинг запущен,для выхода введите 'exit'");
-                        Thread miningThread = new Thread(() -> {
-                            try {
-                                String feeRecipient = walletDB.getMyAddressForMining();
-                                ProofOfWorkService<ArrayList<Transaction>> proofOfWorkService = new ProofOfWorkService<>(javaChainMethodService.getJavaChain(),feeRecipient);
-
-                                ArrayDeque<Block<ArrayList<Transaction>>> blockPool;
-                                while (true) {
-                                    blockPool= javaChainMethodService.getBlocksPoll();
-
-                                    if (!blockPool.isEmpty()) {
-                                        Block<ArrayList<Transaction>> block = javaChainMethodService.popBlockFromPoll();
-                                        proofOfWorkService.startMining(javaChainMethodService.getBlockNumber(), javaChainMethodService.updateBlockInformation(block));
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
-                        miningThread.start();
+                        Thread miningThread = miningStart();
                         scanner =  new Scanner(System.in);
                         String execute = scanner.nextLine();
                         while (!execute.equals("exit")) execute = scanner.nextLine();
@@ -326,12 +267,14 @@ public class NodeApp {
                                     }
                                 } else System.out.println("\nУ вас нет ни одного кошелька");
                             } else if (numberExecute == 2) {
+                                System.out.println("Введите аддрес на ,который хотите получать награду за майнинг");
                                 scanner = new Scanner(System.in);
                                 String address = scanner.nextLine();
                                 if (!asymmetricEncoder.isValidPublicKey(address)) {
                                     System.out.println("Некорректный аддресс кошелька");
                                 }
                                 walletDB.setAddressForMining(address);
+                                System.out.println("Успешно");
 
                             } else {
                                 System.out.println("Некорректный номер параметра");
@@ -339,15 +282,144 @@ public class NodeApp {
 
                             break;
                         }
-
                     }
                 }
             }
             catch (InputMismatchException e){
-                System.out.println("Введите действительный номер комманды!\n");;
+                System.out.println("Введите действительный номер комманды!\n");
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING,e.toString());
             }
+        }
+    }
+
+    private static Thread miningStart() {
+        Thread miningThread = new Thread(() -> {
+            try {
+                String feeRecipient = walletDB.getMyAddressForMining();
+                ProofOfWorkService<ArrayList<Transaction>> proofOfWorkService = new ProofOfWorkService<>(javaChainMethodService.getJavaChain(),feeRecipient);
+
+                ArrayDeque<Block<ArrayList<Transaction>>> blockPool;
+                while (true) {
+                    blockPool= javaChainMethodService.getBlocksPoll();
+
+                    if (!blockPool.isEmpty()) {
+                        Block<ArrayList<Transaction>> block = javaChainMethodService.popBlockFromPoll();
+                        proofOfWorkService.startMining(javaChainMethodService.getBlockNumber(), javaChainMethodService.updateBlockInformation(block));
+                    }
+                }
+            } catch (Exception e) {
+                logger.log(Level.WARNING,e.toString());
+            }
+        });
+        miningThread.start();
+        return miningThread;
+    }
+
+    private static void registerNode() {
+        try {
+            if (!nodeListDB.isCreated(ipAddress)) nodeListDB.addNode(ipAddress);
+            else nodeListDB.editStatusActive(ipAddress, false);
+        }
+        catch (Exception err) {
+            logger.log(Level.WARNING,err.toString());
+        }
+    }
+
+    private static void startBlockAdderServise() {
+        Thread adderBlockThread =new Thread(()->{
+            try {
+                blockAdderServise.run();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        adderBlockThread.start();
+    }
+
+    private static void startServersTheard() {
+        Thread serverApiThread = new Thread(() -> {
+            try {
+                nodeAPIGrpcServise.startServerAPi();
+            } catch (Exception e) {
+                logger.log(Level.WARNING,e.toString());
+            }
+        });
+        serverApiThread.start();
+
+        Thread serverThread = new Thread(() -> {
+            try {
+                nodeServer.startServerNodeCommunication();
+            } catch (Exception e) {
+                logger.log(Level.WARNING,e.toString());
+            }
+        });
+        serverThread.start();
+
+    }
+
+
+    private static String restoreWallet(String privateKey,String password){
+        try {
+            String publicKey = asymmetricEncoder.getPublicFromPrivateKey(privateKey);
+            if (publicKey == null) {
+                return "private key invalid";
+            }
+            if (walletDB.getWalletByAddress(publicKey) != null) {
+                return "Данный кошелек уже добавлен!";
+            }
+            Wallet newWallet = new Wallet(password, publicKey, privateKey);
+            walletDB.createNewWallet(newWallet);
+            return "Кошелек успешно добавлен!";
+        }
+        catch (Exception err){
+            logger.log(Level.WARNING,"Проищошла ошибка: "+err);
+            return null;
+        }
+    }
+
+
+    public static boolean synchronizationBlockChain() throws Exception {
+        String randomIpNode = nodeListDB.getRandomIp();
+        TypeRequestNodeCommunication typeRequest = TypeRequestNodeCommunication.ALL;
+        while (randomIpNode != null) {
+            typeRequest = nodeClient.SynchronizationBlockChain(randomIpNode,javaChainMethodService.getBlockNumber(),typeRequest);
+            if (typeRequest==null) break;
+            randomIpNode = nodeListDB.getRandomIp();
+        }
+        if (randomIpNode == null) {
+            nodeListDB.editStatusActive(ipAddress, true);
+            return false;
+        }
+        return true;
+
+    }
+    public static String sendTransaction(String from,String to,int value,String privateKey){
+        try {
+            Transaction transaction = Transaction.newTransactionBuilder()
+                    .setFrom(from)
+                    .setData("send transaction to "+to)
+                    .setTo(to).setValue(value)
+                    .setNonce(javaChainMethodService.getNoncePending(from))
+                    .setSing(javaChainMethodService.singTransaction(privateKey,from,to)).build();
+            return javaChainMethodService.sendTransaction(transaction);
+        } catch (Exception e) {
+                logger.log(Level.WARNING,e.toString());
+            return null;
+        }
+    }
+    public static boolean checkPasswordInvalid(String password, String enteredPassword){
+        return !hashEncoder.SHA256(password).equals(enteredPassword);
+    }
+    private static boolean createNewWallet(String password) {
+        try {
+            Asymmetric.Keys keys = asymmetricEncoder.generateKeys();
+            Wallet newWallet = new Wallet(password, keys.publicKey(), keys.privateKey());
+            walletDB.createNewWallet(newWallet);
+            return true;
+        } catch (Exception e) {
+            logger.log(Level.WARNING,"Произошла ошибка создание кошелька: "+e);
+            return false;
         }
     }
 

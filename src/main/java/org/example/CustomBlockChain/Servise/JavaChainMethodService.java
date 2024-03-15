@@ -28,16 +28,14 @@ public class JavaChainMethodService {
     LevelDBStateCustom levelDbState = new LevelDBStateCustom();
     LevelDbTransaction levelDbTransaction = new LevelDbTransaction();
     Asymmetric asymmetric = new Asymmetric();
-    final IpConfigParser ipConfigParser = new IpConfigParser();
-    final String ipAddress = ipConfigParser.getIpAddress();
-    NodeListDB nodeListDB = new NodeListDB();
+
+
     HashEncoder hashEncoder = new HashEncoder();
     private final Type typeData = new TypeToken<ArrayList<Transaction>>() {
     }.getType();
     BlockChain<ArrayList<Transaction>> blockChain = new BlockChain<>(hashEncoder);
     LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>(typeData);
     JavaChain javaChain = new JavaChain(blockChain);
-    NodeClient nodeClient = new NodeClient(javaChain);
 
     public JavaChainMethodService() throws IOException, SQLException, ClassNotFoundException {
     }
@@ -88,20 +86,5 @@ public class JavaChainMethodService {
     public Block<ArrayList<Transaction>> updateBlockInformation(Block<ArrayList<Transaction>> block) throws IOException {
         return javaChain.updateBlockInformation(block);
     }
-    public boolean synchronizationBlockChain() throws Exception {
-        String randomIpNode = nodeListDB.getRandomIp();
-        TypeRequestNodeCommunication typeRequest = TypeRequestNodeCommunication.ALL;
-        while (randomIpNode != null) {
-            typeRequest = nodeClient.SynchronizationBlockChain(randomIpNode, getBlockNumber(),typeRequest);
-            if (typeRequest==null) break;
-            randomIpNode = nodeListDB.getRandomIp();
 
-        }
-        if (randomIpNode == null) {
-            nodeListDB.editStatusActive(ipAddress, true);
-            return false;
-        }
-        return true;
-
-    }
 }

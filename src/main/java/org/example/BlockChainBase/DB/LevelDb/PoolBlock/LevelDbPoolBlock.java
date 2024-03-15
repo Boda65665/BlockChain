@@ -117,10 +117,8 @@ public class LevelDbPoolBlock<T> {
             }.getType();
             LevelDbPoolBlock<ArrayList<Transaction>> levelDbPoolBlock = new LevelDbPoolBlock<>(typeData);
         for (Block<ArrayList<Transaction>> block : levelDbPoolBlock.getAll()) {
-            System.out.println(block.getBlockNumber());
+            System.out.println(block.getHash());
         }
-
-
         }
 
     }
