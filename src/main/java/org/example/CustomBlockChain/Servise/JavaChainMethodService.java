@@ -7,14 +7,12 @@ import org.example.BlockChainBase.Cryptography.HashEncoder;
 import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
 import org.example.CustomBlockChain.DB.LevelDB.State.LevelDBStateCustom;
 import org.example.CustomBlockChain.DB.LevelDB.Transaction.LevelDbTransaction;
-import org.example.BlockChainBase.DB.SQL.Node.NodeListDB;
 import org.example.BlockChainBase.Entity.Block;
 import org.example.CustomBlockChain.Entity.AddressCustom;
 import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.CustomBlockChain.BlockChain.JavaChain;
-import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
-import org.example.CustomBlockChain.Entity.TypeRequestNodeCommunication;
-import org.example.CustomBlockChain.NodeCommunication.NodeClient;
+import org.example.CustomBlockChain.Entity.TypeDownloadRequestNodeCommunication;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.security.*;

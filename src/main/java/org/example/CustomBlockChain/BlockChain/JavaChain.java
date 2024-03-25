@@ -15,6 +15,10 @@ import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.BlockChainBase.Exeptions.BlockChainException;
 import org.example.CustomBlockChain.NodeCommunication.NodeClient;
 import org.example.CustomBlockChain.Rules.TransactionRule;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.security.*;
 import java.sql.SQLException;
@@ -62,9 +66,11 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
                 levelDbTransaction.put(transaction);
             }
             awardRewardsForMining(block.getFeeRecipient());
-            nodeClient.update();
+            nodeClient.update(block);
         } catch (Exception e) {
             logger.log(Level.WARNING,"Block not adder so block is invalid");
+            e.printStackTrace();
+
         }
     }
     public void awardRewardsForMining(String addressFeeRecipient) throws IOException {
@@ -119,10 +125,9 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     public String addTransactionToPoolTransactions(Transaction transaction) throws Exception {
         if (transactionRule.Execute(transaction)) {
             Address address = levelDbState.get(transaction.getFrom());
-            address.setNoncePending(address.getNoncePending()+1);
-
             transaction.setHash(hashEncoder.SHA256(transaction.getFrom()+transaction.getValue()+address.getNoncePending()));
             transaction.setNonce(address.getNoncePending());
+            address.setNoncePending(address.getNoncePending()+1);
             poolTransactions.add(transaction);
             levelDbState.update(address);
             levelDbTransactionPool.put(transaction);
@@ -152,9 +157,10 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
     }
 
     @Override
-    public boolean isQueryValid(String lastHash, int height, BlockChainInfoBD.BlockChainInfoStruct actualInfoBlockChain) {
-        return blockChain.isQueryValid(lastHash,height,actualInfoBlockChain);
+    public boolean isQueryValid(String lastHash, int height, BlockChainInfoBD.BlockChainInfoStruct blockChainInfoStruct) {
+        return blockChain.isQueryValid(lastHash,height,blockChainInfoStruct);
     }
+
 
     @Override
     public void scanBlockChain() throws Exception {
@@ -195,7 +201,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         block.setParentHash(blockChain.getTail());
         for (Transaction transaction : block.getData()) {
             transaction.setBlockNumber(block.getBlockNumber());
-            transaction.setStatus(true);
+            if (transactionRule.Execute(transaction)) transaction.setStatus(true);
         }
         block.setHash(Block.calculateHash(block.getData(), blockChain.getTail(), hashEncoder, block.getNonce()));
         return block;
@@ -204,6 +210,19 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
     public boolean isValidPools(ArrayList<Block<ArrayList<Transaction>>> blocksPool, ArrayList<Transaction> transactions) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException, BlockChainException {
         return isValidAllBlock(blocksPool) && transactionRule.validTransactions(transactions);
-
     }
+    @Override
+    public boolean isAlreadyExistBlock(int blockNumber) throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        return blockChain.isAlreadyExistBlock(blockNumber);
+    }
+
+    @Override
+    public boolean isAlreadyExistBlockPending(int blockNumber) throws Exception {
+        return blockChain.isAlreadyExistBlockPending(blockNumber);
+    }
+
+    public boolean isAlreadyExistTransactionPending(String hashTransaction) throws IOException {
+        return levelDbTransaction.get(hashTransaction)!=null || levelDbTransactionPool.get(hashTransaction)!=null;
+    }
+
 }

@@ -33,9 +33,9 @@ public class LevelDbKeysBlockPollStruct {
 
             }
         }
-        public void put(String key) throws IOException {
+        public void put(String key,int numberLastBlock) throws IOException {
             DB db = connectDb();
-            db.put(bytes(keyService.nextKey()),bytes(key));
+            db.put(bytes(keyService.valueOf(numberLastBlock)),bytes(key));
             db.close();
         }
     public String getByNumber(long number) throws IOException {
@@ -55,9 +55,7 @@ public class LevelDbKeysBlockPollStruct {
         }
         public void deleteByNumber(int numberBlock) throws IOException {
             String key = keyService.valueOf(numberBlock);
-
             if (getByHash(key)==null)return;
-
             DB db = connectDb();
             db.delete(bytes(key));
             db.close();

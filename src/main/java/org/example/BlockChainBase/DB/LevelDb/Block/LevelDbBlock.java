@@ -101,9 +101,7 @@ public class LevelDbBlock<T>{
     public static void main(String[] args) throws IOException {
         Type typeData = new TypeToken<ArrayList<Transaction>>(){}.getType();
         LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>(typeData);
-        for (Block<ArrayList<Transaction>> block : levelDbBlock.getAll()) {
-            System.out.println(block.getBlockType());
-        }
+        System.out.println(levelDbBlock.getAll().size());
 
     }
 

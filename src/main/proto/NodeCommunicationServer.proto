@@ -27,15 +27,42 @@ enum ErrorCod {
   INVALID_NUMBER_BLOCK = 0;
   NOT_FOUND = 1;
   THIS_NODE_IS_NOT_VALID = 2;
+
+  DATA_BE_NULL = 3;
+  ALREADY_EXISTS = 4;
+  INCORRECT_DATA = 5;
 }
 
 message ExceptionResponse {
   google.protobuf.Timestamp timestamp = 1;
   ErrorCod error_code = 2;
 }
+message UpdateRequest{
+  oneof data {
+    entity.Block block = 1;
+    entity.Transaction transaction = 2;
+  }
+  entity.BlockChainInfoConstruct blockChainInfo = 4;
+}
+message UpdateResponse{
+  bool isUpdate = 1;
+}
+
+
+message IsUpdateRequest{
+  oneof infoAboutLastData {
+      int32 lastNumberBlock = 1;
+      string lastTransactionHash = 2;
+  }
+}
+message IsUpdateResponse{
+  bool isUpdate = 1;
+}
 
 service NodeCommunication{
   rpc test(TestRequest) returns (TestResponse);
   rpc ping(PingRequest) returns (PingResponse);
   rpc download(DownloadRequest) returns (DownloadResponse);
+  rpc isUpdate(IsUpdateRequest) returns (IsUpdateResponse);
+  rpc update(UpdateRequest) returns (UpdateResponse);
 }

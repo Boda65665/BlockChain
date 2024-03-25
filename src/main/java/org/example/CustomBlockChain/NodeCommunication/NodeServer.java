@@ -1,7 +1,5 @@
 package org.example.CustomBlockChain.NodeCommunication;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.rpc.Status;
 import io.grpc.ServerBuilder;
 import io.grpc.protobuf.StatusProto;
@@ -9,27 +7,23 @@ import io.grpc.stub.StreamObserver;
 import node.communication.base.NodeCommunicationGrpc;
 import node.communication.base.NodeCommunicationServer;
 import node.entity.Entity;
-import org.example.BlockChainBase.BlockChain.BlockChainBase;
 
 import org.example.BlockChainBase.Cryptography.AESEncryption;
 import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
-import org.example.BlockChainBase.Entity.Block;
 import org.example.CustomBlockChain.BlockChain.JavaChain;
-import org.example.CustomBlockChain.Entity.Transaction;
-import org.example.CustomBlockChain.Entity.TypeRequestNodeCommunication;
+import org.example.CustomBlockChain.DB.LevelDB.TransactonPool.LevelDbTransactionPool;
+import org.example.CustomBlockChain.Entity.TypeDownloadRequestNodeCommunication;
+import org.example.CustomBlockChain.Entity.TypeUpdateRequestNodeCommunication;
 import org.example.CustomBlockChain.Servise.ConverterServiseGrpcEntityCustom;
-import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
-import org.example.BlockChainBase.DB.LevelDb.PoolBlock.LevelDbPoolBlock;
-import org.example.BlockChainBase.DB.LevelDb.State.LevelDbState;
-import org.example.BlockChainBase.DB.SQL.Node.NodeListDB;
-import org.example.CustomBlockChain.Servise.ValidNodeCommunicationServise;
+import org.example.CustomBlockChain.Servise.Validation.ValidNodeCommunicationServise;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.sql.SQLException;
-import java.time.chrono.JapaneseChronology;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
     private final BlockChainInfoBD blockChainInfoBD = new BlockChainInfoBD();
@@ -37,8 +31,10 @@ public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
     NodeClient nodeClient;
     private final ConverterServiseGrpcEntityCustom converterServise = new ConverterServiseGrpcEntityCustom();
     private final JavaChain blockChain;
+    private final LevelDbTransactionPool levelDbTransactionPool = new LevelDbTransactionPool();
 
     private final ValidNodeCommunicationServise validNodeCommunicationServise;
+    private final Logger logger = Logger.getLogger("NodeServer");
 
 
     public NodeServer(JavaChain blockChain) throws SQLException, IOException, ClassNotFoundException {
@@ -46,6 +42,44 @@ public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
         this.nodeClient=new NodeClient(blockChain);
         this.validNodeCommunicationServise = new ValidNodeCommunicationServise(blockChain);
         }
+        @Override
+        public void isUpdate(NodeCommunicationServer.IsUpdateRequest request, StreamObserver<NodeCommunicationServer.IsUpdateResponse> responseObserver) {;
+            try {
+                NodeCommunicationServer.IsUpdateResponse.Builder isUpdateResponseBuilder = NodeCommunicationServer.IsUpdateResponse.newBuilder();
+                Status statusErrorResponse = validNodeCommunicationServise.validIsUpdateStatus(request);
+                isUpdateResponseBuilder.setIsUpdate(statusErrorResponse != null);
+                responseObserver.onNext(isUpdateResponseBuilder.build());
+                responseObserver.onCompleted();
+            } catch (Exception e) {
+                logger.log(Level.WARNING,e.toString());
+
+            }
+        }
+        @Override
+        public void update(NodeCommunicationServer.UpdateRequest request, StreamObserver<NodeCommunicationServer.UpdateResponse> responseObserver) {;
+            NodeCommunicationServer.UpdateResponse.Builder updateResponseBuilder = NodeCommunicationServer.UpdateResponse.newBuilder();
+            try {
+
+                Status statusErrorResponse = validNodeCommunicationServise.validUpdateRequest(request);
+                if (statusErrorResponse==null) {
+
+                    switch (TypeUpdateRequestNodeCommunication.valueOf(request.getDataCase().getNumber())) {
+                        case BLOCK -> blockChain.addBlock(converterServise.grpcBlockToBlock(request.getBlock()));
+                        case TRANSACTION_PENDING -> levelDbTransactionPool.put(converterServise.grpcDataToData(request.getTransaction()));
+                    }
+                }
+                updateResponseBuilder.setIsUpdate(statusErrorResponse == null);
+                responseObserver.onNext(updateResponseBuilder.build());
+                responseObserver.onCompleted();
+            }
+            catch (Exception err){
+                err.printStackTrace();
+                responseObserver.onNext(updateResponseBuilder.setIsUpdate(false).build());
+                responseObserver.onCompleted();
+            }
+        }
+
+
 
     @Override
     public void download(NodeCommunicationServer.DownloadRequest request,io.grpc.stub.StreamObserver<NodeCommunicationServer.DownloadResponse> responseObserver)  {
@@ -55,9 +89,9 @@ public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
             responseObserver.onError(StatusProto.toStatusRuntimeException(statusErrorResponse));
             responseObserver.onCompleted();
         }
-        TypeRequestNodeCommunication typeRequest = TypeRequestNodeCommunication.valueOf(request.getType());
+        TypeDownloadRequestNodeCommunication typeRequest = TypeDownloadRequestNodeCommunication.valueOf(request.getType());
         NodeCommunicationServer.DownloadResponse downloadResponse;
-        if (typeRequest==TypeRequestNodeCommunication.ALL) {
+        if (typeRequest== TypeDownloadRequestNodeCommunication.ALL) {
             BlockChainInfoBD.BlockChainInfoStruct blockChainInfoStruct = blockChainInfoBD.getBlockChainInfo();
             ArrayList<Entity.Block> blocksGrpc = converterServise.convertAllBlock(blockChain.getBlocksStartingFrom(request.getLastNumberBlock()));
             Entity.BlockChainInfoConstruct blockChainInfoConstruct = Entity.BlockChainInfoConstruct.newBuilder()
@@ -73,7 +107,8 @@ public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
         responseObserver.onCompleted();
     }
         catch (Exception er){
-            er.printStackTrace();
+            logger.log(Level.WARNING,er.toString());
+
         }
     }
 
@@ -97,12 +132,13 @@ public class NodeServer extends NodeCommunicationGrpc.NodeCommunicationImplBase{
             server.start();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING,e.toString());
+
         }
         try {
             server.awaitTermination();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING,e.toString());
         }
 
     }

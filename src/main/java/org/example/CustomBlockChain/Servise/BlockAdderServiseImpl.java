@@ -41,8 +41,8 @@ public class BlockAdderServiseImpl implements BlockAdderServise
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }, initialDelay, 60000, TimeUnit.MILLISECONDS);
-//                    }, 100, 5000, TimeUnit.MILLISECONDS);
+//        }, initialDelay, 60000, TimeUnit.MILLISECONDS);
+                    }, 100, 20000, TimeUnit.MILLISECONDS);
 
 
         }

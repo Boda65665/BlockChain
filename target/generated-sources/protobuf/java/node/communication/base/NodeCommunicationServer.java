@@ -31,6 +31,18 @@ public final class NodeCommunicationServer {
      * <code>THIS_NODE_IS_NOT_VALID = 2;</code>
      */
     THIS_NODE_IS_NOT_VALID(2),
+    /**
+     * <code>DATA_BE_NULL = 3;</code>
+     */
+    DATA_BE_NULL(3),
+    /**
+     * <code>ALREADY_EXISTS = 4;</code>
+     */
+    ALREADY_EXISTS(4),
+    /**
+     * <code>INCORRECT_DATA = 5;</code>
+     */
+    INCORRECT_DATA(5),
     UNRECOGNIZED(-1),
     ;
 
@@ -46,6 +58,18 @@ public final class NodeCommunicationServer {
      * <code>THIS_NODE_IS_NOT_VALID = 2;</code>
      */
     public static final int THIS_NODE_IS_NOT_VALID_VALUE = 2;
+    /**
+     * <code>DATA_BE_NULL = 3;</code>
+     */
+    public static final int DATA_BE_NULL_VALUE = 3;
+    /**
+     * <code>ALREADY_EXISTS = 4;</code>
+     */
+    public static final int ALREADY_EXISTS_VALUE = 4;
+    /**
+     * <code>INCORRECT_DATA = 5;</code>
+     */
+    public static final int INCORRECT_DATA_VALUE = 5;
 
 
     public final int getNumber() {
@@ -69,6 +93,9 @@ public final class NodeCommunicationServer {
         case 0: return INVALID_NUMBER_BLOCK;
         case 1: return NOT_FOUND;
         case 2: return THIS_NODE_IS_NOT_VALID;
+        case 3: return DATA_BE_NULL;
+        case 4: return ALREADY_EXISTS;
+        case 5: return INCORRECT_DATA;
         default: return null;
       }
     }
@@ -5031,6 +5058,2809 @@ public final class NodeCommunicationServer {
 
   }
 
+  public interface UpdateRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:node.communication.base.UpdateRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.node.entity.Block block = 1;</code>
+     */
+    boolean hasBlock();
+    /**
+     * <code>.node.entity.Block block = 1;</code>
+     */
+    node.entity.Entity.Block getBlock();
+    /**
+     * <code>.node.entity.Block block = 1;</code>
+     */
+    node.entity.Entity.BlockOrBuilder getBlockOrBuilder();
+
+    /**
+     * <code>.node.entity.Transaction transaction = 2;</code>
+     */
+    boolean hasTransaction();
+    /**
+     * <code>.node.entity.Transaction transaction = 2;</code>
+     */
+    node.entity.Entity.Transaction getTransaction();
+    /**
+     * <code>.node.entity.Transaction transaction = 2;</code>
+     */
+    node.entity.Entity.TransactionOrBuilder getTransactionOrBuilder();
+
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    boolean hasBlockChainInfo();
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    node.entity.Entity.BlockChainInfoConstruct getBlockChainInfo();
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    node.entity.Entity.BlockChainInfoConstructOrBuilder getBlockChainInfoOrBuilder();
+
+    public node.communication.base.NodeCommunicationServer.UpdateRequest.DataCase getDataCase();
+  }
+  /**
+   * Protobuf type {@code node.communication.base.UpdateRequest}
+   */
+  public  static final class UpdateRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:node.communication.base.UpdateRequest)
+      UpdateRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use UpdateRequest.newBuilder() to construct.
+    private UpdateRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private UpdateRequest() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UpdateRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UpdateRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              node.entity.Entity.Block.Builder subBuilder = null;
+              if (dataCase_ == 1) {
+                subBuilder = ((node.entity.Entity.Block) data_).toBuilder();
+              }
+              data_ =
+                  input.readMessage(node.entity.Entity.Block.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((node.entity.Entity.Block) data_);
+                data_ = subBuilder.buildPartial();
+              }
+              dataCase_ = 1;
+              break;
+            }
+            case 18: {
+              node.entity.Entity.Transaction.Builder subBuilder = null;
+              if (dataCase_ == 2) {
+                subBuilder = ((node.entity.Entity.Transaction) data_).toBuilder();
+              }
+              data_ =
+                  input.readMessage(node.entity.Entity.Transaction.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((node.entity.Entity.Transaction) data_);
+                data_ = subBuilder.buildPartial();
+              }
+              dataCase_ = 2;
+              break;
+            }
+            case 34: {
+              node.entity.Entity.BlockChainInfoConstruct.Builder subBuilder = null;
+              if (blockChainInfo_ != null) {
+                subBuilder = blockChainInfo_.toBuilder();
+              }
+              blockChainInfo_ = input.readMessage(node.entity.Entity.BlockChainInfoConstruct.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(blockChainInfo_);
+                blockChainInfo_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              node.communication.base.NodeCommunicationServer.UpdateRequest.class, node.communication.base.NodeCommunicationServer.UpdateRequest.Builder.class);
+    }
+
+    private int dataCase_ = 0;
+    private java.lang.Object data_;
+    public enum DataCase
+        implements com.google.protobuf.Internal.EnumLite {
+      BLOCK(1),
+      TRANSACTION(2),
+      DATA_NOT_SET(0);
+      private final int value;
+      private DataCase(int value) {
+        this.value = value;
+      }
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static DataCase valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static DataCase forNumber(int value) {
+        switch (value) {
+          case 1: return BLOCK;
+          case 2: return TRANSACTION;
+          case 0: return DATA_NOT_SET;
+          default: return null;
+        }
+      }
+      public int getNumber() {
+        return this.value;
+      }
+    };
+
+    public DataCase
+    getDataCase() {
+      return DataCase.forNumber(
+          dataCase_);
+    }
+
+    public static final int BLOCK_FIELD_NUMBER = 1;
+    /**
+     * <code>.node.entity.Block block = 1;</code>
+     */
+    public boolean hasBlock() {
+      return dataCase_ == 1;
+    }
+    /**
+     * <code>.node.entity.Block block = 1;</code>
+     */
+    public node.entity.Entity.Block getBlock() {
+      if (dataCase_ == 1) {
+         return (node.entity.Entity.Block) data_;
+      }
+      return node.entity.Entity.Block.getDefaultInstance();
+    }
+    /**
+     * <code>.node.entity.Block block = 1;</code>
+     */
+    public node.entity.Entity.BlockOrBuilder getBlockOrBuilder() {
+      if (dataCase_ == 1) {
+         return (node.entity.Entity.Block) data_;
+      }
+      return node.entity.Entity.Block.getDefaultInstance();
+    }
+
+    public static final int TRANSACTION_FIELD_NUMBER = 2;
+    /**
+     * <code>.node.entity.Transaction transaction = 2;</code>
+     */
+    public boolean hasTransaction() {
+      return dataCase_ == 2;
+    }
+    /**
+     * <code>.node.entity.Transaction transaction = 2;</code>
+     */
+    public node.entity.Entity.Transaction getTransaction() {
+      if (dataCase_ == 2) {
+         return (node.entity.Entity.Transaction) data_;
+      }
+      return node.entity.Entity.Transaction.getDefaultInstance();
+    }
+    /**
+     * <code>.node.entity.Transaction transaction = 2;</code>
+     */
+    public node.entity.Entity.TransactionOrBuilder getTransactionOrBuilder() {
+      if (dataCase_ == 2) {
+         return (node.entity.Entity.Transaction) data_;
+      }
+      return node.entity.Entity.Transaction.getDefaultInstance();
+    }
+
+    public static final int BLOCKCHAININFO_FIELD_NUMBER = 4;
+    private node.entity.Entity.BlockChainInfoConstruct blockChainInfo_;
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    public boolean hasBlockChainInfo() {
+      return blockChainInfo_ != null;
+    }
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    public node.entity.Entity.BlockChainInfoConstruct getBlockChainInfo() {
+      return blockChainInfo_ == null ? node.entity.Entity.BlockChainInfoConstruct.getDefaultInstance() : blockChainInfo_;
+    }
+    /**
+     * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+     */
+    public node.entity.Entity.BlockChainInfoConstructOrBuilder getBlockChainInfoOrBuilder() {
+      return getBlockChainInfo();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (dataCase_ == 1) {
+        output.writeMessage(1, (node.entity.Entity.Block) data_);
+      }
+      if (dataCase_ == 2) {
+        output.writeMessage(2, (node.entity.Entity.Transaction) data_);
+      }
+      if (blockChainInfo_ != null) {
+        output.writeMessage(4, getBlockChainInfo());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (dataCase_ == 1) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, (node.entity.Entity.Block) data_);
+      }
+      if (dataCase_ == 2) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, (node.entity.Entity.Transaction) data_);
+      }
+      if (blockChainInfo_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getBlockChainInfo());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof node.communication.base.NodeCommunicationServer.UpdateRequest)) {
+        return super.equals(obj);
+      }
+      node.communication.base.NodeCommunicationServer.UpdateRequest other = (node.communication.base.NodeCommunicationServer.UpdateRequest) obj;
+
+      if (hasBlockChainInfo() != other.hasBlockChainInfo()) return false;
+      if (hasBlockChainInfo()) {
+        if (!getBlockChainInfo()
+            .equals(other.getBlockChainInfo())) return false;
+      }
+      if (!getDataCase().equals(other.getDataCase())) return false;
+      switch (dataCase_) {
+        case 1:
+          if (!getBlock()
+              .equals(other.getBlock())) return false;
+          break;
+        case 2:
+          if (!getTransaction()
+              .equals(other.getTransaction())) return false;
+          break;
+        case 0:
+        default:
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasBlockChainInfo()) {
+        hash = (37 * hash) + BLOCKCHAININFO_FIELD_NUMBER;
+        hash = (53 * hash) + getBlockChainInfo().hashCode();
+      }
+      switch (dataCase_) {
+        case 1:
+          hash = (37 * hash) + BLOCK_FIELD_NUMBER;
+          hash = (53 * hash) + getBlock().hashCode();
+          break;
+        case 2:
+          hash = (37 * hash) + TRANSACTION_FIELD_NUMBER;
+          hash = (53 * hash) + getTransaction().hashCode();
+          break;
+        case 0:
+        default:
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(node.communication.base.NodeCommunicationServer.UpdateRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code node.communication.base.UpdateRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:node.communication.base.UpdateRequest)
+        node.communication.base.NodeCommunicationServer.UpdateRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                node.communication.base.NodeCommunicationServer.UpdateRequest.class, node.communication.base.NodeCommunicationServer.UpdateRequest.Builder.class);
+      }
+
+      // Construct using node.communication.base.NodeCommunicationServer.UpdateRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (blockChainInfoBuilder_ == null) {
+          blockChainInfo_ = null;
+        } else {
+          blockChainInfo_ = null;
+          blockChainInfoBuilder_ = null;
+        }
+        dataCase_ = 0;
+        data_ = null;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.UpdateRequest getDefaultInstanceForType() {
+        return node.communication.base.NodeCommunicationServer.UpdateRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.UpdateRequest build() {
+        node.communication.base.NodeCommunicationServer.UpdateRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.UpdateRequest buildPartial() {
+        node.communication.base.NodeCommunicationServer.UpdateRequest result = new node.communication.base.NodeCommunicationServer.UpdateRequest(this);
+        if (dataCase_ == 1) {
+          if (blockBuilder_ == null) {
+            result.data_ = data_;
+          } else {
+            result.data_ = blockBuilder_.build();
+          }
+        }
+        if (dataCase_ == 2) {
+          if (transactionBuilder_ == null) {
+            result.data_ = data_;
+          } else {
+            result.data_ = transactionBuilder_.build();
+          }
+        }
+        if (blockChainInfoBuilder_ == null) {
+          result.blockChainInfo_ = blockChainInfo_;
+        } else {
+          result.blockChainInfo_ = blockChainInfoBuilder_.build();
+        }
+        result.dataCase_ = dataCase_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof node.communication.base.NodeCommunicationServer.UpdateRequest) {
+          return mergeFrom((node.communication.base.NodeCommunicationServer.UpdateRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(node.communication.base.NodeCommunicationServer.UpdateRequest other) {
+        if (other == node.communication.base.NodeCommunicationServer.UpdateRequest.getDefaultInstance()) return this;
+        if (other.hasBlockChainInfo()) {
+          mergeBlockChainInfo(other.getBlockChainInfo());
+        }
+        switch (other.getDataCase()) {
+          case BLOCK: {
+            mergeBlock(other.getBlock());
+            break;
+          }
+          case TRANSACTION: {
+            mergeTransaction(other.getTransaction());
+            break;
+          }
+          case DATA_NOT_SET: {
+            break;
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        node.communication.base.NodeCommunicationServer.UpdateRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (node.communication.base.NodeCommunicationServer.UpdateRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int dataCase_ = 0;
+      private java.lang.Object data_;
+      public DataCase
+          getDataCase() {
+        return DataCase.forNumber(
+            dataCase_);
+      }
+
+      public Builder clearData() {
+        dataCase_ = 0;
+        data_ = null;
+        onChanged();
+        return this;
+      }
+
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          node.entity.Entity.Block, node.entity.Entity.Block.Builder, node.entity.Entity.BlockOrBuilder> blockBuilder_;
+      /**
+       * <code>.node.entity.Block block = 1;</code>
+       */
+      public boolean hasBlock() {
+        return dataCase_ == 1;
+      }
+      /**
+       * <code>.node.entity.Block block = 1;</code>
+       */
+      public node.entity.Entity.Block getBlock() {
+        if (blockBuilder_ == null) {
+          if (dataCase_ == 1) {
+            return (node.entity.Entity.Block) data_;
+          }
+          return node.entity.Entity.Block.getDefaultInstance();
+        } else {
+          if (dataCase_ == 1) {
+            return blockBuilder_.getMessage();
+          }
+          return node.entity.Entity.Block.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.node.entity.Block block = 1;</code>
+       */
+      public Builder setBlock(node.entity.Entity.Block value) {
+        if (blockBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          data_ = value;
+          onChanged();
+        } else {
+          blockBuilder_.setMessage(value);
+        }
+        dataCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.node.entity.Block block = 1;</code>
+       */
+      public Builder setBlock(
+          node.entity.Entity.Block.Builder builderForValue) {
+        if (blockBuilder_ == null) {
+          data_ = builderForValue.build();
+          onChanged();
+        } else {
+          blockBuilder_.setMessage(builderForValue.build());
+        }
+        dataCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.node.entity.Block block = 1;</code>
+       */
+      public Builder mergeBlock(node.entity.Entity.Block value) {
+        if (blockBuilder_ == null) {
+          if (dataCase_ == 1 &&
+              data_ != node.entity.Entity.Block.getDefaultInstance()) {
+            data_ = node.entity.Entity.Block.newBuilder((node.entity.Entity.Block) data_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            data_ = value;
+          }
+          onChanged();
+        } else {
+          if (dataCase_ == 1) {
+            blockBuilder_.mergeFrom(value);
+          }
+          blockBuilder_.setMessage(value);
+        }
+        dataCase_ = 1;
+        return this;
+      }
+      /**
+       * <code>.node.entity.Block block = 1;</code>
+       */
+      public Builder clearBlock() {
+        if (blockBuilder_ == null) {
+          if (dataCase_ == 1) {
+            dataCase_ = 0;
+            data_ = null;
+            onChanged();
+          }
+        } else {
+          if (dataCase_ == 1) {
+            dataCase_ = 0;
+            data_ = null;
+          }
+          blockBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.node.entity.Block block = 1;</code>
+       */
+      public node.entity.Entity.Block.Builder getBlockBuilder() {
+        return getBlockFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.node.entity.Block block = 1;</code>
+       */
+      public node.entity.Entity.BlockOrBuilder getBlockOrBuilder() {
+        if ((dataCase_ == 1) && (blockBuilder_ != null)) {
+          return blockBuilder_.getMessageOrBuilder();
+        } else {
+          if (dataCase_ == 1) {
+            return (node.entity.Entity.Block) data_;
+          }
+          return node.entity.Entity.Block.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.node.entity.Block block = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          node.entity.Entity.Block, node.entity.Entity.Block.Builder, node.entity.Entity.BlockOrBuilder> 
+          getBlockFieldBuilder() {
+        if (blockBuilder_ == null) {
+          if (!(dataCase_ == 1)) {
+            data_ = node.entity.Entity.Block.getDefaultInstance();
+          }
+          blockBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              node.entity.Entity.Block, node.entity.Entity.Block.Builder, node.entity.Entity.BlockOrBuilder>(
+                  (node.entity.Entity.Block) data_,
+                  getParentForChildren(),
+                  isClean());
+          data_ = null;
+        }
+        dataCase_ = 1;
+        onChanged();;
+        return blockBuilder_;
+      }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          node.entity.Entity.Transaction, node.entity.Entity.Transaction.Builder, node.entity.Entity.TransactionOrBuilder> transactionBuilder_;
+      /**
+       * <code>.node.entity.Transaction transaction = 2;</code>
+       */
+      public boolean hasTransaction() {
+        return dataCase_ == 2;
+      }
+      /**
+       * <code>.node.entity.Transaction transaction = 2;</code>
+       */
+      public node.entity.Entity.Transaction getTransaction() {
+        if (transactionBuilder_ == null) {
+          if (dataCase_ == 2) {
+            return (node.entity.Entity.Transaction) data_;
+          }
+          return node.entity.Entity.Transaction.getDefaultInstance();
+        } else {
+          if (dataCase_ == 2) {
+            return transactionBuilder_.getMessage();
+          }
+          return node.entity.Entity.Transaction.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.node.entity.Transaction transaction = 2;</code>
+       */
+      public Builder setTransaction(node.entity.Entity.Transaction value) {
+        if (transactionBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          data_ = value;
+          onChanged();
+        } else {
+          transactionBuilder_.setMessage(value);
+        }
+        dataCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.node.entity.Transaction transaction = 2;</code>
+       */
+      public Builder setTransaction(
+          node.entity.Entity.Transaction.Builder builderForValue) {
+        if (transactionBuilder_ == null) {
+          data_ = builderForValue.build();
+          onChanged();
+        } else {
+          transactionBuilder_.setMessage(builderForValue.build());
+        }
+        dataCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.node.entity.Transaction transaction = 2;</code>
+       */
+      public Builder mergeTransaction(node.entity.Entity.Transaction value) {
+        if (transactionBuilder_ == null) {
+          if (dataCase_ == 2 &&
+              data_ != node.entity.Entity.Transaction.getDefaultInstance()) {
+            data_ = node.entity.Entity.Transaction.newBuilder((node.entity.Entity.Transaction) data_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            data_ = value;
+          }
+          onChanged();
+        } else {
+          if (dataCase_ == 2) {
+            transactionBuilder_.mergeFrom(value);
+          }
+          transactionBuilder_.setMessage(value);
+        }
+        dataCase_ = 2;
+        return this;
+      }
+      /**
+       * <code>.node.entity.Transaction transaction = 2;</code>
+       */
+      public Builder clearTransaction() {
+        if (transactionBuilder_ == null) {
+          if (dataCase_ == 2) {
+            dataCase_ = 0;
+            data_ = null;
+            onChanged();
+          }
+        } else {
+          if (dataCase_ == 2) {
+            dataCase_ = 0;
+            data_ = null;
+          }
+          transactionBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.node.entity.Transaction transaction = 2;</code>
+       */
+      public node.entity.Entity.Transaction.Builder getTransactionBuilder() {
+        return getTransactionFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.node.entity.Transaction transaction = 2;</code>
+       */
+      public node.entity.Entity.TransactionOrBuilder getTransactionOrBuilder() {
+        if ((dataCase_ == 2) && (transactionBuilder_ != null)) {
+          return transactionBuilder_.getMessageOrBuilder();
+        } else {
+          if (dataCase_ == 2) {
+            return (node.entity.Entity.Transaction) data_;
+          }
+          return node.entity.Entity.Transaction.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.node.entity.Transaction transaction = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          node.entity.Entity.Transaction, node.entity.Entity.Transaction.Builder, node.entity.Entity.TransactionOrBuilder> 
+          getTransactionFieldBuilder() {
+        if (transactionBuilder_ == null) {
+          if (!(dataCase_ == 2)) {
+            data_ = node.entity.Entity.Transaction.getDefaultInstance();
+          }
+          transactionBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              node.entity.Entity.Transaction, node.entity.Entity.Transaction.Builder, node.entity.Entity.TransactionOrBuilder>(
+                  (node.entity.Entity.Transaction) data_,
+                  getParentForChildren(),
+                  isClean());
+          data_ = null;
+        }
+        dataCase_ = 2;
+        onChanged();;
+        return transactionBuilder_;
+      }
+
+      private node.entity.Entity.BlockChainInfoConstruct blockChainInfo_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          node.entity.Entity.BlockChainInfoConstruct, node.entity.Entity.BlockChainInfoConstruct.Builder, node.entity.Entity.BlockChainInfoConstructOrBuilder> blockChainInfoBuilder_;
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public boolean hasBlockChainInfo() {
+        return blockChainInfoBuilder_ != null || blockChainInfo_ != null;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public node.entity.Entity.BlockChainInfoConstruct getBlockChainInfo() {
+        if (blockChainInfoBuilder_ == null) {
+          return blockChainInfo_ == null ? node.entity.Entity.BlockChainInfoConstruct.getDefaultInstance() : blockChainInfo_;
+        } else {
+          return blockChainInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public Builder setBlockChainInfo(node.entity.Entity.BlockChainInfoConstruct value) {
+        if (blockChainInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          blockChainInfo_ = value;
+          onChanged();
+        } else {
+          blockChainInfoBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public Builder setBlockChainInfo(
+          node.entity.Entity.BlockChainInfoConstruct.Builder builderForValue) {
+        if (blockChainInfoBuilder_ == null) {
+          blockChainInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          blockChainInfoBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public Builder mergeBlockChainInfo(node.entity.Entity.BlockChainInfoConstruct value) {
+        if (blockChainInfoBuilder_ == null) {
+          if (blockChainInfo_ != null) {
+            blockChainInfo_ =
+              node.entity.Entity.BlockChainInfoConstruct.newBuilder(blockChainInfo_).mergeFrom(value).buildPartial();
+          } else {
+            blockChainInfo_ = value;
+          }
+          onChanged();
+        } else {
+          blockChainInfoBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public Builder clearBlockChainInfo() {
+        if (blockChainInfoBuilder_ == null) {
+          blockChainInfo_ = null;
+          onChanged();
+        } else {
+          blockChainInfo_ = null;
+          blockChainInfoBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public node.entity.Entity.BlockChainInfoConstruct.Builder getBlockChainInfoBuilder() {
+        
+        onChanged();
+        return getBlockChainInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      public node.entity.Entity.BlockChainInfoConstructOrBuilder getBlockChainInfoOrBuilder() {
+        if (blockChainInfoBuilder_ != null) {
+          return blockChainInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return blockChainInfo_ == null ?
+              node.entity.Entity.BlockChainInfoConstruct.getDefaultInstance() : blockChainInfo_;
+        }
+      }
+      /**
+       * <code>.node.entity.BlockChainInfoConstruct blockChainInfo = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          node.entity.Entity.BlockChainInfoConstruct, node.entity.Entity.BlockChainInfoConstruct.Builder, node.entity.Entity.BlockChainInfoConstructOrBuilder> 
+          getBlockChainInfoFieldBuilder() {
+        if (blockChainInfoBuilder_ == null) {
+          blockChainInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              node.entity.Entity.BlockChainInfoConstruct, node.entity.Entity.BlockChainInfoConstruct.Builder, node.entity.Entity.BlockChainInfoConstructOrBuilder>(
+                  getBlockChainInfo(),
+                  getParentForChildren(),
+                  isClean());
+          blockChainInfo_ = null;
+        }
+        return blockChainInfoBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:node.communication.base.UpdateRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:node.communication.base.UpdateRequest)
+    private static final node.communication.base.NodeCommunicationServer.UpdateRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new node.communication.base.NodeCommunicationServer.UpdateRequest();
+    }
+
+    public static node.communication.base.NodeCommunicationServer.UpdateRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<UpdateRequest>
+        PARSER = new com.google.protobuf.AbstractParser<UpdateRequest>() {
+      @java.lang.Override
+      public UpdateRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UpdateRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<UpdateRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UpdateRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public node.communication.base.NodeCommunicationServer.UpdateRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface UpdateResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:node.communication.base.UpdateResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bool isUpdate = 1;</code>
+     */
+    boolean getIsUpdate();
+  }
+  /**
+   * Protobuf type {@code node.communication.base.UpdateResponse}
+   */
+  public  static final class UpdateResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:node.communication.base.UpdateResponse)
+      UpdateResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use UpdateResponse.newBuilder() to construct.
+    private UpdateResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private UpdateResponse() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UpdateResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UpdateResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              isUpdate_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              node.communication.base.NodeCommunicationServer.UpdateResponse.class, node.communication.base.NodeCommunicationServer.UpdateResponse.Builder.class);
+    }
+
+    public static final int ISUPDATE_FIELD_NUMBER = 1;
+    private boolean isUpdate_;
+    /**
+     * <code>bool isUpdate = 1;</code>
+     */
+    public boolean getIsUpdate() {
+      return isUpdate_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (isUpdate_ != false) {
+        output.writeBool(1, isUpdate_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (isUpdate_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, isUpdate_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof node.communication.base.NodeCommunicationServer.UpdateResponse)) {
+        return super.equals(obj);
+      }
+      node.communication.base.NodeCommunicationServer.UpdateResponse other = (node.communication.base.NodeCommunicationServer.UpdateResponse) obj;
+
+      if (getIsUpdate()
+          != other.getIsUpdate()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ISUPDATE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsUpdate());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(node.communication.base.NodeCommunicationServer.UpdateResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code node.communication.base.UpdateResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:node.communication.base.UpdateResponse)
+        node.communication.base.NodeCommunicationServer.UpdateResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                node.communication.base.NodeCommunicationServer.UpdateResponse.class, node.communication.base.NodeCommunicationServer.UpdateResponse.Builder.class);
+      }
+
+      // Construct using node.communication.base.NodeCommunicationServer.UpdateResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        isUpdate_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_UpdateResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.UpdateResponse getDefaultInstanceForType() {
+        return node.communication.base.NodeCommunicationServer.UpdateResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.UpdateResponse build() {
+        node.communication.base.NodeCommunicationServer.UpdateResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.UpdateResponse buildPartial() {
+        node.communication.base.NodeCommunicationServer.UpdateResponse result = new node.communication.base.NodeCommunicationServer.UpdateResponse(this);
+        result.isUpdate_ = isUpdate_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof node.communication.base.NodeCommunicationServer.UpdateResponse) {
+          return mergeFrom((node.communication.base.NodeCommunicationServer.UpdateResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(node.communication.base.NodeCommunicationServer.UpdateResponse other) {
+        if (other == node.communication.base.NodeCommunicationServer.UpdateResponse.getDefaultInstance()) return this;
+        if (other.getIsUpdate() != false) {
+          setIsUpdate(other.getIsUpdate());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        node.communication.base.NodeCommunicationServer.UpdateResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (node.communication.base.NodeCommunicationServer.UpdateResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private boolean isUpdate_ ;
+      /**
+       * <code>bool isUpdate = 1;</code>
+       */
+      public boolean getIsUpdate() {
+        return isUpdate_;
+      }
+      /**
+       * <code>bool isUpdate = 1;</code>
+       */
+      public Builder setIsUpdate(boolean value) {
+        
+        isUpdate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool isUpdate = 1;</code>
+       */
+      public Builder clearIsUpdate() {
+        
+        isUpdate_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:node.communication.base.UpdateResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:node.communication.base.UpdateResponse)
+    private static final node.communication.base.NodeCommunicationServer.UpdateResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new node.communication.base.NodeCommunicationServer.UpdateResponse();
+    }
+
+    public static node.communication.base.NodeCommunicationServer.UpdateResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<UpdateResponse>
+        PARSER = new com.google.protobuf.AbstractParser<UpdateResponse>() {
+      @java.lang.Override
+      public UpdateResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UpdateResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<UpdateResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UpdateResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public node.communication.base.NodeCommunicationServer.UpdateResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface IsUpdateRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:node.communication.base.IsUpdateRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 lastNumberBlock = 1;</code>
+     */
+    int getLastNumberBlock();
+
+    /**
+     * <code>string lastTransactionHash = 2;</code>
+     */
+    java.lang.String getLastTransactionHash();
+    /**
+     * <code>string lastTransactionHash = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getLastTransactionHashBytes();
+
+    public node.communication.base.NodeCommunicationServer.IsUpdateRequest.InfoAboutLastDataCase getInfoAboutLastDataCase();
+  }
+  /**
+   * Protobuf type {@code node.communication.base.IsUpdateRequest}
+   */
+  public  static final class IsUpdateRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:node.communication.base.IsUpdateRequest)
+      IsUpdateRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use IsUpdateRequest.newBuilder() to construct.
+    private IsUpdateRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private IsUpdateRequest() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new IsUpdateRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private IsUpdateRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              infoAboutLastDataCase_ = 1;
+              infoAboutLastData_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+              infoAboutLastDataCase_ = 2;
+              infoAboutLastData_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              node.communication.base.NodeCommunicationServer.IsUpdateRequest.class, node.communication.base.NodeCommunicationServer.IsUpdateRequest.Builder.class);
+    }
+
+    private int infoAboutLastDataCase_ = 0;
+    private java.lang.Object infoAboutLastData_;
+    public enum InfoAboutLastDataCase
+        implements com.google.protobuf.Internal.EnumLite {
+      LASTNUMBERBLOCK(1),
+      LASTTRANSACTIONHASH(2),
+      INFOABOUTLASTDATA_NOT_SET(0);
+      private final int value;
+      private InfoAboutLastDataCase(int value) {
+        this.value = value;
+      }
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static InfoAboutLastDataCase valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static InfoAboutLastDataCase forNumber(int value) {
+        switch (value) {
+          case 1: return LASTNUMBERBLOCK;
+          case 2: return LASTTRANSACTIONHASH;
+          case 0: return INFOABOUTLASTDATA_NOT_SET;
+          default: return null;
+        }
+      }
+      public int getNumber() {
+        return this.value;
+      }
+    };
+
+    public InfoAboutLastDataCase
+    getInfoAboutLastDataCase() {
+      return InfoAboutLastDataCase.forNumber(
+          infoAboutLastDataCase_);
+    }
+
+    public static final int LASTNUMBERBLOCK_FIELD_NUMBER = 1;
+    /**
+     * <code>int32 lastNumberBlock = 1;</code>
+     */
+    public int getLastNumberBlock() {
+      if (infoAboutLastDataCase_ == 1) {
+        return (java.lang.Integer) infoAboutLastData_;
+      }
+      return 0;
+    }
+
+    public static final int LASTTRANSACTIONHASH_FIELD_NUMBER = 2;
+    /**
+     * <code>string lastTransactionHash = 2;</code>
+     */
+    public java.lang.String getLastTransactionHash() {
+      java.lang.Object ref = "";
+      if (infoAboutLastDataCase_ == 2) {
+        ref = infoAboutLastData_;
+      }
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (infoAboutLastDataCase_ == 2) {
+          infoAboutLastData_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>string lastTransactionHash = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getLastTransactionHashBytes() {
+      java.lang.Object ref = "";
+      if (infoAboutLastDataCase_ == 2) {
+        ref = infoAboutLastData_;
+      }
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        if (infoAboutLastDataCase_ == 2) {
+          infoAboutLastData_ = b;
+        }
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (infoAboutLastDataCase_ == 1) {
+        output.writeInt32(
+            1, (int)((java.lang.Integer) infoAboutLastData_));
+      }
+      if (infoAboutLastDataCase_ == 2) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, infoAboutLastData_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (infoAboutLastDataCase_ == 1) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(
+              1, (int)((java.lang.Integer) infoAboutLastData_));
+      }
+      if (infoAboutLastDataCase_ == 2) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, infoAboutLastData_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof node.communication.base.NodeCommunicationServer.IsUpdateRequest)) {
+        return super.equals(obj);
+      }
+      node.communication.base.NodeCommunicationServer.IsUpdateRequest other = (node.communication.base.NodeCommunicationServer.IsUpdateRequest) obj;
+
+      if (!getInfoAboutLastDataCase().equals(other.getInfoAboutLastDataCase())) return false;
+      switch (infoAboutLastDataCase_) {
+        case 1:
+          if (getLastNumberBlock()
+              != other.getLastNumberBlock()) return false;
+          break;
+        case 2:
+          if (!getLastTransactionHash()
+              .equals(other.getLastTransactionHash())) return false;
+          break;
+        case 0:
+        default:
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      switch (infoAboutLastDataCase_) {
+        case 1:
+          hash = (37 * hash) + LASTNUMBERBLOCK_FIELD_NUMBER;
+          hash = (53 * hash) + getLastNumberBlock();
+          break;
+        case 2:
+          hash = (37 * hash) + LASTTRANSACTIONHASH_FIELD_NUMBER;
+          hash = (53 * hash) + getLastTransactionHash().hashCode();
+          break;
+        case 0:
+        default:
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(node.communication.base.NodeCommunicationServer.IsUpdateRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code node.communication.base.IsUpdateRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:node.communication.base.IsUpdateRequest)
+        node.communication.base.NodeCommunicationServer.IsUpdateRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                node.communication.base.NodeCommunicationServer.IsUpdateRequest.class, node.communication.base.NodeCommunicationServer.IsUpdateRequest.Builder.class);
+      }
+
+      // Construct using node.communication.base.NodeCommunicationServer.IsUpdateRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        infoAboutLastDataCase_ = 0;
+        infoAboutLastData_ = null;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.IsUpdateRequest getDefaultInstanceForType() {
+        return node.communication.base.NodeCommunicationServer.IsUpdateRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.IsUpdateRequest build() {
+        node.communication.base.NodeCommunicationServer.IsUpdateRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.IsUpdateRequest buildPartial() {
+        node.communication.base.NodeCommunicationServer.IsUpdateRequest result = new node.communication.base.NodeCommunicationServer.IsUpdateRequest(this);
+        if (infoAboutLastDataCase_ == 1) {
+          result.infoAboutLastData_ = infoAboutLastData_;
+        }
+        if (infoAboutLastDataCase_ == 2) {
+          result.infoAboutLastData_ = infoAboutLastData_;
+        }
+        result.infoAboutLastDataCase_ = infoAboutLastDataCase_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof node.communication.base.NodeCommunicationServer.IsUpdateRequest) {
+          return mergeFrom((node.communication.base.NodeCommunicationServer.IsUpdateRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(node.communication.base.NodeCommunicationServer.IsUpdateRequest other) {
+        if (other == node.communication.base.NodeCommunicationServer.IsUpdateRequest.getDefaultInstance()) return this;
+        switch (other.getInfoAboutLastDataCase()) {
+          case LASTNUMBERBLOCK: {
+            setLastNumberBlock(other.getLastNumberBlock());
+            break;
+          }
+          case LASTTRANSACTIONHASH: {
+            infoAboutLastDataCase_ = 2;
+            infoAboutLastData_ = other.infoAboutLastData_;
+            onChanged();
+            break;
+          }
+          case INFOABOUTLASTDATA_NOT_SET: {
+            break;
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        node.communication.base.NodeCommunicationServer.IsUpdateRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (node.communication.base.NodeCommunicationServer.IsUpdateRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int infoAboutLastDataCase_ = 0;
+      private java.lang.Object infoAboutLastData_;
+      public InfoAboutLastDataCase
+          getInfoAboutLastDataCase() {
+        return InfoAboutLastDataCase.forNumber(
+            infoAboutLastDataCase_);
+      }
+
+      public Builder clearInfoAboutLastData() {
+        infoAboutLastDataCase_ = 0;
+        infoAboutLastData_ = null;
+        onChanged();
+        return this;
+      }
+
+
+      /**
+       * <code>int32 lastNumberBlock = 1;</code>
+       */
+      public int getLastNumberBlock() {
+        if (infoAboutLastDataCase_ == 1) {
+          return (java.lang.Integer) infoAboutLastData_;
+        }
+        return 0;
+      }
+      /**
+       * <code>int32 lastNumberBlock = 1;</code>
+       */
+      public Builder setLastNumberBlock(int value) {
+        infoAboutLastDataCase_ = 1;
+        infoAboutLastData_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 lastNumberBlock = 1;</code>
+       */
+      public Builder clearLastNumberBlock() {
+        if (infoAboutLastDataCase_ == 1) {
+          infoAboutLastDataCase_ = 0;
+          infoAboutLastData_ = null;
+          onChanged();
+        }
+        return this;
+      }
+
+      /**
+       * <code>string lastTransactionHash = 2;</code>
+       */
+      public java.lang.String getLastTransactionHash() {
+        java.lang.Object ref = "";
+        if (infoAboutLastDataCase_ == 2) {
+          ref = infoAboutLastData_;
+        }
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (infoAboutLastDataCase_ == 2) {
+            infoAboutLastData_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string lastTransactionHash = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLastTransactionHashBytes() {
+        java.lang.Object ref = "";
+        if (infoAboutLastDataCase_ == 2) {
+          ref = infoAboutLastData_;
+        }
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          if (infoAboutLastDataCase_ == 2) {
+            infoAboutLastData_ = b;
+          }
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string lastTransactionHash = 2;</code>
+       */
+      public Builder setLastTransactionHash(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  infoAboutLastDataCase_ = 2;
+        infoAboutLastData_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string lastTransactionHash = 2;</code>
+       */
+      public Builder clearLastTransactionHash() {
+        if (infoAboutLastDataCase_ == 2) {
+          infoAboutLastDataCase_ = 0;
+          infoAboutLastData_ = null;
+          onChanged();
+        }
+        return this;
+      }
+      /**
+       * <code>string lastTransactionHash = 2;</code>
+       */
+      public Builder setLastTransactionHashBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        infoAboutLastDataCase_ = 2;
+        infoAboutLastData_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:node.communication.base.IsUpdateRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:node.communication.base.IsUpdateRequest)
+    private static final node.communication.base.NodeCommunicationServer.IsUpdateRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new node.communication.base.NodeCommunicationServer.IsUpdateRequest();
+    }
+
+    public static node.communication.base.NodeCommunicationServer.IsUpdateRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<IsUpdateRequest>
+        PARSER = new com.google.protobuf.AbstractParser<IsUpdateRequest>() {
+      @java.lang.Override
+      public IsUpdateRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new IsUpdateRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<IsUpdateRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<IsUpdateRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public node.communication.base.NodeCommunicationServer.IsUpdateRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface IsUpdateResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:node.communication.base.IsUpdateResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bool isUpdate = 1;</code>
+     */
+    boolean getIsUpdate();
+  }
+  /**
+   * Protobuf type {@code node.communication.base.IsUpdateResponse}
+   */
+  public  static final class IsUpdateResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:node.communication.base.IsUpdateResponse)
+      IsUpdateResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use IsUpdateResponse.newBuilder() to construct.
+    private IsUpdateResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private IsUpdateResponse() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new IsUpdateResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private IsUpdateResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              isUpdate_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              node.communication.base.NodeCommunicationServer.IsUpdateResponse.class, node.communication.base.NodeCommunicationServer.IsUpdateResponse.Builder.class);
+    }
+
+    public static final int ISUPDATE_FIELD_NUMBER = 1;
+    private boolean isUpdate_;
+    /**
+     * <code>bool isUpdate = 1;</code>
+     */
+    public boolean getIsUpdate() {
+      return isUpdate_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (isUpdate_ != false) {
+        output.writeBool(1, isUpdate_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (isUpdate_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, isUpdate_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof node.communication.base.NodeCommunicationServer.IsUpdateResponse)) {
+        return super.equals(obj);
+      }
+      node.communication.base.NodeCommunicationServer.IsUpdateResponse other = (node.communication.base.NodeCommunicationServer.IsUpdateResponse) obj;
+
+      if (getIsUpdate()
+          != other.getIsUpdate()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ISUPDATE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsUpdate());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(node.communication.base.NodeCommunicationServer.IsUpdateResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code node.communication.base.IsUpdateResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:node.communication.base.IsUpdateResponse)
+        node.communication.base.NodeCommunicationServer.IsUpdateResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                node.communication.base.NodeCommunicationServer.IsUpdateResponse.class, node.communication.base.NodeCommunicationServer.IsUpdateResponse.Builder.class);
+      }
+
+      // Construct using node.communication.base.NodeCommunicationServer.IsUpdateResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        isUpdate_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return node.communication.base.NodeCommunicationServer.internal_static_node_communication_base_IsUpdateResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.IsUpdateResponse getDefaultInstanceForType() {
+        return node.communication.base.NodeCommunicationServer.IsUpdateResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.IsUpdateResponse build() {
+        node.communication.base.NodeCommunicationServer.IsUpdateResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public node.communication.base.NodeCommunicationServer.IsUpdateResponse buildPartial() {
+        node.communication.base.NodeCommunicationServer.IsUpdateResponse result = new node.communication.base.NodeCommunicationServer.IsUpdateResponse(this);
+        result.isUpdate_ = isUpdate_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof node.communication.base.NodeCommunicationServer.IsUpdateResponse) {
+          return mergeFrom((node.communication.base.NodeCommunicationServer.IsUpdateResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(node.communication.base.NodeCommunicationServer.IsUpdateResponse other) {
+        if (other == node.communication.base.NodeCommunicationServer.IsUpdateResponse.getDefaultInstance()) return this;
+        if (other.getIsUpdate() != false) {
+          setIsUpdate(other.getIsUpdate());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        node.communication.base.NodeCommunicationServer.IsUpdateResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (node.communication.base.NodeCommunicationServer.IsUpdateResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private boolean isUpdate_ ;
+      /**
+       * <code>bool isUpdate = 1;</code>
+       */
+      public boolean getIsUpdate() {
+        return isUpdate_;
+      }
+      /**
+       * <code>bool isUpdate = 1;</code>
+       */
+      public Builder setIsUpdate(boolean value) {
+        
+        isUpdate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool isUpdate = 1;</code>
+       */
+      public Builder clearIsUpdate() {
+        
+        isUpdate_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:node.communication.base.IsUpdateResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:node.communication.base.IsUpdateResponse)
+    private static final node.communication.base.NodeCommunicationServer.IsUpdateResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new node.communication.base.NodeCommunicationServer.IsUpdateResponse();
+    }
+
+    public static node.communication.base.NodeCommunicationServer.IsUpdateResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<IsUpdateResponse>
+        PARSER = new com.google.protobuf.AbstractParser<IsUpdateResponse>() {
+      @java.lang.Override
+      public IsUpdateResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new IsUpdateResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<IsUpdateResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<IsUpdateResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public node.communication.base.NodeCommunicationServer.IsUpdateResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_node_communication_base_DownloadRequest_descriptor;
   private static final 
@@ -5066,6 +7896,26 @@ public final class NodeCommunicationServer {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_node_communication_base_ExceptionResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_node_communication_base_UpdateRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_node_communication_base_UpdateRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_node_communication_base_UpdateResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_node_communication_base_UpdateResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_node_communication_base_IsUpdateRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_node_communication_base_IsUpdateRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_node_communication_base_IsUpdateResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_node_communication_base_IsUpdateResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -5090,17 +7940,31 @@ public final class NodeCommunicationServer {
       "estResponse\022\014\n\004test\030\001 \001(\t\"y\n\021ExceptionRe" +
       "sponse\022-\n\ttimestamp\030\001 \001(\0132\032.google.proto" +
       "buf.Timestamp\0225\n\nerror_code\030\002 \001(\0162!.node" +
-      ".communication.base.ErrorCod*O\n\010ErrorCod" +
-      "\022\030\n\024INVALID_NUMBER_BLOCK\020\000\022\r\n\tNOT_FOUND\020" +
-      "\001\022\032\n\026THIS_NODE_IS_NOT_VALID\020\0022\236\002\n\021NodeCo" +
-      "mmunication\022S\n\004test\022$.node.communication" +
-      ".base.TestRequest\032%.node.communication.b" +
-      "ase.TestResponse\022S\n\004ping\022$.node.communic" +
-      "ation.base.PingRequest\032%.node.communicat" +
-      "ion.base.PingResponse\022_\n\010download\022(.node" +
-      ".communication.base.DownloadRequest\032).no" +
-      "de.communication.base.DownloadResponseb\006" +
-      "proto3"
+      ".communication.base.ErrorCod\"\253\001\n\rUpdateR" +
+      "equest\022#\n\005block\030\001 \001(\0132\022.node.entity.Bloc" +
+      "kH\000\022/\n\013transaction\030\002 \001(\0132\030.node.entity.T" +
+      "ransactionH\000\022<\n\016blockChainInfo\030\004 \001(\0132$.n" +
+      "ode.entity.BlockChainInfoConstructB\006\n\004da" +
+      "ta\"\"\n\016UpdateResponse\022\020\n\010isUpdate\030\001 \001(\010\"`" +
+      "\n\017IsUpdateRequest\022\031\n\017lastNumberBlock\030\001 \001" +
+      "(\005H\000\022\035\n\023lastTransactionHash\030\002 \001(\tH\000B\023\n\021i" +
+      "nfoAboutLastData\"$\n\020IsUpdateResponse\022\020\n\010" +
+      "isUpdate\030\001 \001(\010*\211\001\n\010ErrorCod\022\030\n\024INVALID_N" +
+      "UMBER_BLOCK\020\000\022\r\n\tNOT_FOUND\020\001\022\032\n\026THIS_NOD" +
+      "E_IS_NOT_VALID\020\002\022\020\n\014DATA_BE_NULL\020\003\022\022\n\016AL" +
+      "READY_EXISTS\020\004\022\022\n\016INCORRECT_DATA\020\0052\332\003\n\021N" +
+      "odeCommunication\022S\n\004test\022$.node.communic" +
+      "ation.base.TestRequest\032%.node.communicat" +
+      "ion.base.TestResponse\022S\n\004ping\022$.node.com" +
+      "munication.base.PingRequest\032%.node.commu" +
+      "nication.base.PingResponse\022_\n\010download\022(" +
+      ".node.communication.base.DownloadRequest" +
+      "\032).node.communication.base.DownloadRespo" +
+      "nse\022_\n\010isUpdate\022(.node.communication.bas" +
+      "e.IsUpdateRequest\032).node.communication.b" +
+      "ase.IsUpdateResponse\022Y\n\006update\022&.node.co" +
+      "mmunication.base.UpdateRequest\032\'.node.co" +
+      "mmunication.base.UpdateResponseb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -5151,6 +8015,30 @@ public final class NodeCommunicationServer {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_node_communication_base_ExceptionResponse_descriptor,
         new java.lang.String[] { "Timestamp", "ErrorCode", });
+    internal_static_node_communication_base_UpdateRequest_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_node_communication_base_UpdateRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_node_communication_base_UpdateRequest_descriptor,
+        new java.lang.String[] { "Block", "Transaction", "BlockChainInfo", "Data", });
+    internal_static_node_communication_base_UpdateResponse_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_node_communication_base_UpdateResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_node_communication_base_UpdateResponse_descriptor,
+        new java.lang.String[] { "IsUpdate", });
+    internal_static_node_communication_base_IsUpdateRequest_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_node_communication_base_IsUpdateRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_node_communication_base_IsUpdateRequest_descriptor,
+        new java.lang.String[] { "LastNumberBlock", "LastTransactionHash", "InfoAboutLastData", });
+    internal_static_node_communication_base_IsUpdateResponse_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_node_communication_base_IsUpdateResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_node_communication_base_IsUpdateResponse_descriptor,
+        new java.lang.String[] { "IsUpdate", });
     com.google.protobuf.WrappersProto.getDescriptor();
     com.google.protobuf.TimestampProto.getDescriptor();
     node.entity.Entity.getDescriptor();

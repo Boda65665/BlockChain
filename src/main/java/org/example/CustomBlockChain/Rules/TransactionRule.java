@@ -38,7 +38,6 @@ public class TransactionRule implements RuleBase<Transaction> {
         if (fromAddress==null) return false;
 
         if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo()+transaction.getNonce()),transaction.getFrom(),transaction.getSing())) return false;
-
         if (transaction.getValue()>fromAddress.getBalance() || transaction.getValue()<0) return false;
         if(transaction.getNonce() < fromAddress.getNonce()) return false;
         return true;
@@ -46,9 +45,9 @@ public class TransactionRule implements RuleBase<Transaction> {
     public boolean validTransactions(ArrayList<Transaction> transactions) throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
         for (Transaction transaction : transactions) {
             Address fromAddress = levelDbState.get(transaction.getFrom());
-
             if (fromAddress==null) return false;
             if (!hashEncoder.SHA256(transaction.getFrom()+transaction.getValue()+transaction.getNonce()).equals(transaction.getHash())) return false;
+
             if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo() + transaction.getNonce()), transaction.getFrom(), transaction.getSing())) return false;
 
             if (transaction.getValue()>fromAddress.getBalance() || transaction.getValue()<0) return false;
@@ -62,8 +61,8 @@ public class TransactionRule implements RuleBase<Transaction> {
             return Execute(null, new Block<>(transaction));
         } catch (IOException | SignatureException | NoSuchAlgorithmException | InvalidKeyException |
                  NoSuchProviderException e) {
-            LogRecord log = new LogRecord(Level.WARNING, e.toString());
-            logger.log(log);
+
+            System.out.println(e.toString());
         }
             return false;
         }

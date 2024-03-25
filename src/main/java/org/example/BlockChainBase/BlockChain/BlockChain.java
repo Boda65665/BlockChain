@@ -82,9 +82,13 @@ public class BlockChain<T> implements BlockChainBase<T>{
 
     @Override
     public boolean isQueryValid(String lastHash, int height, BlockChainInfoBD.BlockChainInfoStruct actualInfoBlock) {
-        return actualInfoBlock.lastHsh().equals(lastHash) && actualInfoBlock.height() == height;
+        return equalsHashBlock(lastHash,actualInfoBlock.lastHsh()) && actualInfoBlock.height() == height;
     }
+    public boolean equalsHashBlock(String hashFirst,String hashSecond){
+        if (hashFirst==null) return hashSecond==null;
+        return (hashFirst.equals(hashSecond));
 
+    }
     @Override
     public void scanBlockChain()  {
 
@@ -152,4 +156,12 @@ public class BlockChain<T> implements BlockChainBase<T>{
     }
 
 
+    public boolean isAlreadyExistBlock(int blockNumber) throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        return blockChainInfoBD.getBlockChainInfo().height()>=blockNumber;
+    }
+
+    @Override
+    public boolean isAlreadyExistBlockPending(int blockNumber) throws Exception {
+        return blocksPool.getLast().getBlockNumber()>=blockNumber;
+    }
 }

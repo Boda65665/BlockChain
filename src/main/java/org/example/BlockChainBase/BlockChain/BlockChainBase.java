@@ -1,10 +1,8 @@
 package org.example.BlockChainBase.BlockChain;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
 import org.example.BlockChainBase.Entity.Address;
 import org.example.BlockChainBase.Entity.Block;
-import org.example.BlockChainBase.Exeptions.BlockChainException;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -31,4 +29,6 @@ public interface BlockChainBase<T> {
     void addAll(ArrayList<Block<T>> blocks) throws Exception;
     void addAllToBlockPoll(ArrayList<Block<T>> blocks) throws Exception;
     String getTailFromBlockPoll();
+    boolean isAlreadyExistBlock(int blockNumber) throws Exception;
+    boolean isAlreadyExistBlockPending(int blockNumber) throws Exception;
 }

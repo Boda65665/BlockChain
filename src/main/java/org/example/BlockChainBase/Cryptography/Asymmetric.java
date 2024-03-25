@@ -33,8 +33,8 @@ public class Asymmetric {
 
 
     public String sign(String plaintext, String privateKey) throws SignatureException, UnsupportedEncodingException, InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
-        Security.addProvider(new BouncyCastleProvider());
 
+        Security.addProvider(new BouncyCastleProvider());
         Signature ecdsaSign = Signature.getInstance("SHA256withECDSA", "BC");
         ecdsaSign.initSign(getPrivateKeyFromString(privateKey));
         ecdsaSign.update(plaintext.getBytes("UTF-8"));
@@ -46,8 +46,7 @@ public class Asymmetric {
     public  boolean verify(String plaintext, String publicKey,String signature){
         try {
             Security.addProvider(new BouncyCastleProvider());
-            Signature ecdsaVerify = Signature.getInstance("SHA256withECDSA",
-                    "BC");
+            Signature ecdsaVerify = Signature.getInstance("SHA256withECDSA", "BC");
             ecdsaVerify.initVerify(getPublicKeyFromString(publicKey));
             ecdsaVerify.update(plaintext.getBytes("UTF-8"));
             return ecdsaVerify.verify(Base64.getDecoder().decode(signature));

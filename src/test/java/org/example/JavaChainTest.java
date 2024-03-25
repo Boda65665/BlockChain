@@ -6,6 +6,7 @@ import org.example.BlockChainBase.BlockChain.BlockChain;
 import org.example.BlockChainBase.Cryptography.HashEncoder;
 import org.example.BlockChainBase.DB.LevelDb.Block.LevelDbBlock;
 import org.example.BlockChainBase.DB.LevelDb.PoolBlock.LevelDbPoolBlock;
+import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
 import org.example.BlockChainBase.Entity.Block;
 import org.example.BlockChainBase.Exeptions.BlockChainException;
 import org.example.CustomBlockChain.BlockChain.JavaChain;
@@ -15,6 +16,9 @@ import org.example.CustomBlockChain.Entity.Transaction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.security.InvalidKeyException;
@@ -34,14 +38,23 @@ public class JavaChainTest {
     LevelDbBlock<ArrayList<Transaction>> levelDbBlock = new LevelDbBlock<>(typeData);
     LevelDbPoolBlock<ArrayList<Transaction>> levelDbPoolBlock  = new LevelDbPoolBlock<>(typeData);
     LevelDbTransactionPool levelDbTransactionPool = new LevelDbTransactionPool();
-
+    BlockChainInfoBD blockChainInfoBD = new BlockChainInfoBD();
     public JavaChainTest() throws SQLException, IOException, ClassNotFoundException {
+    }
+    @Test
+    void isQueryValid() throws SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        Block<ArrayList<Transaction>> block = new Block<>();
+        block.setHash("002d6e1b33bbd6c26b3066c4fa3957b4bff43ba6cea9ce32036a6891cbd4dd64");
+        block.setBlockNumber(2);
+        Assertions.assertTrue(javaChain.isQueryValid(block.getHash(),block.getBlockNumber(),blockChainInfoBD.getBlockChainInfo()));
+        block.setBlockNumber(3);
+        Assertions.assertFalse(javaChain.isQueryValid(block.getHash(),block.getBlockNumber(),blockChainInfoBD.getBlockChainInfo()));
+
     }
 
     @Test
     void isValid() throws IOException, SignatureException, NoSuchAlgorithmException, InvalidKeyException, NoSuchProviderException {
         ArrayList<Block<ArrayList<Transaction>>> blocks = levelDbBlock.getAll();
-        blocks.add(null);
         for (Block<ArrayList<Transaction>> block : blocks) {
             Assertions.assertTrue(javaChain.isValid(block, block.getParentHash()));
 

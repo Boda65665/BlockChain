@@ -120,6 +120,68 @@ public final class NodeCommunicationGrpc {
     return getDownloadMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<node.communication.base.NodeCommunicationServer.IsUpdateRequest,
+      node.communication.base.NodeCommunicationServer.IsUpdateResponse> getIsUpdateMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "isUpdate",
+      requestType = node.communication.base.NodeCommunicationServer.IsUpdateRequest.class,
+      responseType = node.communication.base.NodeCommunicationServer.IsUpdateResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<node.communication.base.NodeCommunicationServer.IsUpdateRequest,
+      node.communication.base.NodeCommunicationServer.IsUpdateResponse> getIsUpdateMethod() {
+    io.grpc.MethodDescriptor<node.communication.base.NodeCommunicationServer.IsUpdateRequest, node.communication.base.NodeCommunicationServer.IsUpdateResponse> getIsUpdateMethod;
+    if ((getIsUpdateMethod = NodeCommunicationGrpc.getIsUpdateMethod) == null) {
+      synchronized (NodeCommunicationGrpc.class) {
+        if ((getIsUpdateMethod = NodeCommunicationGrpc.getIsUpdateMethod) == null) {
+          NodeCommunicationGrpc.getIsUpdateMethod = getIsUpdateMethod =
+              io.grpc.MethodDescriptor.<node.communication.base.NodeCommunicationServer.IsUpdateRequest, node.communication.base.NodeCommunicationServer.IsUpdateResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "isUpdate"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  node.communication.base.NodeCommunicationServer.IsUpdateRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  node.communication.base.NodeCommunicationServer.IsUpdateResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new NodeCommunicationMethodDescriptorSupplier("isUpdate"))
+              .build();
+        }
+      }
+    }
+    return getIsUpdateMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<node.communication.base.NodeCommunicationServer.UpdateRequest,
+      node.communication.base.NodeCommunicationServer.UpdateResponse> getUpdateMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "update",
+      requestType = node.communication.base.NodeCommunicationServer.UpdateRequest.class,
+      responseType = node.communication.base.NodeCommunicationServer.UpdateResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<node.communication.base.NodeCommunicationServer.UpdateRequest,
+      node.communication.base.NodeCommunicationServer.UpdateResponse> getUpdateMethod() {
+    io.grpc.MethodDescriptor<node.communication.base.NodeCommunicationServer.UpdateRequest, node.communication.base.NodeCommunicationServer.UpdateResponse> getUpdateMethod;
+    if ((getUpdateMethod = NodeCommunicationGrpc.getUpdateMethod) == null) {
+      synchronized (NodeCommunicationGrpc.class) {
+        if ((getUpdateMethod = NodeCommunicationGrpc.getUpdateMethod) == null) {
+          NodeCommunicationGrpc.getUpdateMethod = getUpdateMethod =
+              io.grpc.MethodDescriptor.<node.communication.base.NodeCommunicationServer.UpdateRequest, node.communication.base.NodeCommunicationServer.UpdateResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "update"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  node.communication.base.NodeCommunicationServer.UpdateRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  node.communication.base.NodeCommunicationServer.UpdateResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new NodeCommunicationMethodDescriptorSupplier("update"))
+              .build();
+        }
+      }
+    }
+    return getUpdateMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -168,6 +230,20 @@ public final class NodeCommunicationGrpc {
       asyncUnimplementedUnaryCall(getDownloadMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void isUpdate(node.communication.base.NodeCommunicationServer.IsUpdateRequest request,
+        io.grpc.stub.StreamObserver<node.communication.base.NodeCommunicationServer.IsUpdateResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getIsUpdateMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void update(node.communication.base.NodeCommunicationServer.UpdateRequest request,
+        io.grpc.stub.StreamObserver<node.communication.base.NodeCommunicationServer.UpdateResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getUpdateMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -191,6 +267,20 @@ public final class NodeCommunicationGrpc {
                 node.communication.base.NodeCommunicationServer.DownloadRequest,
                 node.communication.base.NodeCommunicationServer.DownloadResponse>(
                   this, METHODID_DOWNLOAD)))
+          .addMethod(
+            getIsUpdateMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                node.communication.base.NodeCommunicationServer.IsUpdateRequest,
+                node.communication.base.NodeCommunicationServer.IsUpdateResponse>(
+                  this, METHODID_IS_UPDATE)))
+          .addMethod(
+            getUpdateMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                node.communication.base.NodeCommunicationServer.UpdateRequest,
+                node.communication.base.NodeCommunicationServer.UpdateResponse>(
+                  this, METHODID_UPDATE)))
           .build();
     }
   }
@@ -236,6 +326,22 @@ public final class NodeCommunicationGrpc {
       asyncUnaryCall(
           getChannel().newCall(getDownloadMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void isUpdate(node.communication.base.NodeCommunicationServer.IsUpdateRequest request,
+        io.grpc.stub.StreamObserver<node.communication.base.NodeCommunicationServer.IsUpdateResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getIsUpdateMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void update(node.communication.base.NodeCommunicationServer.UpdateRequest request,
+        io.grpc.stub.StreamObserver<node.communication.base.NodeCommunicationServer.UpdateResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getUpdateMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -275,6 +381,20 @@ public final class NodeCommunicationGrpc {
     public node.communication.base.NodeCommunicationServer.DownloadResponse download(node.communication.base.NodeCommunicationServer.DownloadRequest request) {
       return blockingUnaryCall(
           getChannel(), getDownloadMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public node.communication.base.NodeCommunicationServer.IsUpdateResponse isUpdate(node.communication.base.NodeCommunicationServer.IsUpdateRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getIsUpdateMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public node.communication.base.NodeCommunicationServer.UpdateResponse update(node.communication.base.NodeCommunicationServer.UpdateRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getUpdateMethod(), getCallOptions(), request);
     }
   }
 
@@ -319,11 +439,29 @@ public final class NodeCommunicationGrpc {
       return futureUnaryCall(
           getChannel().newCall(getDownloadMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<node.communication.base.NodeCommunicationServer.IsUpdateResponse> isUpdate(
+        node.communication.base.NodeCommunicationServer.IsUpdateRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getIsUpdateMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<node.communication.base.NodeCommunicationServer.UpdateResponse> update(
+        node.communication.base.NodeCommunicationServer.UpdateRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getUpdateMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_TEST = 0;
   private static final int METHODID_PING = 1;
   private static final int METHODID_DOWNLOAD = 2;
+  private static final int METHODID_IS_UPDATE = 3;
+  private static final int METHODID_UPDATE = 4;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -353,6 +491,14 @@ public final class NodeCommunicationGrpc {
         case METHODID_DOWNLOAD:
           serviceImpl.download((node.communication.base.NodeCommunicationServer.DownloadRequest) request,
               (io.grpc.stub.StreamObserver<node.communication.base.NodeCommunicationServer.DownloadResponse>) responseObserver);
+          break;
+        case METHODID_IS_UPDATE:
+          serviceImpl.isUpdate((node.communication.base.NodeCommunicationServer.IsUpdateRequest) request,
+              (io.grpc.stub.StreamObserver<node.communication.base.NodeCommunicationServer.IsUpdateResponse>) responseObserver);
+          break;
+        case METHODID_UPDATE:
+          serviceImpl.update((node.communication.base.NodeCommunicationServer.UpdateRequest) request,
+              (io.grpc.stub.StreamObserver<node.communication.base.NodeCommunicationServer.UpdateResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -418,6 +564,8 @@ public final class NodeCommunicationGrpc {
               .addMethod(getTestMethod())
               .addMethod(getPingMethod())
               .addMethod(getDownloadMethod())
+              .addMethod(getIsUpdateMethod())
+              .addMethod(getUpdateMethod())
               .build();
         }
       }

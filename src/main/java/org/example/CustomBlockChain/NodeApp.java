@@ -9,7 +9,7 @@ import org.example.BlockChainBase.Cryptography.HashEncoder;
 
 import org.example.CustomBlockChain.API.GRPC.NodeAPIGrpcServiseImpl;
 import org.example.BlockChainBase.DB.SQL.Node.IpConfigParser;
-import org.example.CustomBlockChain.Entity.TypeRequestNodeCommunication;
+import org.example.CustomBlockChain.Entity.TypeDownloadRequestNodeCommunication;
 import org.example.CustomBlockChain.NodeCommunication.NodeClient;
 import org.example.CustomBlockChain.NodeCommunication.NodeServer;
 import org.example.CustomBlockChain.Servise.BlockAdderServiseImpl;
@@ -77,6 +77,9 @@ public class NodeApp {
                         System.out.println("\nЗапуск поиска нод в сети...");
                         if (!synchronizationBlockChain()) {
                             System.out.println("Вы единственная Node в сети");
+                        }
+                        else {
+                            System.out.println("Ваша нода успешно синхонизирована");
                         }
                         break;
                     }
@@ -381,7 +384,7 @@ public class NodeApp {
 
     public static boolean synchronizationBlockChain() throws Exception {
         String randomIpNode = nodeListDB.getRandomIp();
-        TypeRequestNodeCommunication typeRequest = TypeRequestNodeCommunication.ALL;
+        TypeDownloadRequestNodeCommunication typeRequest = TypeDownloadRequestNodeCommunication.ALL;
         while (randomIpNode != null) {
             typeRequest = nodeClient.SynchronizationBlockChain(randomIpNode,javaChainMethodService.getBlockNumber(),typeRequest);
             if (typeRequest==null) break;

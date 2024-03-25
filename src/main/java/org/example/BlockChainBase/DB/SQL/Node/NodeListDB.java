@@ -25,7 +25,7 @@ public class NodeListDB {
         ResultSet resultSet = connection.getMetaData().getTables(null, null, "node_list", null);
         String basePath = System.getProperty("user.dir");
         if (!resultSet.next()) {
-            String sql = Files.readString(Paths.get(basePath + "\\src\\main\\java\\org\\example\\BlockChainBase\\DB\\SQL\\NodeList.sql"));
+            String sql = Files.readString(Paths.get(basePath + "\\src\\main\\java\\org\\example\\BlockChainBase\\DB\\SQL\\Node\\NodeList.sql"));
             statement.execute(sql);
         }
     }
@@ -34,7 +34,7 @@ public class NodeListDB {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://192.168.0.102:5432/postgres", "postgres", "1006");
+                    "jdbc:postgresql://localhost:5432/postgres", "postgres", "1006");
         } catch (ClassNotFoundException e) {
             System.out.println("PostgreSQL JDBC драйвер не найден!");
             e.printStackTrace();
@@ -119,7 +119,7 @@ public class NodeListDB {
     }
     public String getLastIp() throws IOException {
         String basePath = System.getProperty("user.dir");
-        String path = basePath+"\\src\\main\\java\\org\\example\\DB\\SQL\\Node\\lastIp.txt";
+        String path = basePath+"\\src\\main\\java\\org\\example\\BlockChainBase\\DB\\SQL\\Node\\lastIp.txt";
         FileReader fileReader = new FileReader(path);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String line;

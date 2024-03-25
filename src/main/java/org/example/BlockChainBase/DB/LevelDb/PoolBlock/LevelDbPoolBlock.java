@@ -45,7 +45,7 @@ public class LevelDbPoolBlock<T> {
     public void put(Block<T> block) throws IOException {
         DB db = connectDb();
         String key = block.getHash();
-        levelDbKeysBlockPollStruct.put(block.getHash());
+        levelDbKeysBlockPollStruct.put(block.getHash(),block.getBlockNumber());
         String value = gson.toJson(block);
         db.put(bytes(key), bytes(value));
         db.close();
@@ -116,8 +116,9 @@ public class LevelDbPoolBlock<T> {
             Type typeData = new TypeToken<ArrayList<Transaction>>() {
             }.getType();
             LevelDbPoolBlock<ArrayList<Transaction>> levelDbPoolBlock = new LevelDbPoolBlock<>(typeData);
-        for (Block<ArrayList<Transaction>> block : levelDbPoolBlock.getAll()) {
-            System.out.println(block.getHash());
+            LevelDbKeysBlockPollStruct levelDbKeysBlockPollStruct1 = new LevelDbKeysBlockPollStruct();
+        for (String s : levelDbKeysBlockPollStruct1.getAll()) {
+            System.out.println(s);
         }
         }
 

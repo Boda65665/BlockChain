@@ -11,12 +11,11 @@ import node.api.grc.NodeApi;
 import node.api.grc.NodeApi.*;
 import node.communication.base.NodeCommunicationServer;
 import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
-import org.example.BlockChainBase.Entity.Address;
 import org.example.BlockChainBase.Entity.Block;
-import org.example.CustomBlockChain.Entity.AddressCustom;
 import org.example.CustomBlockChain.Entity.Transaction;
 import org.example.CustomBlockChain.Servise.ConverterServiseGrpcEntityCustom;
 import org.example.CustomBlockChain.Servise.JavaChainMethodService;
+import org.example.CustomBlockChain.Servise.Validation.ValidationServiseNodeAPI;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;

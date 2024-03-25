@@ -1,8 +1,8 @@
-org\example\BlockChainBase\Entity\BlockType.class
-node\entity\Entity$BlockType$1.class
-org\example\CustomBlockChain\Entity\TypeRequestNodeCommunication.class
-node\entity\Entity$BlockType.class
-node\entity\Entity$BlockChainInfoConstructOrBuilder.class
-node\entity\Entity$BlockChainInfoConstruct$Builder.class
-node\entity\Entity$BlockChainInfoConstruct$1.class
-node\entity\Entity$BlockChainInfoConstruct.class
+node\communication\base\NodeCommunicationServer$IsUpdateResponse.class
+node\communication\base\NodeCommunicationServer$UpdateResponseOrBuilder.class
+node\communication\base\NodeCommunicationServer$UpdateResponse$1.class
+node\communication\base\NodeCommunicationServer$IsUpdateResponse$1.class
+node\communication\base\NodeCommunicationServer$UpdateResponse$Builder.class
+node\communication\base\NodeCommunicationServer$IsUpdateResponse$Builder.class
+node\communication\base\NodeCommunicationServer$IsUpdateResponseOrBuilder.class
+node\communication\base\NodeCommunicationServer$UpdateResponse.class

@@ -90,7 +90,10 @@ public class LevelDbTransactionPool {
     }
     public static void main(String[] args) throws IOException {
         LevelDbTransactionPool levelDbTransaction = new LevelDbTransactionPool();
-        System.out.println(levelDbTransaction.getAll().size());
+        for (Transaction transaction : levelDbTransaction.getAll()) {
+            System.out.println(transaction.getNonce());
+
+        }
     }
 
 

@@ -22,6 +22,7 @@ enum BlockType {
   PENDING = 1;
 }
 
+
 message Block {
   string parentHash = 1;
   string feeRecipient = 2;

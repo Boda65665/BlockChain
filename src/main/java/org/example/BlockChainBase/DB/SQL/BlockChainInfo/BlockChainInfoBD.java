@@ -100,15 +100,16 @@ public class BlockChainInfoBD {
         String sql = "SELECT * FROM block_chain_info";
         PreparedStatement statement = connection.prepareStatement(sql);
         ResultSet resultSet = statement.executeQuery();
-
-        BlockChainInfoStruct blockChainInfoStruct = new BlockChainInfoStruct(encryption.decode(resultSet.getString("last_hash")),Integer.parseInt(encryption.decode(resultSet.getString("height"))));
+        String lastHash = encryption.decode(resultSet.getString("last_hash"));
+        BlockChainInfoStruct blockChainInfoStruct = new BlockChainInfoStruct(lastHash.isEmpty()?null:lastHash,Integer.parseInt(encryption.decode(resultSet.getString("height"))));
         connection.close();
         return blockChainInfoStruct;
     }
 
 public static void main(String[] args) throws Exception {
     BlockChainInfoBD blockChainInfoBD = new BlockChainInfoBD();
-    blockChainInfoBD.addInfo("00b63e53785fd143b3c25549f7febe230e02f1592705fa30fd7f5767a0dc3403",1);
+//    blockChainInfoBD.addInfo("",0);
+    System.out.println(blockChainInfoBD.getBlockChainInfo());
 }
 
 }

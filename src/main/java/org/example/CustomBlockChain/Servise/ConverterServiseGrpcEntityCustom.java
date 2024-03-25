@@ -1,19 +1,28 @@
 package org.example.CustomBlockChain.Servise;
 
 import node.entity.Entity;
+import org.example.BlockChainBase.Cryptography.AESEncryption;
+import org.example.BlockChainBase.DB.SQL.BlockChainInfo.BlockChainInfoBD;
 import org.example.BlockChainBase.Entity.Block;
 import org.example.BlockChainBase.Entity.BlockType;
 import org.example.BlockChainBase.Service.ConverterServiseGrpcEntityBase;
 import org.example.CustomBlockChain.Entity.AddressCustom;
 import org.example.CustomBlockChain.Entity.Transaction;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEntityBase<Entity.Transaction,Transaction, Entity.Address,AddressCustom,
         Entity.Block,Block<ArrayList<Transaction>>> {
+
+    private final AESEncryption encryption = new AESEncryption();
     public ConverterServiseGrpcEntityCustom() throws SQLException, IOException, ClassNotFoundException {
     }
 
@@ -133,7 +142,24 @@ public class ConverterServiseGrpcEntityCustom implements ConverterServiseGrpcEnt
         }
         return grpcTransaction;
     }
+    public Entity.BlockChainInfoConstruct blockChainInfoBaseToBlockChainInfoGrpc(BlockChainInfoBD.BlockChainInfoStruct blockChainInfoStruct){
+        try {
+            return Entity.BlockChainInfoConstruct.newBuilder().setHashLastBlock(blockChainInfoStruct.lastHsh()).setNumberLastBlock(encryption.encode(String.valueOf(blockChainInfoStruct.height()))).build();
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException |
+                 BadPaddingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+
+    public BlockChainInfoBD.BlockChainInfoStruct blockChainInfoGrpcToBase(Entity.BlockChainInfoConstruct blockChainInfo)  {
+        try {
+            return new BlockChainInfoBD.BlockChainInfoStruct(blockChainInfo.getHashLastBlock(),Integer.parseInt(encryption.decode(blockChainInfo.getNumberLastBlock())));
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | IllegalBlockSizeException |
+                 BadPaddingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
 
