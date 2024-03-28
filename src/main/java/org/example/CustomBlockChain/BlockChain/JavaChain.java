@@ -80,7 +80,8 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
                 .setNonce(0)
                 .setNoncePending(0)
                 .setPublicKey(addressFeeRecipient)
-                .setHashTransactionComplete(new ArrayList<>()).build();
+                .setHashTransactionComplete(new ArrayList<>()).build
+                        ();
         feeRecipient.setBalance(feeRecipient.getBalance()+100);
         levelDbState.update(feeRecipient);
     }
@@ -95,6 +96,8 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         if (transactionsCompletedAddressFrom==null) transactionsCompletedAddressFrom=new ArrayList<>();
         transactionsCompletedAddressFrom.add(transaction.getHash());
         from.setTransactionsComplete(transactionsCompletedAddressFrom);
+        from.setBalance(from.getBalance()-transaction.getGas()*transaction.getGasPrice());
+
         if (!transaction.getFrom().equals(transaction.getTo())) {
             ArrayList<String>transactionsCompletedAddressTo = to.getTransactionsComplete();
             transactionsCompletedAddressTo.add(transaction.getHash());
@@ -199,6 +202,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
         block.setParentHash(blockChain.getTail());
         for (Transaction transaction : block.getData()) {
             transaction.setBlockNumber(block.getBlockNumber());
+            transaction.setGas(block.getData().size());
             if (transactionRule.Execute(transaction)) transaction.setStatus(true);
         }
         block.setHash(Block.calculateHash(block.getData(), blockChain.getTail(), hashEncoder, block.getNonce()));

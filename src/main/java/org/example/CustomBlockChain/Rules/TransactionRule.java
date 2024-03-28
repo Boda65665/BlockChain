@@ -38,7 +38,7 @@ public class TransactionRule implements RuleBase<Transaction> {
         if (fromAddress==null) return false;
 
         if (!asymmetric.verify(hashEncoder.SHA256(transaction.getTo()+transaction.getNonce()),transaction.getFrom(),transaction.getSing())) return false;
-        if (transaction.getValue()>fromAddress.getBalance() || transaction.getValue()<0) return false;
+        if (transaction.getValue()+transaction.getGasPrice()*transaction.getGas()>=fromAddress.getBalance() || transaction.getValue()<0) return false;
         if(transaction.getNonce() < fromAddress.getNonce()) return false;
         return true;
     }

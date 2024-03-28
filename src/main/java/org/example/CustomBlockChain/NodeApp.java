@@ -404,7 +404,9 @@ public class NodeApp {
                     .setData("send transaction to "+to)
                     .setTo(to).setValue(value)
                     .setNonce(javaChainMethodService.getNoncePending(from))
-                    .setSing(javaChainMethodService.singTransaction(privateKey,from,to)).build();
+                    .setSing(javaChainMethodService.singTransaction(privateKey,from,to))
+                    .setGasPrice(1)
+                    .build();
             return javaChainMethodService.sendTransaction(transaction);
         } catch (Exception e) {
                 logger.log(Level.WARNING,e.toString());
