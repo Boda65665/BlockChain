@@ -138,9 +138,7 @@ public class NodeListDB {
 
     public static void main(String[] args) throws Exception {
         NodeListDB nodeListDB = new NodeListDB();
-//        nodeListDB.addNode("192.343.534.45453");
-//        nodeListDB.editStatusActive("192.343.534.45453",tr
-        System.out.println(nodeListDB.isCreated("192.168.0.102"));
+
 
 
     }

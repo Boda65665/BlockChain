@@ -131,8 +131,7 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
             poolTransactions.add(transaction);
             levelDbState.update(address);
             levelDbTransactionPool.put(transaction);
-
-           // nodeClient.update();
+           nodeClient.update(transaction);
             return transaction.getHash();
         }
 
@@ -147,7 +146,6 @@ public class JavaChain implements BlockChainBase<ArrayList<Transaction>> {
 
     public void addBlockToPoll(Block<ArrayList<Transaction>> block) throws Exception {
         blockChain.addBlockToPoll(block);
-        //nodeClient.update();
     }
 
     @Override

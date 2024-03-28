@@ -27,10 +27,9 @@ public class NodeClientTest {
     }
 
     @Test
-    void isUpdateBlock() throws IOException {
+    void isUpdateBlock() throws Exception {
 
 //        Assertions.assertTrue(nodeClient.update(javaChain.getBlocks().getLast()));
-        Assertions.assertTrue(nodeClient.update(levelDbTransaction.getAll().getLast()));
     }
     @Test
     void Update(){

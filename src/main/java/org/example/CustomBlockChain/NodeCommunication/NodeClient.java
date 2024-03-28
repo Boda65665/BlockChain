@@ -46,7 +46,7 @@ public class NodeClient {
             }
             IpConfigParser ipConfigParser = new IpConfigParser();
             final String ipAddress = ipConfigParser.getIpAddress();
-            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:8081").usePlaintext().build();
+            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget(IP+":8081").usePlaintext().build();
             NodeCommunicationGrpc.NodeCommunicationBlockingStub stub = NodeCommunicationGrpc.newBlockingStub(managedChannel);
             if (typeRequest == TypeDownloadRequestNodeCommunication.ALL) {
                 NodeCommunicationServer.DownloadRequest downloadRequest = NodeCommunicationServer.DownloadRequest.newBuilder().setLastNumberBlock(numberBlock).setType("ALL").build();
@@ -82,7 +82,7 @@ public class NodeClient {
 
     private boolean ping(String ip) {
         try {
-            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:8081").usePlaintext().build();
+            ManagedChannel managedChannel = ManagedChannelBuilder.forTarget(ip+":8081").usePlaintext().build();
             NodeCommunicationGrpc.NodeCommunicationBlockingStub stub = NodeCommunicationGrpc.newBlockingStub(managedChannel);
             NodeCommunicationServer.PingRequest pingRequest = NodeCommunicationServer.PingRequest.newBuilder().build();
             stub.ping(pingRequest);
@@ -95,13 +95,27 @@ public class NodeClient {
     }
 
 
-    public boolean update(Transaction transaction) {
-        return isNotUpdated(NodeCommunicationServer.IsUpdateRequest.newBuilder().setLastTransactionHash(transaction.getHash()).build()) && update(NodeCommunicationServer.UpdateRequest.newBuilder().setTransaction(converterServiseGrpc.dataBlockToGrpcData(transaction)));
+    public void update(Transaction transaction) throws Exception {
+        for (String ip : nodeListDB.getAllIp()) {
+            if (!isNotUpdated(NodeCommunicationServer.IsUpdateRequest.newBuilder().setLastTransactionHash(transaction.getHash()).build(),ip)) continue;
+            update(NodeCommunicationServer.UpdateRequest.newBuilder().setTransaction(converterServiseGrpc.dataBlockToGrpcData(transaction)),ip);
+
+        }
+
     }
-    public boolean update(Block<ArrayList<Transaction>> block){
-        return isNotUpdated(NodeCommunicationServer.IsUpdateRequest.newBuilder().setLastNumberBlock(block.getBlockNumber()).build()) && update(NodeCommunicationServer.UpdateRequest.newBuilder().setBlock(converterServiseGrpc.blockToGrpcBlock(block)));
+    public void update(Block<ArrayList<Transaction>> block) {
+        try {
+            for (String ip : nodeListDB.getAllIp()) {
+                if (!isNotUpdated(NodeCommunicationServer.IsUpdateRequest.newBuilder().setLastNumberBlock(block.getBlockNumber()).build(), ip))
+                    continue;
+                update(NodeCommunicationServer.UpdateRequest.newBuilder().setBlock(converterServiseGrpc.blockToGrpcBlock(block)), ip);
+            }
+        }
+        catch (Exception er){
+            logger.log(Level.WARNING,er.toString());
+        }
     }
-    private boolean update(NodeCommunicationServer.UpdateRequest.Builder requestBuilder){
+    private boolean update(NodeCommunicationServer.UpdateRequest.Builder requestBuilder,String ip){
         try {
             requestBuilder.setBlockChainInfo(converterServiseGrpc.blockChainInfoBaseToBlockChainInfoGrpc(blockChainInfoBD.getBlockChainInfo()));
             ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:8081").usePlaintext().build();
@@ -116,7 +130,7 @@ public class NodeClient {
         }
         }
 
-    private boolean isNotUpdated(NodeCommunicationServer.IsUpdateRequest request){
+    private boolean isNotUpdated(NodeCommunicationServer.IsUpdateRequest request,String ip){
         try {
             ManagedChannel managedChannel = ManagedChannelBuilder.forTarget("localhost:8081").usePlaintext().build();
             NodeCommunicationGrpc.NodeCommunicationBlockingStub stub = NodeCommunicationGrpc.newBlockingStub(managedChannel);
